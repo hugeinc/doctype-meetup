@@ -1,0 +1,126 @@
+@font-face{
+    font-family:'HUGEAvantGardeBold';
+    src:url("huge_agb_v5-webfont.ttf") format("truetype");
+    font-weight:normal;
+    font-style:normal
+}
+
+body {
+    color: #666;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 16px;
+}
+
+header, h1, h2, h3, h4, h5, h6 {
+    font-family:HUGEAvantGardeBold, 'Helvetica Neue', Helvetica, Arial, Geneva, sans-serif;
+    font-weight:700;
+    text-rendering:optimizeLegibility;
+    font-weight: normal;
+    letter-spacing: -.05em;
+    font-size: 50px;
+    text-shadow: none;
+}
+
+h1 {
+    font-size: 36px;
+}
+
+h2 {
+    font-size: 28px;
+}
+
+h3 {
+    font-size: 22px;
+}
+
+h4, h5, h6 {
+    font-size: 18px;
+}
+
+.presentation {
+    background: #fff;
+}
+
+li {
+    list-style-type: disc;
+}
+
+ul.bigger {
+    font-size: 1.4em;
+}
+
+ul.biggest {
+    font-size: 1.6em;
+}
+
+ul.smaller {
+    font-size: 24px;
+}
+
+.slide {
+    background: #fff;
+    -webkit-box-shadow: 0px 0px 10px #ccc; /* Safari and Chrome */
+    box-shadow: 0px 0px 10px #ccc;
+    background-image: none;
+}
+pre {
+    font-family: "Droid Sans Mono", Courier;
+    background: rgba(199, 199, 199, 0.05);
+    border-radius: 8px;
+    border: 1px solid rgba(199, 199, 199, 0.1);
+    font-size: 1.2em;
+}
+
+
+.fs .footnote {
+	display:block;
+}
+
+.fs pre.smaller {
+    font-size: 14px;
+}
+
+.fs table {
+	border-collapse: collapse;
+}
+
+.fs td, .fs th {
+	border: 1px solid;
+	font-size: 30px;
+}
+.offline-storage pre.prettyprint {
+    font-size: 24px;
+}
+
+.offline-storage pre.smaller {
+    font-size: 18px;
+}
+pre b, ul li b {
+    font-weight: normal;
+    color: #ED228E;
+    text-shadow: none;
+}
+
+section, footer {
+    text-shadow: none;
+    color: #666;
+}
+
+.slide p.subscript {
+    font-size: .8em;
+    margin-top: 100px;
+}
+
+button {
+    border: 2px solid #666;
+    background: #dcdcdc;
+    font-size: 16px;
+}
+
+#toc-list img {
+    display:none;
+}
+
+.intro .middle p {
+    line-height:1.5em;
+}

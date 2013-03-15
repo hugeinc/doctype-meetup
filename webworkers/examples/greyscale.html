@@ -1,0 +1,29 @@
+<!doctype html>
+<html>
+	<head>
+		<title>Web Workers Examples - Image Processing</title>
+		<link rel="stylesheet" href="/css/main.css" />
+	</head>
+	<body>
+		<div class="wrapper">
+			<h1>
+				Image Processing
+				<img class="worker-gif" src="/img/underconstruction.gif" />
+			</h1>
+			
+			<form>
+				<select>
+					<option value="greyscale">Greyscale</option>
+					<option value="threshold">Threshold</option>
+					<option value="other">Other</option>
+				</select>
+				<button>apply filter</button>
+			</form>
+			
+			<canvas width="335" height="504"></canvas>
+		</div>
+		
+		<script src="/js/main.js"></script>
+		<script src="/js/examples/greyscale.js"></script>
+	</body>
+</html>

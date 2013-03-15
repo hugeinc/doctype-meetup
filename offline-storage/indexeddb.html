@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<!--
+  Copyright 2011 Google Inc.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+  Original slides: Marcin Wichary (mwichary@google.com)
+  Modifications: Chrome DevRel Team (chrome-devrel@googlegroups.com)
+                 Alex Russell (slightlyoff@chromium.org)
+                 Brad Neuberg
+-->
+<html manifest="cache.appcache">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge;chrome=1" />
+    <title>HTML5 Presentation</title>
+    <link href="http://fonts.googleapis.com/css?family=Droid+Sans|Droid+Sans+Mono" rel="stylesheet" type="text/css" />
+    <link id="prettify-link" href="src/prettify/prettify.css" rel="stylesheet" disabled />
+    <link href="styles/fonts.css" rel="stylesheet" type="text/css" media="screen" />
+    <link href="styles/presentation.excss" rel="stylesheet" type="text/excss" media="screen" />
+    <link href="styles/common.excss" rel="stylesheet" type="text/excss" media="screen" />
+    <link class="theme" href="styles/default.excss" rel="stylesheet" type="text/excss" media="screen" />
+    <link href="styles/huge.css" rel="stylesheet" type="text/css" media="screen" />
+  </head>
+  <body>
+    <nav id="helpers">
+      <button title="Previous slide" id="nav-prev" class="nav-prev">&#8701;</button> 
+      <button title="Jump to a random slide" id="slide-no">5</button> 
+      <button title="Next slide" id="nav-next" class="nav-next">&#8702;</button>
+      <menu>
+        <button type="checkbox" data-command="toc" title="Table of Contents" class="toc">TOC</button>
+        <!-- <button type="checkbox" data-command="resources" title="View Related Resources">&#9734;</button> -->
+        <button type="checkbox" data-command="notes" title="View Slide Notes">&#9999;</button>
+        <button type="checkbox" data-command="source" title="View slide source">&#8635;</button>
+        <button type="checkbox" data-command="help" title="View Help">?</button>
+      </menu>
+    </nav>
+    <div class="presentation">
+      <div id="presentation-counter">Loading...</div>
+      <div class="slides">
+        <div class="slide" id="landing-slide">
+          <section class="middle">
+            <p>This presentation is an HTML5 website</p>
+            <p>Press <span id="left-init-key" class="key">&rarr;</span> key to advance.</p>
+            <p id="disclaimer-message">Having issues seeing the presentation? Read the <a href="disclaimer.html">disclaimer</a></p>
+          </section>
+          <aside class="note">
+            <section>
+              Welcome! (This field is for speaker notes and commentary.)
+            </section>
+          </aside> 
+        </div>
+
+        <div class="slide" id="title-slide">
+          <section class="middle">
+            <hgroup>
+              <h1>
+                IndexedDB
+              </h1>
+              <h2>
+                NoSQL: not just for serverside guys anymore
+              </h2>
+            </hgroup>
+            <p></p>
+          </section>
+        </div>
+        
+        <div class="slide" id="table-of-contents">
+          <header><h1>Today, we will cover...</h1></header>
+          <section>
+            <ul id="toc-list">
+            </ul>
+          </section>
+        </div>
+
+      <div class="slide offline-storage" id="indexed-db">
+      <header><h1>IndexedDB.</h1></header>
+        <section>
+            <p>IndexedDB is an object-oriented database right here in your browser.</p>
+            <ul class="biggest">
+                <li>Available in Chrome (11+) and Firefox (4+)</li>
+                <li>Replacing (?) WebSQL</li>
+                <li>Asynchronous and synchronous (TBI(mplemented))</li>
+                <li>Transactional</li>
+                <li>Good for online, offline, and multiple (non-private) browser sessions</li>
+            </ul>
+        </section>
+      </div>
+
+      <div class="slide offline-storage">
+      <header><h2>.. some basics.</h2></header>
+        <section>
+            <ul class="bigger">
+                <li>Databases (object stores) are named, ie <b>version</b></li>
+                <li>Databases can have many objects (or various other values such as strings)</li>
+                <li>You can create arbitrary indices</li>
+                <li>You can pass <b>ranges</b> (ie 1-10) in order to "LIMIT" your results</li>
+                <li>Transactions are scoped:  read only, read-write, snapshot</li>
+                <li>Add, get, put (update), delete data</li>
+                <li>UNLIMITED data, with user sign off (otherwise, 5mb in chrome)</li>
+            </ul>     
+            
+            <p class="subscript">I can't find the firefox limit anywhere..</p>       
+        </section>
+      </div>
+
+      <div class="slide offline-storage">
+        <header><h1>Examples!</h1></head>
+        <section>
+<pre>
+var db;  
+//create or open a db
+var request = window.indexedDB.<b>open</b>('SuperDB');  
+request.<b>onerror</b> = function(event) {  
+  alert('Oh noo my db');  
+};  
+request.<b>onsuccess</b> = function(event) {  
+  db = request.result;  
+};  
+</pre>
+        </section>
+      </div>
+
+
+      <div class="slide offline-storage">
+        <section>
+        <p>We've opened our db, now let's set or create a version.</p>
+
+<pre>
+if (db.<b>version</b> != "DoubleGood") {  
+  var request = db.<b>setVersion</b>("DoubleGood");  
+  //insert request.onsuccess and request.onerror here! 
+}
+</pre>
+      </section>
+      </div>   
+
+      <div class="slide offline-storage">
+        <header><h2>Sorting.</h2>
+        <section>
+        <p>You can choose either a <b>Key Path</b> or a <b>Key Generator</b>, depending on what type of operations you need.</p>
+        <ul class="bigger">
+            <li>Key Path: Object stores for JS objects only.  Objects must have a property matching the name of the key path provided.</li>
+            <li>Key Generator: For any kind of value.  You can supply a specific key, or one will be generated for you.</li>
+            <li>Both: The object store must store JS objects.  "Usually a key is generated and the value of the generated key is stored in the object in a property with the same name as the key path. However, if such a property already exists, the value of that property is used as key rather than generating a new key."</li>
+        </ul>
+        
+        </section>
+      </div>  
+      
+      
+
+      <div class="slide offline-storage">
+        <header><h2>Real world-ish example.</h2>
+        <section>
+<pre class="smaller">
+var friendLocations = [  
+  { name: "James", location: "Empire State Building", geo: "40.748716,-73.986171", date: "" },  
+  { name: "Kim", location: "Huge Inc", geo: "40.702869,-73.990485", date: "" },  
+  { name: "Kim", location: "Huge Inc", geo: "40.702869,-73.990485" },  
+];  
+
+request.onsuccess = function(event) {  
+
+  var contacts = db.<b>createObjectStore</b>("friendLocations",);  
+  
+  // searching by names is a given; make it non-unique since these can collide 
+  contacts.<b>createIndex</b>("name", "name", { unique: false });  
+  
+  // we probably want to search on location too 
+  contacts.<b>createIndex</b>("location", "location", { unique: false });  
+};  
+</pre>
+        </section>
+    </div> 
+    
+    <div class="slide offline-storage">
+        <header><h2>Real world-ish example.</h2>
+        <section>
+<pre class="smaller">
+var transaction = db.transaction(["friendLocations"]);  
+var objectStore = transaction.objectStore("friendLocations");  
+var request = objectStore.get("Kim");  
+request.onerror = function(event) {  
+  alert('No recent location updates from Kim.');  
+};  
+request.onsuccess = function(event) {  
+  alert("Kim's latest location update is " + request.result.location);  
+}; 
+</pre>
+      </section>
+      </div>       
+      
+              
+<!--      <div class="slide offline-storage">
+        <header><h1>Examples!</h1></header>
+        <section>
+<pre>var idbRequest = window.<b>indexedDB</b>.<b>open</b>('SuperDB');
+idbRequest.onsuccess = function(event) {
+  <b>var db = event.srcElement.result</b>;
+  var transaction = db.<b>transaction</b>([], <b>IDBTransaction.READ_ONLY</b>);
+  var curRequest = transaction.<b>objectStore</b>('ObjectStore Name').<b>openCursor</b>();
+  curRequest.<b>onsuccess</b> = ...;
+};
+</pre>
+          <div class="center" id="indexeddb-example">
+            <input type="text" placeholder="key" id="idb-key" size="10" /> <input type="text" placeholder="value" id="idb-value" size="15" />
+            <button onclick="indexedDbSample.idbCreate()">create SuperDB!</button>
+            <div id="idb-log"></div>
+            <div class="record-list" id="idb-results-wrapper"></div>
+          </div>
+          <p class="subscript">**https://developer.mozilla.org/en/IndexedDB/Using_IndexedDB</p>
+          <script defer>
+            var indexedDbSample = (function() {
+              var idb_;
+              var idbRequest_;
+              var idbLog_ = document.getElementById('idb-log');
+              var idResultsWrapper_ = document.getElementById('idb-results-wrapper');
+
+              // IndexedDB spec is still evolving, various browsers keep it
+              // behind various flags and implementation varies.
+              if ('webkitIndexedDB' in window) {
+                window.indexedDB = window.webkitIndexedDB;
+                window.IDBTransaction = window.webkitIDBTransaction;
+              } else if ('moz_indexedDB' in window) {
+                window.indexedDB = window.moz_indexedDB;
+              }
+
+              // Open our IndexedDB if the browser supports it.
+              if (window.indexedDB) {
+                idbRequest_ = window.indexedDB.open("Test", "A test object store.");
+                idbRequest_.onerror = idbError_;
+                idbRequest_.addEventListener('success', function(event) {
+                  idb_ = event.srcElement.result;
+                  idbShow_(event);
+                }, false);
+              }
+
+              function idbError_(event) {
+                idbLog_.innerHTML += '<p class="error">Error: ' +
+                                     event.message + ' (' + event.code + ')</p>';
+              }
+
+              function idbShow_(event) {
+                if (!idb_.objectStoreNames.contains('myObjectStore')) {
+                  idbLog_.innerHTML = "<p>Object store not yet created.</p>";
+                  return;
+                }
+
+                var html = [];
+                var transaction = idb_.transaction([], IDBTransaction.READ_ONLY); // Read is default.
+                var request = transaction.objectStore('myObjectStore').openCursor(); // Get all results.
+
+                // This callback will continue to be called until we have no more results.
+                request.onsuccess = function(e) {
+                  var cursor = e.srcElement.result;
+                  if (!cursor) {
+                    idResultsWrapper_.innerHTML = '<ul class="record-list" id="idb-results">' + html.join('') + '</ul>';
+                    return;
+                  }
+                  html.push('<li><span class="keyval" contenteditable onblur="indexedDbSample.updateKey(\'',
+                            cursor.key, '\', this)">', cursor.key, '</span> ',
+                            '=> <span class="keyval" contenteditable onblur="indexedDbSample.updateValue(\'',
+                            cursor.key, '\', this)">', cursor.value, '</span>&nbsp; ',
+                            '<a href="javascript:void(0)" onclick="indexedDbSample.deleteKey(\'',
+                            cursor.key, '\')">[Delete]</a></li>');
+                  cursor.continue();
+                }
+                request.onerror = idbError_;
+              }
+
+              function idbCreate_() {
+                if (!idb_) {
+                  if (idbRequest_) {
+                    idbRequest_.addEventListener('success', removeObjectStore, false); // If indexedDB is still opening, just queue this up.
+                  }
+                  return;
+                }
+
+                var request = idb_.setVersion('the new version string');
+                request.onerror = idbError_;
+                request.onsuccess = function(e) {
+                  if (!idb_.objectStoreNames.contains('myObjectStore')) {
+                    try {
+                      var objectStore = idb_.createObjectStore('myObjectStore', null); // FF is requiring the 2nd keyPath arg. It can be optional :(
+                      idbLog_.innerHTML = "<p>Object store created.</p>";
+                    } catch (err) {
+                      idbLog_.innerHTML = '<p class="error">' + err.toString() + '</p>';
+                    }
+                  } else {
+                    idbLog_.innerHTML = '<p class="error">Object store already exists.</p>';
+                  }
+                }
+              }
+
+              function idbSet_() {
+                if (!idb_) {
+                  if (idbRequest_) {
+                    idbRequest_.addEventListener('success', removeObjectStore, false); // If indexedDB is still opening, just queue this up.
+                  }
+                  return;
+                }
+
+                if (!idb_.objectStoreNames.contains('myObjectStore')) {
+                  idbLog_.innerHTML = "<p class=\"error\">Object store doesn't exist.</p>";
+                  return;
+                }
+
+                 // Create a transaction that locks the world.
+                var objectStore = idb_.transaction([], IDBTransaction.READ_WRITE)
+                                      .objectStore("myObjectStore");
+                var request = objectStore.put(
+                    document.getElementById('idb-value').value,
+                    document.getElementById('idb-key').value);
+                request.onerror = idbError_;
+                request.onsuccess = idbShow_;
+              }
+
+              function updateKey_(key, element) {
+                var newKey = element.textContent;
+                var transaction = idb_.transaction([], IDBTransaction.READ_WRITE); // Create a transaction that locks the world.
+                var objectStore = transaction.objectStore("myObjectStore");
+                var request = objectStore.get(key);
+                request.onerror = idbError_;
+                request.onsuccess = function(event) {
+                  var value = event.srcElement.result;
+                  if (objectStore.delete) {
+                    var request = objectStore.delete(key);
+                  } else {
+                    var request = objectStore.remove(key);
+                  }
+                  request.onerror = idbError_;
+                  request.onsuccess = function(event) {
+                    var request = objectStore.add(value, newKey);
+                    request.onerror = idbError_;
+                    request.onsuccess = idbShow_;
+                  };
+                };
+              }
+
+              function updateValue_(key, element) {
+                var transaction = idb_.transaction([], IDBTransaction.READ_WRITE); // Create a transaction that locks the world.
+                var objectStore = transaction.objectStore("myObjectStore");
+                var request = objectStore.put(element.textContent, key);
+                request.onerror = idbError_;
+                request.onsuccess = idbShow_;
+              }
+
+              function deleteKey_(key) {
+                var transaction = idb_.transaction([], IDBTransaction.READ_WRITE); // Create a transaction that locks the world.
+                var objectStore = transaction.objectStore("myObjectStore");
+                if (objectStore.delete) {
+                  var request = objectStore.delete(key);
+                } else {
+                  var request = objectStore.remove(key);
+                }
+                request.onerror = idbError_;
+                request.onsuccess = idbShow_;
+              }
+
+              function idbRemove_() {
+                if (!idb_) {
+                  if (idbRequest_) {
+                    idbRequest_.addEventListener('success', removeObjectStore, false); // If indexedDB is still opening, just queue this up.
+                  }
+                  return;
+                }
+
+                var request = idb_.setVersion("the new version string");
+                request.onerror = idbError_;
+                request.onsuccess = function(event) {
+
+                  if (idb_.objectStoreNames.contains('myObjectStore')) {
+                    try {
+                      // Spec has been updated to deleteObjectStore.
+                      if (idb_.deleteObjectStore) {
+                        idb_.deleteObjectStore('myObjectStore');
+                      } else {
+                        idb_.removeObjectStore('myObjectStore');
+                      }
+                      idResultsWrapper_.innerHTML = '';
+                      idbLog_.innerHTML = "<p>Object store removed.</p>";
+                    } catch (err) {
+                      idbLog_.innerHTML = '<p class="error">' + err.toString() + '</p>';
+                    }
+                  } else {
+                    idbLog_.innerHTML = "<p class=\"error\">Object store doesn't exist.</p>";
+                  }
+                };
+              }
+
+              return {
+                idbSet: idbSet_,
+                idbCreate: idbCreate_,
+                idbRemove: idbRemove_,
+                updateKey: updateKey_,
+                updateValue: updateValue_,
+                deleteKey: deleteKey_
+              }
+            })();
+          </script>
+        </section>
+      </div>
+-->
+         
+      <div class="slide offline-storage">
+      <header><h2>Practical uses.</h2></header>
+        <section>
+            <p>For now, IndexedDB in the real world is basically limited to chrome apps, or apps where 100% of your user base use ff 4.0 or higher.</p>
+            <p>It's also pretty slow.</p>
+            <p>However, all major browsers plan to adopt it soon*</p>
+            <p class="subscript">see caniuse.com for details.</p>
+            
+        </section>
+      </div>
+   
+      </div> <!-- slides -->
+      <div id="speaker-note" class="invisible" style="display: none;">
+      </div> <!-- speaker note -->
+      <aside id="help" class="sidebar invisible" style="display: none;">
+        <table>
+          <caption>Help</caption>
+          <tbody>
+            <tr>
+              <th>Move Around</th>
+              <td>&larr;&nbsp;&rarr;</td>
+            </tr>
+            <tr>
+              <th>Source File</th>
+              <td>s</td>
+            </tr>
+            <tr>
+              <th>Change Theme</th>
+              <td>t</td>
+            </tr>
+            <tr>
+              <th>Syntax Highlight</th>
+              <td>h</td>
+            </tr>
+            <tr>
+              <th>Speaker Notes</th>
+              <td>n</td>
+            </tr>
+            <tr>
+              <th>Toggle 3D</th>
+              <td>3</td>
+            </tr>
+            <tr>
+              <th>Help</th>
+              <td>0</td>
+            </tr>
+          </tbody>
+        </table>
+      </aside>
+    </div> <!-- presentation -->
+
+    <!--[if lt IE 9]>
+    <script 
+      src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js">
+    </script>
+    <script>CFInstall.check({ mode: "overlay" });</script>
+    <![endif]-->
+
+    <script src="js/excss.js"></script>
+    <script src="js/utils.js"></script>
+
+  </body>
+</html>

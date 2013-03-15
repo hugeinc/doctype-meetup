@@ -1,0 +1,97 @@
+<!doctype html>
+<html>
+<head>
+	<title>Business Card</title>
+	<link rel="stylesheet" href="css/business-card.css" />
+	<style>
+		#container {
+			-webkit-perspective: 1000;
+			-webkit-perspective-origin: 50% 50%;
+		}
+		#businessCard .front { 
+			-webkit-transform: translateZ(-1px) scale(.5) matrix(-1,0,0,1,0,0);
+		}
+		#businessCard .back {
+			-webkit-transform: scale(.5);
+			opacity: 1;
+		}
+		#businessCard .side {
+			-webkit-backface-visibility: visible;
+		}
+		#businessCard {
+			-webkit-transform-style: preserve-3d;
+			-webkit-transition: -webkit-transform 500ms;
+		}
+		
+
+		#businessCard.flip {
+			-webkit-transform: rotateY(-180deg) scale(1.5);
+		}
+		#businessCard.flyaway {
+			-webkit-transition: -webkit-transform 1500ms;
+			-webkit-transform: rotateX(90deg) translateZ(-1000px);
+		}
+	</style>
+</head>
+<body>
+
+	<div id="container">
+		
+		<div id="businessCard">
+			
+			<!-- back -->
+			<div class="side back">
+				<h1>HUGE</h1>
+			</div>
+			
+			<!-- front -->
+			<div class="side front">
+				<h2>HUGE</h2>
+				<p>
+					Rob LaPlaca / Senior Web Developer<br />
+					P. 718 233 9431 / F. 718 625 5157 / rlaplaca@hugeinc.com<br />
+					45 Main Street, Suite 220<br />
+					Brooklyn, NY 11201
+				</p>
+				<p>www.hugeinc.com</p>
+			</div>
+
+			
+		</div>
+		
+
+
+
+		<div id="closingMessage">
+			<h1>Use Responsibly</h1>
+		</div>
+	</div>
+	
+  	<script>		
+	window.addEventListener("DOMContentLoaded", function() {
+
+		var businessCard = document.getElementById("businessCard");
+		
+		window.addEventListener("keyup", function(e) {
+
+			if(e.keyCode == 39) { 
+				// right arrow
+				businessCard.className = "flip";
+			} else if(e.keyCode == 37) { 
+				// left arrow
+				businessCard.className = ""; 
+			} else if(e.keyCode == 32) {
+				// space
+				businessCard.className = "flyaway";
+				var closingMsg = "";
+				
+				setTimeout(function() {
+					document.getElementById("closingMessage").className = "appear";
+				}, 1000)
+			}
+		});
+		
+	});
+	</script>
+</body>
+</html>

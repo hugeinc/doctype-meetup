@@ -1,0 +1,43 @@
+<!doctype html>
+<html>
+	<head>
+		<title>Web Workers Examples - Mapping - Responsive UI </title>
+		<link rel="stylesheet" href="/css/main.css" />
+
+		<script src="http://maps.google.com/maps/api/js?sensor=true"></script>
+	</head>
+	<body>
+		<div class="wrapper">
+			<h1>Mapping - Responsive UI </h1>
+			
+			<p>
+				This is the 
+				<a class="magenta" href="http://slides.html5rocks.com/#web-workers">
+					HTML5 Rocks 
+				</a> 
+				website
+			</p>
+			
+			<div id="w-wrapper">
+	          <div id="wmap" class="gmap example">
+	            <img src="http://maps.google.com/maps/api/staticmap?center=13,13&zoom=3&size=680x200&sensor=false"/>
+	          </div>
+	          <div style="margin-top:5px">
+	            <button id="find-route-y">Find route with Workers</button>
+	            <button id="find-route-n">Find route without Workers</button>
+	            <p id="w-loading">Loading Route...</p>
+	          </div>
+	          <p style="font-size: 90%;" class="center">Try dragging the map while the complex route is being calculated (you will only be able to do that with Workers!)</p>
+	        </div>
+	        <!-- 
+        	<script src="src/webworkers/points.js" defer></script>
+        	<script src="src/webworkers/annealing.js" defer></script>
+        	-->
+        	<script src="/js/examples/annealing.js"></script>
+		</div>
+		
+		<script src="/js/main.js"></script>
+		<script src="/js/examples/map.js"></script>
+	</body>
+</html>
+

@@ -1,0 +1,48 @@
+body { font-family: arial; }
+h1, h2 { margin: 20px 0 0 0; }
+h1 { margin-top: 10px;  }
+h2 { font-size: 16px; }
+a { color: #ed228e; }
+a:hover { text-decoration: none; }
+ol { margin: 5px 0 0 0; }
+ol li { font-size: 14px; line-height: 1.5; }
+.coordinate-plane { position: relative; left: 30px;  height: 405px; width: 412px; }
+.knob { background: #fff; position: absolute; display: block; height: 10px; width: 10px; border: 1px solid #333; -moz-border-radius: 50px; border-radius: 50px; 
+	-webkit-transform: translate(-5px,-4px); 
+	-moz-transform: translate(-5,-4);	
+}
+.p1, .p2 { background: #ED228E; z-index: 50; }
+.p2 { background: #666; }
+#p1X, #p1Y { color: #ED228E; }
+#p2X, #p2Y { color: #666; }
+.p0 { left: 0; top: 400px; }
+.p1 { left: 40px; top: 360px; }
+.p2 { left: 100px; top: 40px; }
+.p3 { left: 400px; top: 0; }
+canvas { border: 1px solid #333; border-top: 1px dashed #333; border-right: 1px dashed #333; }
+.canned-function { color: #666; }
+.css { margin: 0; padding-top: 15px;  font-size: 16px; }
+.box { 
+	height: 40px; width: 40px; background: #ccc; border: 1px solid #333; position: relative; 
+	-webkit-transition: all 1s linear;
+}
+.custom { background: #ed228e; }
+.linear { -webkit-transition: all 1s linear; }
+.ease-in { -webkit-transition: all 1s ease-in; }
+.ease-out { -webkit-transition: all 1s ease-out; }
+.ease-in-out { -webkit-transition: all 1s ease-in-out;}
+.moveBox .box { left: 400px; }
+.graph { height: 432px; width: 432px; position: relative; }
+.x-axis { left: 32px; bottom: 0; position: absolute; height: 30px; width: 400px;  }
+.x-axis .marker, .x-axis .big-marker { height: 15px; width: 39px; border-right: 1px solid #333; float: left;}
+.x-axis .big-marker { height: 30px; }
+.y-axis { position: absolute; width: 30px; height: 400px; }
+.y-axis .big-marker, .y-axis .marker { height: 39px; border-top: 1px solid #333; }
+.y-axis .marker { width: 15px; margin-left: 15px; }
+#wrap { width: 1000px; margin: auto; }
+.col { width: 485px; float: left; }
+.demo { margin-top: -20px; }
+
+.demo p { margin-bottom: 5px; }
+.clear { clear: both; }
+.subheader { margin: 0 0 15px 0; padding: 0;  }

@@ -1,0 +1,190 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <title>Picture Cube</title>
+  <style type="text/css" media="screen">
+    body {
+      background-color: black;
+	 background-image: -webkit-gradient(radial,
+	                            50% 300, 1,
+	                            50% 270, 300,
+	                            from(rgba(255, 255, 255, 0.3)),
+	                            to(rgba(255, 255, 255, 0)));
+	     background-repeat: no-repeat;
+    }
+
+    #container {
+      height: 700px;
+      -webkit-perspective: 800; /* For compatibility with iPhone 3.0, we leave off the units here */
+      -webkit-perspective-origin: 50% 225px;
+    }
+    #stage {
+      width: 100%;
+      height: 100%;
+
+    }
+    
+    #shape {
+      position: relative;
+      top: 160px;
+      margin: 0 auto;
+      height: 200px;
+      width: 200px;
+      -webkit-transform-style: preserve-3d;
+
+
+    }
+    
+    .plane {
+      position: absolute;
+      height: 200px;
+      width: 200px;
+	  overflow: hidden;
+      -webkit-transition: -webkit-transform 2s, opacity 2s;
+      -webkit-backface-visibility: hidden;
+    }
+
+	
+
+    #shape.backfaces .plane {
+/*      -webkit-backface-visibility: visible;*/
+    }
+    
+	#shape.fly-back {
+		-webkit-transform: translateZ(-400px) rotateX(130deg) rotateY(-360deg);
+	}
+	#shape.plane-1 {
+		-webkit-transform: translateZ(100px) rotateX(90deg) rotateY(-180deg);
+	}
+	#shape.plane-2 {
+		-webkit-transform: translateZ(100px) rotateX(0deg) rotateY(-90deg);
+	}
+	#shape.plane-3 {
+		-webkit-transform: translateZ(100px) rotateX(0deg) rotateY(-180deg);
+	}
+	#shape.plane-4 {
+		-webkit-transform: translateZ(100px) rotateX(0deg) rotateY(-270deg);
+	}
+	#shape.plane-5 {
+		-webkit-transform: translateZ(100px) rotateX(0deg) rotateY(-360deg);
+	}
+	#shape.plane-6 {
+		-webkit-transform: translateZ(100px) rotateX(-90deg) rotateY(0deg);
+	}
+	
+	#shape.move {
+	  -webkit-transform: rotateY(90deg) translateZ(100px);
+		-webkit-animation: zoom 1s 1 linear;
+	}
+	
+    #shape {
+      /*-webkit-animation: spin 8s infinite linear;*/
+      -webkit-transition: -webkit-transform 2s cubic-bezier(0,0,.25,1);
+    }
+
+	@-webkit-keyframes spin {
+        from  { -webkit-transform: rotateY(0); }
+        to    { -webkit-transform: rotateY(90deg); }
+    }
+
+    @-webkit-keyframes zoom {
+        0%  { -webkit-transform: translateZ(100px) rotateY(0deg); }
+        50%    { -webkit-transform: translateZ(-500px) rotateY(45deg); }
+		100%    { -webkit-transform: translateZ(100px) rotateY(90deg); }
+    }
+
+    /* ---------- cube styles ------------- */
+    .cube > .one {
+      opacity: 0.5;
+      -webkit-transform: scale3d(1.2, 1.2, 1.2) rotateX(90deg) translateZ(100px);
+    }
+
+    .cube > .two {
+      opacity: 0.5;
+      -webkit-transform: scale3d(1.2, 1.2, 1.2) translateZ(100px);
+    }
+
+    .cube > .three {
+      opacity: 0.5;
+      -webkit-transform: scale3d(1.2, 1.2, 1.2) rotateY(90deg) translateZ(100px);
+    }
+
+    .cube > .four {
+      opacity: 0.5;
+      -webkit-transform: scale3d(1.2, 1.2, 1.2) rotateY(180deg) translateZ(100px);
+    }
+
+    .cube > .five {
+      opacity: 0.5;
+      -webkit-transform: scale3d(1.2, 1.2, 1.2) rotateY(-90deg) translateZ(100px);
+    }
+
+    .cube > .six {
+      opacity: 0.5;
+      -webkit-transform: scale3d(1.2, 1.2, 1.2) rotateX(-90deg) translateZ(100px) rotate(180deg);
+    }
+
+  </style>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.0/jquery.min.js"></script>
+  <script type="text/javascript" charset="utf-8">
+	var prevClass = "";
+	setInterval(function() {
+		var shape = $("#shape");
+
+		shape.removeClass(prevClass);
+	//	shape.addClass("fly-back");
+	//	setTimeout(function() {
+			
+			var className = "plane-" + Math.ceil(Math.random() * 6);
+
+			shape.removeClass("fly-back");
+			shape.addClass(className);
+		//	console.log(shape.get(0).className)
+			prevClass = className;
+			
+			//setTimeout(function() {
+				//shape.attr("class", "cube");
+			//}, 2000)
+	//	}, 2000);
+		//shape.addClass("move");
+
+	}, 3000);
+  </script>
+
+</head>
+<body>
+
+
+  <div id="container">
+    <div id="stage">
+      <div id="shape" class="cube">
+        <div class="plane one">
+        	<img src="http://farm6.static.flickr.com/5285/5312718495_17facbff3d.jpg" width="200" />
+        </div>
+        <div class="plane two">
+
+			<img src="http://farm6.static.flickr.com/5208/5350082283_8edb9d3fda.jpg" width="200" />
+		</div>
+        <div class="plane three">
+        	<img src="http://farm6.static.flickr.com/5206/5361977513_7d368f2595.jpg" width="200" />
+        </div>
+        <div class="plane four">
+        	<img src="http://farm6.static.flickr.com/5136/5392505591_88364351f8.jpg" width="200" />
+        </div>
+        <div class="plane five">
+
+        	<img src="http://farm6.static.flickr.com/5132/5441820621_cbc15cb992.jpg" width="200" />
+        </div>
+        <div class="plane six">
+        	<img src="http://farm6.static.flickr.com/5201/5321411546_0edc2d5ca1.jpg" width="200" />
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  
+</body>
+</html>

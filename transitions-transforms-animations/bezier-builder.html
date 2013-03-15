@@ -1,0 +1,198 @@
+<!doctype html> 
+<html> 
+	<head> 
+		<title>CSS cubic-bezier Builder</title>	
+		<link rel="stylesheet" href="css/bezier-main.css" />
+	</head> 
+	<body> 
+		<div id="wrap"> 
+			<h1>CSS cubic-bezier Builder</h1> 
+			<p class="subheader">drag the colored knobs to adjust the curve</p> 
+			
+			<div class="graph col"> 
+				<div class="x-axis"> 
+					<div class="marker"></div> 
+					<div class="marker"></div> 
+					<div class="marker"></div> 
+					<div class="marker"></div> 
+					<div class="big-marker"></div> 
+					<div class="marker"></div> 
+					<div class="marker"></div> 
+					<div class="marker"></div> 
+					<div class="marker"></div> 
+					<div class="big-marker"></div> 
+				</div> 
+				<div class="y-axis"> 
+					<div class="big-marker"></div> 
+					<div class="marker"></div> 
+					<div class="marker"></div> 
+					<div class="marker"></div> 
+					<div class="marker"></div> 
+					<div class="big-marker"></div> 
+					<div class="marker"></div> 
+					<div class="marker"></div> 
+					<div class="marker"></div> 
+					<div class="marker"></div> 
+				</div> 
+ 
+				<div class="coordinate-plane"> 
+					<a href="#" class="knob p0"></a> 
+					<a href="#" class="knob p1"></a> 
+					<a href="#" class="knob p2"></a> 
+					<a href="#" class="knob p3"></a> 
+				
+					<canvas height="400" width="400" id="bezierCurve" /> 
+				</div> 
+			</div> 
+			
+			<div class="demo col"> 
+				<p><a href="#" id="animateBox">Click here</a> to compare transition timing functions:</p>		
+				
+				<p id="customBezier">cubic-bezier(reflects current graph):</p> 
+				<div class="box custom"></div> 
+				
+				<p><a href="#" class="canned-function" -data-easing="0,0,1,1">linear</a>:</p> 
+				<div class="box linear"></div> 
+ 
+				<p><a href="#" class="canned-function" -data-easing="0,0,.58,1">ease-out</a>:</p> 
+				<div class="box ease-out"></div> 
+												
+				<p><a href="#" class="canned-function" -data-easing=".42,0,.58,1">ease-in-out</a>:</p> 
+				<div class="box ease-in-out"></div> 
+				
+				<p><a href="#" class="canned-function" -data-easing=".42,0,1,1">ease-in</a>:</p> 
+				<div class="box ease-in"></div> 
+			</div> 
+			
+			<div class="css clear"> 
+				<code>-webkit-transition: all 1s <span id="cubicBezier">cubic-bezier(<span id="p1X">0</span>, <span id="p1Y">0</span>, <span id="p2X">.25</span>, <span id="p2Y">1</span>)</span>;</code> 
+				<br />
+			</div> 
+		
+			<h2>References</h2> 
+			<ol> 
+				<li><a href="http://developer.apple.com/library/safari/#documentation/InternetWeb/Conceptual/SafariVisualEffectsProgGuide/Transitions/Transitions.html#//apple_ref/doc/uid/TP40008032-CH4-SW11" target="_blank">Safari CSS Visual Effects Guide</a></li> 
+				<li><a href="http://developer.apple.com/library/safari/#documentation/AppleApplications/Reference/SafariCSSRef/Articles/Functions.html#//apple_ref/css/func/cubic-bezier" target="_blank">Safari cubic-bezier reference</a></li> 
+			</ol> 
+		</div> 
+		
+		<script src="js/jquery-1.4.4.min.js"></script> 
+		<script src="js/jquery-ui-1.8.9.custom.min.js"></script> 
+		<script> 
+			var $p1, $p2, box, $customBezier, $cubicBezier;
+			
+			$(function() {
+ 
+				var ctx = $("#bezierCurve").get(0).getContext("2d");
+				
+				box = $(".box").get(0);	
+				$p1 = $(".p1");
+				$p2 = $(".p2");
+				$customBezier = $("#customBezier");
+				$cubicBezier = $("#cubicBezier");
+				
+				renderWrap(ctx);
+				setTransitionFn();				
+				setDemoValue();
+				
+				$(".p1, .p2").draggable({ 
+					containment: 'parent',
+					drag: function(event, ui) {
+						renderWrap(ctx);
+						setDemoValue();
+					},
+					stop: function(){
+						renderWrap(ctx);
+						setTransitionFn();
+						setDemoValue();
+					}
+				});
+				
+				$(".canned-function").click(function(e) {
+					e.preventDefault();
+					var vals = $(this).attr("-data-easing").split(",");
+					$p1.css("left", vals[0] * 400);
+					$p1.css("top", 	(1 - vals[1]) * 400);
+					$p2.css("left", vals[2] * 400);
+					$p2.css("top", 	(1 - vals[3]) * 400);
+					renderWrap(ctx);
+					setTransitionFn();				
+					setDemoValue();
+				});
+				
+				$("#animateBox").click(function(e){
+					e.preventDefault();
+					var $body = $("body");
+					
+					$body.addClass("moveBox");
+					
+					setTimeout(function() {
+						$body.removeClass("moveBox");
+						// console.log($(".box").get(1).style.webkitTransition)
+					}, 2000);
+				});
+			});
+			
+			function setDemoValue() { 
+				$customBezier.html($cubicBezier.text());
+			}
+			
+			function setTransitionFn() {
+				box.style.webkitTransition = "left 1s cubic-bezier(" + $("#p1X").html() + "," + $("#p1Y").html() + ","+$("#p2X").html() + "," + $("#p2Y").html() + ")";
+			}
+			
+			// this just removes leading 0 and truncates values
+			function adjustValue(val) {	
+				val = val.toFixed(2);
+				val = val.toString().replace("0.", ".").replace("1.00", "1").replace(".00", "0");
+				return val;
+			}
+			
+			function renderWrap(ctx) {
+				var p1 = $p1.position(),
+					p2 = $p2.position();
+				
+				render(ctx, {
+					x: p1.left,
+					y: p1.top
+				}, {
+					x: p2.left,
+					y: p2.top
+				});
+			};
+			
+			function render(ctx, p1, p2) {
+				var ctx = ctx;
+				ctx.clearRect(0,0,400,400);
+				
+				ctx.beginPath();
+				ctx.lineWidth = 5;
+				ctx.strokeStyle = "#333";
+			    ctx.moveTo(0,400);
+				// p1 (x,y) p2 (x,y)
+			    ctx.bezierCurveTo(p1.x,p1.y,p2.x,p2.y,400,0);				
+				ctx.stroke();
+				ctx.closePath();
+				
+				ctx.beginPath();
+				ctx.strokeStyle = "#999";
+				ctx.lineWidth = 1;
+				ctx.moveTo(0,400);
+				// p1 (x,y)
+				ctx.lineTo(p1.x + 5, p1.y + 5);
+				ctx.stroke(); 
+				
+				ctx.moveTo(400,0);
+				// p2 (x,y)
+				ctx.lineTo(p2.x + 5, p2.y + 5 );
+				ctx.stroke();
+				ctx.closePath();
+								
+				$("#p1X").html( adjustValue( (p1.x + 5) / 400) );
+				$("#p1Y").html( adjustValue( 1 - (p1.y + 4) / 400) );
+				$("#p2X").html( adjustValue( (p2.x + 5) / 400) );
+				$("#p2Y").html( adjustValue( 1 - (p2.y + 4) / 400) );
+			}
+		</script> 
+	</body>	
+</html>

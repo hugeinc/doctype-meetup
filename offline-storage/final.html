@@ -1,0 +1,1030 @@
+<!DOCTYPE html>
+<!--
+  Copyright 2011 Google Inc.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+  Original slides: Marcin Wichary (mwichary@google.com)
+  Modifications: Chrome DevRel Team (chrome-devrel@googlegroups.com)
+                 Alex Russell (slightlyoff@chromium.org)
+                 Brad Neuberg
+-->
+<html manifest="cache.appcache">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge;chrome=1" />
+    <title>Let's take this offline: HTML5 &amp; Offline Storage</title>
+    <!-- <link href="http://fonts.googleapis.com/css?family=Droid+Sans|Droid+Sans+Mono" rel="stylesheet" type="text/css" /> -->
+    <link id="prettify-link" href="src/prettify/prettify.css" rel="stylesheet" disabled />
+    <link href="styles/fonts.css" rel="stylesheet" type="text/css" media="screen" />
+    <link href="styles/presentation.excss" rel="stylesheet" type="text/excss" media="screen" />
+    <link href="styles/common.excss" rel="stylesheet" type="text/excss" media="screen" />
+    <link class="theme" href="styles/default.excss" rel="stylesheet" type="text/excss" media="screen" />
+    <link class="theme" href="styles/moon.excss" rel="stylesheet" type="text/excss" media="screen"/>
+    <link class="theme" href="styles/sand.excss" rel="stylesheet" type="text/excss" media="screen"/>
+    <link class="theme" href="styles/sea_wave.excss" rel="stylesheet" type="text/excss" media="screen"/>
+    <link href="styles/huge.css" rel="stylesheet" type="text/css" media="screen" />
+  </head>
+  <body>
+    <nav id="helpers">
+      <button title="Previous slide" id="nav-prev" class="nav-prev">&#8701;</button> 
+      <button title="Jump to a random slide" id="slide-no">5</button> 
+      <button title="Next slide" id="nav-next" class="nav-next">&#8702;</button>
+      <menu>
+        <button type="checkbox" data-command="toc" title="Table of Contents" class="toc">TOC</button>
+        <!-- <button type="checkbox" data-command="resources" title="View Related Resources">&#9734;</button> -->
+        <button type="checkbox" data-command="notes" title="View Slide Notes">&#9999;</button>
+        <button type="checkbox" data-command="source" title="View slide source">&#8635;</button>
+        <button type="checkbox" data-command="help" title="View Help">?</button>
+      </menu>
+    </nav>
+    <div class="presentation">
+      <div id="presentation-counter">Loading...</div>
+      <div class="slides">
+        <div class="slide" id="landing-slide">
+          <section class="middle">
+            <img src="img/intro.png" style="width:100%;" />
+
+            <div style="display:none;"><p>This presentation is an HTML5 website</p>
+            <p>Press <span id="left-init-key" class="key">&rarr;</span> key to advance.</p>
+            <p id="disclaimer-message">Having issues seeing the presentation? Read the <a href="disclaimer.html">disclaimer</a></p></div>
+
+          </section>
+          <aside class="note">
+            <section>
+              Welcome! (This field is for speaker notes and commentary.)
+            </section>
+          </aside> 
+        </div>
+
+        <div class="slide" id="controls-slide">
+          <header>Slides controls</header>
+          <section>
+            <ul>
+              <li><span class="key">&larr;</span> and <span class="key">&rarr;</span> to move around.</li>
+              <li><span class="key">Ctrl/Command</span> and <span class="key">+</span> or <span class="key">-</span> to zoom in and out if slides don’t fit.</li>
+              <li><span class="key">S</span> to view page source.</li>
+              <li><span class="key">T</span> to change the theme.</li>
+              <li><span class="key">H</span> to toggle syntax highlight.</li>
+              <li><span class="key">N</span> to toggle speaker notes.</li>
+              <li><span class="key">3</span> to toggle 3D effect.</li>
+              <li><span class="key">0</span> to toggle help.</li>
+            </ul>
+          </section>
+        </div>
+
+        <div class="slide" id="table-of-contents">
+          <header><h1>Today, we will cover...</h1></header>
+          <section>
+            <ul id="toc-list" class="bigger">
+            </ul>
+          </section>
+        </div>
+
+        <div class="slide transitionSlide" id="intro">
+          <section class="middle">
+            <h2>Offline Storage</h2>
+            <p>How the cookie crumbles</p>
+            <img src="img/cookie.jpg" height="225" width="225" style="width: 225px; height: 225px; opacity: 1" />
+          </section>
+        </div>
+
+        <div class="slide intro" id="intro-1">
+          <section class="middle">
+            <h2 style="text-decoration:line-through; color:#666;">The internet is a place you visit for content.</h2>
+            <h1 style="color:#333;">The internet is a content delivery network.</h1>
+            <p>We must learn to manage content with respect to context.</p>
+          </section>
+        </div>
+
+        <div class="slide intro" id="intro-2">
+          <section class="middle">
+            <h1>Out with the old.</h1>
+            <img src="img/old.png" />
+            <cite><a href="http://bradfrostweb.com/blog/web/for-a-future-friendly-web/">http://bradfrostweb.com/blog/web/for-a-future-friendly-web/</a></cite>
+          </section>
+        </div>
+
+        <div class="slide intro" id="intro-3">
+          <section class="middle">
+            <h1>In with the new.</h1>
+            <img src="img/new.png" />
+            <cite><a href="http://bradfrostweb.com/blog/web/for-a-future-friendly-web/">http://bradfrostweb.com/blog/web/for-a-future-friendly-web/</a></cite>
+          </section>
+        </div>
+
+        <div class="slide intro" id="intro-4">
+          <section class="middle">
+            <h1 style="color:#333;">Users won't always have internet connections.</h1>
+            <h3>But their devices will still work.</h3>
+            <img src="img/boo.jpeg" alt="" />
+          </section>
+        </div>
+
+        <div class="slide intro" id="intro-5">
+          <section class="middle formula">
+            <h3 style="color:#333; text-decoration:line-through;">There's an app for that.</h3>
+            <span><h1 style="color:#d00;">"Don't tell me what to do." <small>- your users</small></h1>
+            <img src="img/tell.jpeg" /></span>
+          </section>
+        </div>
+
+        <div class="slide intro" id="intro-6">
+          <section class="middle">
+            <h3>Favoring apps over the web, or vice versa, is not the answer.</h3>
+            <h1 style="color:#333">Your content needs to be accessible wherever the user can look for it.</h1>
+            <p>Be it on the <span style="text-decoration:line-through">mobile</span> web, an app store, or...</p>
+          </section>
+        </div>
+
+        <div class="slide intro" id="intro-7">
+          <section class="middle">
+            <h1>Offline.</h1>
+            <p>But how?</p>
+          </section>
+        </div>
+
+        <div class="slide intro" id="intro-8">
+          <section class="middle">
+            <img src="img/diff.jpeg" />
+            <h3>Bring the web offline, and even closer to the user than ever before.</h3>
+          </section>
+        </div>
+
+        <div class="slide transitionSlide" id="the-cookie-crumbles">
+          <section class="middle">
+            <h2>Web Storage</h2>
+            <p>How the cookie crumbles</p>
+            <img src="img/cookie.jpg" height="225" width="225" style="width: 225px; height: 225px; opacity: 1" />
+          </section>
+        </div>
+
+        <div class="slide" id="what-is-it">
+          <header><h1>What is it?</h1></header>
+          <section>
+            <pre>
+            // use localStorage for persistent storage
+            <b>localStorage</b>.<strong>setItem</strong>("foo", "bar");
+            
+            <b>localStorage</b>.<strong>getItem</strong>("foo"); // outputs bar
+            
+            
+            // use sessionStorage for per tab storage
+            <b>sessionStorage</b>.<strong>setItem</strong>("cat", "dog");
+            
+            <b>sessionStorage</b>.<strong>getItem</strong>("cat"); // outputs dog
+            
+            </pre>
+          </section>
+        </div>
+    
+      <div class="slide" id="what-can-you-do">
+          <header><h1>What methods are available?</h1></header>
+          <section>
+          <pre>
+            // the following methods apply for local and session storage
+            <b>localStorage</b>.<strong>setItem</strong>("foo", "bar");
+            <b>localStorage</b>.<strong>getItem</strong>("foo");
+            <b>localStorage</b>.<strong>removeItem</strong>("foo");
+            
+            // length and key() can be used for looping
+            for(var i=0, len=<b>localStorage</b>.<strong>length</strong>; i&lt;len; i++) {
+              console.log(<b>localStorage</b>.<strong>key</strong>(i);)
+            }
+            
+            // deletes all entries
+            <b>localStorage</b>.<strong>clear</strong>();
+          </pre>
+
+          </section>
+        </div>
+
+<!--
+  <div class="slide" id="web-storage-events">
+         <header><h1>Storage Event</h1></header>
+         <section>
+<pre>
+// Fires only in the same window if sessionStorage changed
+// Fires in all windows open if localStorage is changed
+document.addEventListener('storage', handleStorage, false);
+</pre>
+
+         </section>
+       </div>
+--> 
+    <div class="slide" id="web-storage-format">
+          <header><h1>Caveat, you can only save Strings</h1></header>
+          <section>
+<pre>
+<b>var</b> myObject = {dog: "Fido"};
+
+<b>localStorage</b>.<strong>setItem</strong>("pet", myObject);
+console.log(<b>localStorage</b>.<strong>getItem</strong>("pet")); // outputs [object Object]!
+
+localStorage.setItem("pet", <b>JSON</b>.<strong>stringify</strong>(myObject) );
+
+// the object is stored in pet as a String
+// if you want to use it, you have to parse it back into an object
+<b>var</b> anotherObject = <b>JSON</b>.<strong>parse</strong>(<b>localStorage</b>.<strong>getItem</strong>("pet"));
+console.log(anotherObject); // Still an object
+
+</pre>
+          </section>
+        </div>
+
+    <div class="slide" id="local-session-browser-support">
+          <header><h1>Web Storage Browser Support</h1></header>
+          <section>
+            <ul id="timeline">
+                <li>Chrome 10+</li>
+        <li>Firefox 3.5+</li>
+        <li>Safari 4+</li>
+        <li>Opera 10.5+</li>
+        <li>IE 8+</li>
+        <li>iOS Safari 3.2+</li>
+        <li>Android 2.1+</li>                               
+            </ul>
+      <a href="https://github.com/hugeinc/USTORE.js" style="color: #00aedb; border-color: #00aedb;" target="_blank">USTORE.js</a> - Cross-browser compatibility (up to 128kb storage in IE 7/8)
+          </section>
+        </div>
+
+    <div class="slide" id="why-is-it-awesome">
+          <header><h1>Why is it awesome?</h1></header>
+          <section>
+  
+      <ul id="timeline">
+                <li><b style="color: #ED228E">5mb</b> of storage</li>
+        <li>Works on <b style="color: #ED228E">mobile</b></li>
+        <li>Simple API</li>                               
+            </ul>
+
+          </section>
+        </div>
+
+<!--
+        <div class="slide offline-storage" id="web-storage">
+          <header><span class="js">JS</span> <h1>Web Storage</h1></header>
+          <section>
+<pre>
+// use localStorage for persistent storage
+// use sessionStorage for per tab storage
+saveButton.addEventListener('click', function () {
+  window.<b>localStorage</b>.<b>setItem</b>('value', area.value);
+  window.<b>localStorage</b>.<b>setItem</b>('timestamp', (new Date()).getTime());
+}, false);
+textarea.value = window.<b>localStorage</b>.<b>getItem</b>('value');
+</pre>
+            <p id="localstorage-message">Save text value on the client side (crash-safe)</p>
+            <textarea id="ta" placeholder="Type your text here..."></textarea>
+            <button id="save-ta">Save</button>
+            <p id="ta-log"></p>
+            <script defer>
+              (function(){
+
+                try {
+                  (window.localStorage.getItem) // will throw in Firefox under some settings
+                } catch(e){
+                  return; // quit because dom.storage.enabled is false
+                }
+
+                var area = document.querySelector('#ta');
+                // place content from previous edit
+                if (!area.value) {
+                  area.value = window.localStorage.getItem('value');
+                }
+                updateLog(false);
+  
+                // your content will be saved locally
+                document.querySelector('#save-ta').addEventListener('click', function () {
+                  window.localStorage.setItem('value', area.value);
+                  window.localStorage.setItem('timestamp', (new Date()).getTime());
+                  updateLog(true);
+                }, false);
+
+                function updateLog(new_save) {
+                  var log = document.querySelector("#ta-log");
+                  var delta = 0;
+                  if (window.localStorage.getItem('value')) {
+                    delta = ((new Date()).getTime() - (new Date()).setTime(window.localStorage.getItem('timestamp'))) / 1000;
+                    if (new_save) {
+                      log.textContent = 'Saved. Content will be available after browser refresh/reopen.';
+                      setTimeout(function() {
+                        log.textContent = '';
+                      }, 3000);
+                    } else {
+                      log.textContent = 'last saved: ' + delta + 's ago';
+                    }
+                  }
+                }
+
+              })();  
+            </script>
+          </section>
+        </div>
+-->
+        <div class="slide transitionSlide" id="indexed-db-intro">
+          <section class="middle">
+            <hgroup>
+              <h1>
+                NoSQL: not just for serverside guys anymore
+              </h1>
+              <h2>
+                IndexedDB
+              </h2>
+              <img src="img/nosql.png" width="423" height="223" style="width:423px; height:223px; opacity:1; margin-top:40px;" />
+            </hgroup>
+            <p></p>
+          </section>
+        </div>
+
+      <div class="slide offline-storage" id="indexed-db">
+      <header><h1>IndexedDB.</h1></header>
+        <section>
+            <p>IndexedDB is an object-oriented database right here in your browser.</p>
+            <ul class="biggest">
+                <li>Available in Chrome (11+) and Firefox (4+)</li>
+                <li>Replacing (?) WebSQL</li>
+                <li>Asynchronous and synchronous (TBI(mplemented))</li>
+                <li>Transactional</li>
+                <li>Good for online, offline, and multiple (non-private) browser sessions</li>
+            </ul>
+        </section>
+      </div>
+
+      <div class="slide offline-storage">
+      <header><h2>.. some basics.</h2></header>
+        <section>
+            <ul class="bigger">
+                <li>Databases (object stores) are named, ie <b>version</b></li>
+                <li>Databases can have many objects (or various other values such as strings)</li>
+                <li>You can create arbitrary indices</li>
+                <li>You can pass <b>ranges</b> (ie 1-10) in order to "LIMIT" your results</li>
+                <li>Transactions are scoped:  read only, read-write, snapshot</li>
+                <li>Add, get, put (update), delete data</li>
+                <li>UNLIMITED data, with user sign off (otherwise, 5mb in chrome)</li>
+            </ul>     
+            
+            <p class="subscript">I can't find the firefox limit anywhere..</p>       
+        </section>
+      </div>
+
+      <div class="slide offline-storage">
+        <header><h1>Examples!</h1></head>
+        <section>
+<pre>
+var db;  
+//create or open a db
+var request = window.indexedDB.<b>open</b>('SuperDB');  
+request.<b>onerror</b> = function(event) {  
+  alert('Oh noo my db');  
+};  
+request.<b>onsuccess</b> = function(event) {  
+  db = request.result;  
+};  
+</pre>
+        </section>
+      </div>
+
+
+      <div class="slide offline-storage">
+        <section>
+        <p>We've opened our db, now let's set or create a version.</p>
+
+<pre>
+if (db.<b>version</b> != "DoubleGood") {  
+  var request = db.<b>setVersion</b>("DoubleGood");  
+  //insert request.onsuccess and request.onerror here! 
+}
+</pre>
+      </section>
+      </div>   
+
+      <div class="slide offline-storage">
+        <header><h2>Sorting.</h2>
+        <section>
+        <p>You can choose either a <b>Key Path</b> or a <b>Key Generator</b>, depending on what type of operations you need.</p>
+        <ul class="smaller">
+            <li>Key Path: Object stores for JS objects only.  Objects must have a property matching the name of the key path provided.</li>
+            <li>Key Generator: For any kind of value.  You can supply a specific key, or one will be generated for you.</li>
+            <li>Both: The object store must store JS objects. (Useful for when you need to sort on a primary key, but also fetch things with like properties)</li>
+        </ul>
+        
+        </section>
+      </div>  
+      
+      
+
+      <div class="slide offline-storage">
+        <header><h2>Real world-ish example.</h2>
+        <section>
+<pre class="smaller">
+var friendLocations = [  
+  { name: "James", location: "Empire State Building", geo: "40.748716,-73.986171", date: "Jan 9" },  
+  { name: "Kim", location: "Huge Inc", geo: "40.702869,-73.990485", date: "Oct 4" },  
+  { name: "Kim", location: "Statue of LIbery", geo: "40.702869,-73.990485", date: "Aug 31" },  
+];  
+
+request.onsuccess = function(event) {  
+
+  var contacts = db.<b>createObjectStore</b>("friendLocations",);  
+  
+  // searching by names is a given; make it non-unique since these can collide 
+  contacts.<b>createIndex</b>("name", "name", { unique: false });  
+  
+  // we probably want to search on location too 
+  contacts.<b>createIndex</b>("location", "location", { unique: false });  
+};  
+</pre>
+        </section>
+    </div> 
+    
+    <div class="slide offline-storage">
+        <header><h2>Real world-ish example.</h2>
+        <section>
+<pre class="smaller">
+var transaction = db.transaction(["friendLocations"]);  
+var objectStore = transaction.objectStore("friendLocations");  
+var request = objectStore.get("Kim");  
+request.onerror = function(event) {  
+  alert('No recent location updates from Kim.');  
+};  
+request.onsuccess = function(event) {  
+  alert("Kim's latest location update is " + request.result.location);  
+}; 
+</pre>
+      </section>
+
+      </div>       
+
+
+      <div class="slide offline-storage">
+      <header><h2>Practical uses.</h2></header>
+        <section>
+            <p>For now, IndexedDB in the real world is basically limited to chrome apps, or apps where 100% of your user base use ff 4.0 or higher.</p>
+            <p>It's also pretty slow.</p>
+            <p>However, all major browsers plan to adopt it soon*</p>
+            <p class="subscript">see caniuse.com for details.</p>
+            
+        </section>
+      </div>
+      
+      
+        <div class="slide transitionSlide" id="filesystem-overview-slide">
+          <header><h2><img src="img/hdisk.png" style="position:relative;top: 17px;"/> File API </h2></header>
+          <section>
+          
+            <ul class="bigger" id="fileSystemComponents">
+              <li>FileSystem - asynchronous local read and write access</li>
+              <li>FileWriter - part of filesystem to write files locally</li>
+              <li>FileReader - api to process text/blob/file objects</li>
+              <li>Blob/BlobBuilder - work with binary objects</li>
+              
+                            
+            </ul>
+          </section>
+        </div>
+        		<div class="slide fs" id="caveat-aka-support">
+			<header>Support a.k.a. Caveats</header>
+			<section>
+				<table>
+					<tr>
+						<th>API</th>
+						<th>Chrome</th>
+						<th>Firefox</th>
+						<th>Opera</th>
+						<th>Safari</th>
+						<th>IE</th>
+					</tr>
+					
+					<tr>
+						<th>FileSystem</th>
+						<td>12+*</td>
+						<td>no</td>
+						<td>no</td>
+						<td>no</td>
+						<td>no</td>
+				
+					</tr>
+					<tr>
+						<th>FileWriter</th>
+						<td>12+*</td>
+						<td>no</td>
+						<td>no</td>
+						<td>no</td>
+						<td>no</td>
+					
+					</tr>
+					<tr>
+						<th>FileReader</th>
+						<td>6+</td>
+						<td>3.6+</td>
+						<td>12.1</td>
+						<td>no</td>
+						<td>no</td>
+					
+					</tr>
+					<tr>
+						<th>Blob/BlobBuilder**</th>
+						<td>8+</td>
+						<td>6+</td>
+						<td>no</td>
+						<td>nightly</td>
+						<td>no</td>						
+					</tr>
+					
+					
+				</table>
+				
+				<footer>
+					<span class="footnote">Information from caniuse.com and mozilla developer network</span>
+					<span class="footnote">* Comments on the internet suggest 13. Requires --unlimited-quota-for-files flag (which translates to 1gb)</span>
+					<span class="footnote">**available in android 3.0</span>
+				</footer>
+			</section>
+		</div>  
+        <div class="slide fs" id="fileSystem">
+          <header>FileSystem </header>
+          <section>
+            <ul class="bigger">
+              <li>Client-side filesystem for storing and retrieving files.</li>
+              <li> Temporary or Persistent</li>
+              <li>Asynchronous (Synchronous api with webworkers )</li>  
+              <li>CRUD operations on Files and Directories</li>           
+            </ul>
+            
+          </section>
+        </div>
+        
+        <div class="slide fs" id="fileSystemFileCreateExample">
+          <header>File - Create/Retrieve</header>
+          <section>
+            <pre class="smaller">
+window.requestFileSystem = window.requestFileSystem || window.webkitRequestFileSystem;
+
+function fileSystemInitCallback(fs) {
+ function getFileCallback(fileEntry) {
+                
+  console.log(fileEntry.isFile);//true
+  console.log(fileEntry.isDirectory);// false
+  console.log(fileEntry.name);//testFile.txt
+  console.log(fileEntry.fullPath);
+  console.log(fileEntry.toURL('text/plain'));
+ }
+  
+ fs.root.getFile('testFile.txt',{create:true, exclusive: false}, getFileCallback);
+}
+window.requestFileSystem(window.TEMPORARY, 10*1024*1024, fileSystemInitCallback, errorHandler);
+            </pre>
+          </section>
+        </div>
+      <div class="slide fs" id="fileSystemErrorHandler">
+          <header>File - ErrorHandler</header>
+          <section>
+            <pre class="smaller">
+function errorHandler(e) {
+  var msg = '';
+
+  switch (e.code) {
+    case FileError.QUOTA_EXCEEDED_ERR:
+      msg = 'QUOTA_EXCEEDED_ERR';
+      break;
+    case FileError.NOT_FOUND_ERR:
+      msg = 'NOT_FOUND_ERR';
+      break;
+    case FileError.SECURITY_ERR:
+      msg = 'SECURITY_ERR';
+      break;
+    case FileError.INVALID_MODIFICATION_ERR:
+      msg = 'INVALID_MODIFICATION_ERR';
+      break;
+    case FileError.INVALID_STATE_ERR:
+      msg = 'INVALID_STATE_ERR';
+      break;
+    default:
+      msg = 'Unknown Error';
+      break;
+  };
+
+  console.log('Error: ' + msg);
+}           
+            </pre>
+          </section>  
+      </div>
+      
+      
+      
+        <div class="slide fs" id="fileSystemFileWriteExample">
+          <header>File - Write</header>
+          <section>
+            <pre class="smaller">
+function fileSystemInitCallback(fs) {
+
+  fs.root.getFile('testWrite.txt', {create: true}, function(fileEntry) {
+
+    // Create a FileWriter object for our FileEntry (log.txt).
+    fileEntry.createWriter(function(fileWriter) {
+
+      fileWriter.onwriteend = function(e) {
+        console.log('Write completed.');
+      };
+
+      fileWriter.onerror = function(e) {
+        console.log('Write failed: ' + e.toString());
+      };
+
+      // Create a new Blob and write it to log.txt.
+      var bb = new WebKitBlobBuilder(); 
+      bb.append('DOCTYPE HTML');
+      fileWriter.write(bb.getBlob('text/plain'));
+
+    }, errorHandler);
+
+  }, errorHandler);
+}
+            </pre>
+          </section>
+      </div>
+  
+          <div class="slide fs" id="fileSystemFileAppendExample">
+          <header>File - Append</header>
+          <section>
+            <pre class="smaller">
+function fileSystemInitCallback(fs) {
+
+  fs.root.getFile('testFile.txt', {create: false}, function(fileEntry) {
+
+    // Create a FileWriter object for our FileEntry (testFile.txt).
+    fileEntry.createWriter(function(fileWriter) {
+
+      fileWriter.seek(fileWriter.length); // Start write position at EOF.
+
+      // Create a new Blob and write it to log.txt.
+      var bb = new BlobBuilder(); 
+      bb.append('Hello World');
+      fileWriter.write(bb.getBlob('text/plain'));
+
+    }, errorHandler);
+
+  }, errorHandler);
+
+}
+
+
+            </pre>
+          </section>
+      </div>
+          
+        <div class="slide fs" id="fileSystemReadExample">
+          <header>File - Read</header>
+          <section>             
+            
+            <pre class="smaller">
+function fileSystemInitCallback(fs) {
+
+  fs.root.getFile('testFile.txt', {}, function(fileEntry) {
+
+    // Get a File object representing the file,
+    // then use FileReader to read its contents.
+    fileEntry.file(function(file) {
+       var reader = new FileReader();
+       reader.onloadend = function(e) {
+         document.querySelector('#output').value += this.result;
+       };
+
+       reader.readAsText(file);
+    }, errorHandler);
+
+  }, errorHandler);
+  
+  fs.root.getFile('testWrite.txt', {}, function(fileEntry) {
+
+    fileEntry.file(function(file) {
+       var reader = new FileReader();
+       reader.onloadend = function(e) {
+         document.querySelector('#output').value += '\n' + this.result;
+       };
+
+       reader.readAsText(file);
+    }, errorHandler);
+
+  }, errorHandler);
+}
+            </pre>
+          </section>
+    </div> 
+            
+
+    
+        <div class="slide fs" id="fileSystemMoveDeleteExample">
+          <header>File - Delete/Copy</header>
+          <section>             
+            
+            <pre class="smaller">
+/*DELETE */           
+window.requestFileSystem(window.PERSISTENT, 10*1024*1024, function(fs) {
+  fs.root.getFile('testFile.txt', {create: false}, function(fileEntry) {
+
+    fileEntry.remove(function() {
+      console.log('File removed.');
+    }, errorHandler);
+
+  }, errorHandler);
+}, errorHandler);           
+
+/* COPY */
+function copy(cwd, src, dest) {
+  cwd.getFile(src, {}, function(fileEntry) {
+
+    cwd.getDirectory(dest, {}, function(dirEntry) {
+      fileEntry.copyTo(dirEntry);
+    }, errorHandler);
+
+  }, errorHandler);
+}
+window.requestFileSystem(window.TEMPORARY, 10*1024*1024, function(fs) {
+  copy(fs.root, '/folder1/me.png', 'folder2/mypics/');
+}, errorHandler);           
+            </pre>
+          </section>
+      </div> 
+             
+    <div class="slide fs" id="fileSystemDirCreateExample">
+    
+      <header>Directory - Create/Retrieve, Remove/RemoveRecursively</header>
+      <section>
+        <br/>
+        <br/>
+        <pre >
+function fileSystemInitCallback(fs){
+  fs.root.getDirectory('MyPictures', {create: true}, function(dirEntry) {
+    console.log(dirEntry.isDirectory);//true
+  }, errorHandler);
+
+fs.root.getDirectory('music/genres/jazz', {}, function(dirEntry) {
+
+    dirEntry.remove(function() {
+      console.log('Directory removed.');
+    }, errorHandler);
+
+  }, errorHandler);
+  
+  fs.root.getDirectory('/misc/../music', {}, function(dirEntry) {
+
+    dirEntry.removeRecursively(function() {
+      console.log('Directory removed.');
+    }, errorHandler);
+
+  }, errorHandler);
+}
+        </pre>
+      </section>
+    </div>
+    
+    <div class="slide fs" id="fileSystemDirListExample">
+    
+      <header>Directory - List</header>
+      <section>
+        
+        <pre >
+function toArray(list) {
+  return Array.prototype.slice.call(list || [], 0);
+}
+function listResults(entries) {
+ 
+  entries.forEach(function(entry, i) {
+   console.log(entry);
+  });  
+}
+
+function fileSystemInitCallback(fs) {
+
+  var dirReader = fs.root.createReader();
+  var entries = [];
+
+  // Call the reader.readEntries() until no more results are returned.
+  var readEntries = function() {
+     dirReader.readEntries (function(results) {
+      if (!results.length) {
+        listResults(entries.sort());
+      } else {
+        entries = entries.concat(toArray(results));
+        readEntries();
+      }
+    }, errorHandler);
+  };
+
+  readEntries(); // Start reading dirs.
+
+}
+        </pre>
+      </section>
+    </div>
+      
+    <div class="slide fs" id="fileRealWorld">
+      <header>File API - Real World</header>
+      <section>
+        <ul class="bigger">
+          <li>Caching large assets - images/videos/music</li>
+          <li>Persistent Uploader - upload files in the background</li>
+          <li>Prefetching pages or images</li>
+          <li>Reduce requests</li>          
+        </ul>
+      </section>
+    </div>  
+
+        <div class="slide transitionSlide" id="intro-app-cache">
+          <section class="middle">
+            <h2>The Application Cache</h2>
+            <p>Take your code home with you</p>
+            <img src="img/cookie.jpg" height="225" width="225" style="width: 225px; height: 225px; opacity: 1" />
+          </section>
+        </div>
+
+        <div class="slide intro" id="what-can-cache-do">
+          <section>
+            <header><h1>What does the application cache do?</h1></header>
+            <ul class="bigger">
+              <li>Cache client side resources within the browser</li>
+              <li>Limit latency &amp; requests for files</li>
+              <li>Enable web applications to exist sans the web</li>
+            </ul>
+          </section>
+        </div>
+
+        <div class="slide" id="how-can-cache-do">
+          <section>
+            <header><h1>The Code</h1></header>
+<pre>
+// add the reference to the manifest file
+&lt;html manifest="cache.manifest"&gt;
+
+// deliver the appropriate mime type from the server
+res.header('Content-Type', 'text/cache-manifest');
+
+// the actual cache manifest file below
+CACHE MANIFEST
+# rev 0.0.8
+/
+/css/style.css
+/js/libs/modernizr-1.6.min.js
+/js/libs/jquery-1.4.2.js
+/js/libs/plugins.js
+/js/todo.js
+/js/mylibs/todo.basemodel.js
+/js/mylibs/todo.clientdb.js
+/js/todo.models.js
+/js/app.js
+NETWORK:
+*
+</pre>
+          </section>
+        </div>
+
+        <div class="slide" id="cache-process">
+          <section>
+            <header><h1>Cache process while online.</h1></header>
+            <p>1.) Request cache file from server.</p>
+            <p>2.) If the response is 200, download and cache all files as according to the manifest.
+            <p>3.) If the response is 302, do nothing.</p>
+          </section>
+        </div>
+
+        <div class="slide" id="use-cache-for">
+          <section>
+            <header><h1>Use cases.</h1></header>
+            <ul class="bigger">
+              <li>Web applications</li>
+              <li>Web sites</li>
+              <li>Everything web*</li>
+            </ul>
+            <p class="smaller">As long as you write better code</p>
+          </section>
+        </div>
+
+        <div class="slide" id="cache-warning">
+          <section class="middle">
+            <h1>WARNING.</h1>
+            <p>Unless you write perfect code, apply the cache as the last step in your application.</p>
+            <p>Otherwise, whenever you want to edit a cached file, you'll also have to edit the cache manifest.</p>
+          </section>
+        </div>
+
+        <div class="slide" id="together-ness">
+          <section>
+            <header><h1>Bringing it all together.</h1></header>
+            <p>1.) When connected, save data to the client &amp; and server per user interaction.</p>
+            <p>2.) When offline*, just save data to the client side.</p>
+            <p>3.) When coming back online, sync the data.</p>
+          </section>
+        </div>
+
+          <div class="slide">
+            <section>
+              <header><h1>How do I tell if I'm offline?</h1></header>    
+<pre>
+if (typeof navigator.onLine === 'undefined' || 
+navigator.onLine === true) {
+  // you're definitely online
+} else if (navigator.online === false) {
+  // you're offline and on a browser that supports it.
+}
+</pre>
+            </section>
+          </div>
+
+        <div class="slide">
+          <section>
+            <h1 style="font-size:300px; color:#333;">Done.</h1>
+          </section>
+        </div>
+
+		</div> <!-- slides -->
+
+  
+      <div id="speaker-note" class="invisible" style="display: none;">
+      </div> <!-- speaker note -->
+      <aside id="help" class="sidebar invisible" style="display: none;">
+        <table>
+          <caption>Help</caption>
+          <tbody>
+            <tr>
+              <th>Move Around</th>
+              <td>&larr;&nbsp;&rarr;</td>
+            </tr>
+            <tr>
+              <th>Source File</th>
+              <td>s</td>
+            </tr>
+            <tr>
+              <th>Change Theme</th>
+              <td>t</td>
+            </tr>
+            <tr>
+              <th>Syntax Highlight</th>
+              <td>h</td>
+            </tr>
+            <tr>
+              <th>Speaker Notes</th>
+              <td>n</td>
+            </tr>
+            <tr>
+              <th>Toggle 3D</th>
+              <td>3</td>
+            </tr>
+            <tr>
+              <th>Help</th>
+              <td>0</td>
+            </tr>
+          </tbody>
+        </table>
+      </aside>
+    </div> <!-- presentation -->
+
+    <!--[if lt IE 9]>
+    <script 
+      src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js">
+    </script>
+    <script>CFInstall.check({ mode: "overlay" });</script>
+    <![endif]-->
+
+    <script src="src/prettify/prettify.js" onload="prettyPrint();" defer></script>
+    <script src="js/excss.js"></script>
+    <script src="js/utils.js"></script>
+    <!--<script src="http://maps.google.com/maps/api/js?sensor=true"></script>-->
+    <script>
+      // Check if new appcache is available, load it, and reload page.
+      if (window.applicationCache) {
+        window.applicationCache.addEventListener('updateready', function(e) {
+          if (window.applicationCache.status == window.applicationCache.UPDATEREADY) {
+            window.applicationCache.swapCache();
+            if (confirm('A new version of this site is available. Load it?')) {
+              window.location.reload();
+            }
+          }
+        }, false);
+      }
+/*
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-15028909-5']);
+      _gaq.push(['_trackPageview']);
+      _gaq.push(['_trackPageLoadTime']);
+
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+*/
+    </script>
+  </body>
+</html>

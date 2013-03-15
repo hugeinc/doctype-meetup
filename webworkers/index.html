@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Intro to Web Workers: !doctype html</title>
+
+    <meta charset="utf-8">
+
+    <script src="libs/js/prettify.js"></script>
+    <link rel="stylesheet" type="text/css" href="libs/css/slideshow.css" />
+    <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=' +
+            'Open+Sans:regular,semibold,italic,italicsemibold|Droid+Sans+Mono" />
+    <script src="libs/js/slides.js"></script>
+
+    <!-- references to custom stuff goes here. -->
+    <script src="js/script.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/styles.css" />
+
+  </head>
+
+  <body class="hidden">
+
+    <div class="slides layout-regular template-huge">
+        
+    <div class="slide">
+      <h1 class="thin-pink-bottom-border">
+        Intro to Web Workers
+      </h1>
+      <p>"It's as easy as computing pi to ten thousand digits."</p>
+      <p class="smaller">November 15th, 2012</p>
+      <p class="smaller">https://github.com/hugeinc/webworkers-meetup.git</p>
+    </div>
+
+    <div class="slide magenta invert white-border">
+      <h1 class="v-center bigger white">Purpose.</h1>
+    </div>
+
+    <div class="slide">
+      <h4>Workers..</h4>
+      <ul class="build">
+        <li>Allow for background threads in js</li>
+        <li>True non-blocking process</li>
+        <li>(but this means no access to DOM)</li>
+        <li>Shared or dedicated workers</li>
+        <li>Uses messaging to pass data around</li>
+      </ul>
+    </div>
+    
+    <div class="slide">
+      <h4>Messaging?</h4>
+      <p>Simple way to send data between two windows/frames</p>
+      <p>Also the core way to communicate with a web worker</p>
+      <p>Useful for cross-domain communication</p>
+      <p>window.postMessage</p>   
+      <p><a href="http://dev.w3.org/html5/postmsg/">read more..</a></p>   
+    </div>
+    
+    <div class="slide magenta invert white-border">
+      <h1 class="v-center bigger white">Usage.</h1>
+    </div>
+    
+    <div class="slide">
+      <h4>Use cases</h4>
+      <p>Computation</p>
+      <p>"Heavy" sorting/traversing for huge objects</p>
+      <p>Background api calls/polling while doing other tasks</p>
+      <p>Image preloading</p>
+      <p>Hashing/encryption functions</p>
+      <p>Image manipulation</p>
+    </div>
+
+    <div class="slide magenta invert white-border">
+      <h1 class="v-center bigger white">Support.</h1>
+    </div>
+    
+    <div class="slide">
+      <h4>Supported Browsers</h4>
+      <p>Firefox</p>
+      <p>Safari (including mobile)</p>
+      <p>Chrome</p>
+      <p>Opera</p>
+      <h4>Unsupported</h4>
+      <p>IE < 10</p>
+      <p>Android =(</p>
+    </div>
+    
+    <div class="slide">
+      <h4>Polyfills/shims</h4>
+      <p><a href="http://code.google.com/p/fakeworker-js/">FakeWorker</a> (using setTimeout and eval)</p>
+      <p><a href="http://html5-shims.googlecode.com/svn/trunk/demo/workers.html">Worker Shim</a> (using google gears)</p>
+    </div>
+
+    <div class="slide magenta invert white-border">
+      <h1 class="v-center bigger white">Intro.</h1>
+    </div>
+    
+    <div class="slide">
+      <h4>Create a new worker</h4>
+      <pre>var worker = new Worker('worker.js');</pre>
+      <p>(worker.js holds your computationally expensive code)</p>
+      <h4>Listen for the worker's message</h4>
+      <pre>
+worker.onmessage = function(e) {
+ console.log(e.data);
+};
+      </pre>
+      <p>You now have your data to display to the user.</p>
+    </div>
+    
+    <div class="slide">
+      <h4>User input</h4>
+      <p>Passes data into the web worker for use.</p>
+      <pre>worker.postMessage(input);</pre>
+    </div>
+
+<!-- computation exmaple -->
+
+    <div class="slide">
+      <h4>Within the worker.</h4>
+      <p>Any data you pass back to your original script uses postMessage.</p>
+      <p>Any data you receive uses an event listener on "message".</p>
+      <p>Just regular javascript; remember--no DOM</p>
+    </div>
+    
+    <div class="slide magenta invert white-border">
+      <h1 class="v-center bigger white">Digging deeper.</h1>
+    </div>
+    
+    <div class="slide">
+      <img src="http://www.11points.com/images/animatedgifs/underconstruction.gif" width="80%" />
+    </div>
+    
+    <div class="slide">
+      <h4>Within the worker.</h4>
+      <p>Both <pre>self</pre> and <pre>this</pre> refer to the global scope of the worker.</p>
+    </div>
+    <div class="slide">
+      <p><strong>Accessible:</strong>
+      <ul>
+        <li>navigator</li>
+        <li>location</li>
+        <li>XMLHttpRequest</li>
+        <li>setTimeout() and clearTimeout()</li>
+        <li>setInterval() and clearInterval()</li>
+        <li>Other workers</li>
+        <li>ErrorEvent</li>
+      </ul>
+    </div>
+    <div class="slide">
+      <p><strong>NOT Accessible:</strong>
+      <ul>
+        <li>window</li>
+        <li>DOM</li>
+        <li>parent</li>
+       </ul>
+    </div>    
+    <div class="slide magenta invert white-border">
+      <h1 class="v-center bigger white">Further Reading.</h1>
+    </div>
+    
+    <div class="slide">
+      <h4>Handy resources.</h4>
+      <p><a href="http://www.w3.org/TR/workers/">http://www.w3.org/TR/workers/</a></p>
+      <p><a href="https://developer.mozilla.org/en-US/docs/DOM/Using_web_workers">https://developer.mozilla.org/en-US/docs/DOM/Using_web_workers</a></p>
+      <p><a href="http://www.html5rocks.com/en/tutorials/workers/basics/">http://www.html5rocks.com/en/tutorials/workers/basics/</a></p>
+      <p><a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/workers.html">http://www.whatwg.org/specs/web-apps/current-work/multipage/workers.html</a></p>
+    </div>
+    
+    <div class="slide magenta invert white-border">
+      <h1 class="v-center bigger white">Questions?</h1>
+    </div>
+    
+    <div class="slide magenta invert white-border">
+      <h1 class="v-center bigger white">Done.</h1>
+    </div>
+
+
+  </body>
+</html>
+

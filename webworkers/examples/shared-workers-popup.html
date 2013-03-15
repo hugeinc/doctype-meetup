@@ -1,0 +1,27 @@
+<!doctype html>
+<html>
+	<head>
+		<title>Web Workers Examples - Shared Workers</title>
+		<link rel="stylesheet" href="/css/main.css" />
+	</head>
+	<body>
+		<div class="wrapper" style="width: 480px;">
+			<h1>Shared Workers</h1>
+			
+			<form method="get">
+				<input type="text" id="chat-input" />
+				<input type="submit" value="say" />
+			</form>
+
+			<p>
+				You are <span id="shared-worker-output"></span>
+			</p>
+			<div class="output" id="chat">
+
+			</div>
+		</div>
+		
+		<script src="/js/main.js"></script>
+		<script src="/js/examples/shared-workers.js"></script>
+	</body>
+</html>

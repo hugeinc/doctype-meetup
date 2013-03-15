@@ -1,0 +1,27 @@
+.presentation {
+  background: #778;
+}
+
+.slide {
+  @mixin bgGradient(#fff, #bbd, #eee) borderRadius(20px, 0, 10px) transitionSingle(margin, 0.25s, ease-in-out);
+}
+
+header, section, footer, .css, .js, .html {
+  font-family: "Arial";
+}
+
+header {
+  color: black;
+}
+
+pre {
+  font-family: "Droid Sans Mono", Courier;
+  background: rgba(255, 0, 0, 0.05);
+  border-radius: 8px;
+  border: 1px solid rgba(255, 0, 0, 0.2);
+}
+
+.sidebar {
+  background-color: #EEE;
+  border-right: 5px solid #CCD;
+}
