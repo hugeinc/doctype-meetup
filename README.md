@@ -4,6 +4,16 @@
 Contains presentation materials from the <!doctype html> meetup
 http://www.meetup.com/doctype-html/
 
+Web Audio API - April 18, 2013
+-------------
+directory: /webaudio
+
+It’s time to delete that bgsound from your body tag, and explore 
+the all new Web Audio API. This is way more than the basic audio 
+tag, it’s an API for processing and synthesizing audio in web 
+applications. Come make some noise with us as we explore the 
+coolest HTML5 feature you’ve never heard of!
+
 
 Web Workers - November 15, 2012
 -------------
