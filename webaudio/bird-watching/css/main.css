@@ -1,0 +1,15 @@
+.section {
+	padding: 20px 0 40px 0;
+	border-bottom: 1px solid #ccc;
+}
+body {
+	color: #333;
+	font-family: 'Ovo', serif;
+}
+h1 {
+	padding-bottom: 20px;
+	border-bottom: 2px solid #999;
+}
+p {
+	color: #555;
+}
