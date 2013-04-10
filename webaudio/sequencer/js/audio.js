@@ -12,12 +12,19 @@ var sampleArray =
         '../assets/FH2_Snare_05.wav'
     ]
 
+var isPlaying = false;
+var scheduleAheadTime = 1; //var scheduleAheadTime = 0.1;
+var lookahead = 25.0;
+var timerID = 0;
+
 var bufferList = new Array();
-//var scheduleAheadTime = 0.1;
-
-var scheduleAheadTime = 1;
-
 var triggerArray = new Array();
+
+function init(){
+    bindWindowActions();
+    setUpTriggerArrays();
+    bufferLoad();
+}
 
 function setUpTriggerArrays() {
     //TODO: use jquery to set limit of layers onload
@@ -27,9 +34,20 @@ function setUpTriggerArrays() {
     }
 }
 
-function init(){
-    setUpTriggerArrays();
-    bufferLoad();
+function bindWindowActions(){
+    
+    $(document).on('keydown', function(e){
+        bindPlay(e);
+    });
+
+}
+
+function bindPlay(e){
+    
+    if (e.which === 32) {
+        isPlaying = !isPlaying;
+        play(bufferList);
+    }
 }
 
 function bufferLoad() {
@@ -49,29 +67,33 @@ function loadCallback(buffers){
 }
 
 function play(bufferList){
-    scheduler(bufferList);
+    if (isPlaying) {
+        scheduler(bufferList);
+    } else {
+        clearTimeout(timerID)
+    }
 }
 
-function playSound(sample, time) {
-    var source = context.createBufferSource();
-    source.buffer = sample;
-    source.connect(context.destination);
-    source.start(time);
-}
+var thisTriggerArray = new Array();
 
-function scheduler(bufferList) {
+function scheduler(bufferList, lookahead) {
     
-    var thisTriggerArray = new Array();
-
+    //playSound(bufferList[1], .5);
+                 //console.log(bufferList);
     for (var i = 0; i < triggerArray.length; i++) {
 
         thisTriggerArray = triggerArray[i];
 
         for (var j = 0; j < thisTriggerArray.length; j++) {
-          
-            if (triggerArray[j] < context.currentTime + scheduleAheadTime){
+            //console.log(triggerArray[j]);
+
+            // IMPORTANT.. context currentTime needs to be reset, or else it will think all array members are less than schedule ahead time (in the past)
+
+            if (context.currentTime + thisTriggerArray[j] < context.currentTime + scheduleAheadTime){
                 
                 playSound(bufferList[i], thisTriggerArray[j]);
+
+                console.log(bufferList[i] + ',' + thisTriggerArray[j]);
             }
         }
 
@@ -81,7 +103,20 @@ function scheduler(bufferList) {
     ** lookahead is waaaaaay shorter than scheduleahead time, so this will always check way more frequently than the notes scheduled could possibly be triggered
     ** NOTE: soooo, if you schedule the same sound twice, will it fire twice?
     */
-    //timerID = window.setTimeout( scheduler, lookahead );
+    //timerID = window.setTimeout( function(){scheduler(bufferList, lookahead)}, lookahead );
+}
+
+function playSound(sample, time) {
+    /***
+    ** NOTE: needs to be reset every time it's played,
+    */
+    //console.log(sample);
+    var source = context.createBufferSource();
+    source.buffer = sample;
+    source.connect(context.destination);
+
+    // IMPORTANT.. context currentTime needs to be reset, or else it will think the current time is in the past, and will always fire immediately
+    source.start(context.currentTime + time);
 }
 
 init();

@@ -1,11 +1,18 @@
+// [
+//     '../assets/FH2_Kick_26.wav',
+//     '../assets/FH2_Crash_02.wav',
+//     '../assets/FH2_Hat_09.wav',
+//     '../assets/FH2_Snare_05.wav'
+// ]
+
 var sequenced = [
     {
-        layer: 1,
+        layer: 0,
         //time: $scope.getTime(0)
-        time: 0 //in bars
+        time: .8 //in bars
     },
     {
-        layer: 3,
+        layer: 1,
         time: .1
     },
     {
@@ -14,10 +21,10 @@ var sequenced = [
     },
     {
         layer: 1,
-        time: .3
+        time: .9
     },
     {
-        layer: 1,
+        layer: 3,
         time: 0 
     },
     {
