@@ -1,0 +1,93 @@
+/**
+
+ All your styles belong here.
+
+*/
+
+@font-face{
+    font-family:'HUGEAvantGardeBold';
+    src:url("huge_agb_v5-webfont.ttf") format("truetype");
+    font-weight:normal;
+    font-style:normal
+}
+
+
+
+header, h1, h2, h3, h4, h5, h6 {
+    font-family:HUGEAvantGardeBold, 'Helvetica Neue', Helvetica, Arial, Geneva, sans-serif;
+    font-weight:700;
+    text-rendering:optimizeLegibility;
+    font-weight: normal;
+    letter-spacing: -.05em;
+    text-shadow: none;
+}
+
+h1.thin-pink-bottom-border {
+	border-bottom:3px solid #ED228E;
+	padding-bottom:13px;
+	display:inline-block;
+}
+
+h1.v-center {
+	margin-top:250px;
+}
+
+.hidden {
+	display:none;
+}
+
+.bigger {
+	font-size:300%;
+}
+
+.smaller {
+	font-size:80%;
+}
+
+.magenta {
+	color:#ED228E;
+}
+
+.slides.template-huge > .slide {
+	border-radius:0px;
+}
+
+.slides.template-huge > .slide.white-border {
+	border:18px solid #fff;
+}
+
+.slides.template-huge > .slide.invert {
+	color:#e1e1e1;
+}
+
+.slides.template-huge > .slide.invert a {
+	color:#fff;
+}
+
+.slides.template-huge > .slide.green {
+    background-color:#8ac33f;
+}
+
+.slides.template-huge > .slide.magenta {
+	background-color:#ED228E;
+}
+
+.slides.template-huge > .slide.black {
+	background-color:#000;
+}
+
+.menu-container {
+	display: none;
+	background-color: #ffffff;
+	font-family:'HUGEAvantGardeBold', arial, sans-serif;
+	position: fixed;
+	width: 100%;
+	height: 100%;
+	overflow-y: scroll;
+	z-index: 100000;
+}
+	.fast-nav { position: absolute; top: 50px; left: 50px; }
+		.fast-nav a { display: block; color: #000; margin: 0 0 20px; font-size: 30px; text-decoration: none; text-transform: uppercase; }
+	ul.menu { list-style-type: none; margin: 50px 0; }
+		ul.menu li { text-align: center; }
+			ul.menu li a { color: #ED228E; text-decoration: none; }
