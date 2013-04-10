@@ -87,7 +87,7 @@ function scheduler(bufferList, lookahead) {
         for (var j = 0; j < thisTriggerArray.length; j++) {
             //console.log(triggerArray[j]);
 
-            // IMPORTANT.. context currentTime needs to be reset, or else it will think all array members are less than schedule ahead time (in the past)
+            // IMPORTANT.. context currentTime needs to be reset, or else it will think all array members are less than schedule ahead time (in the past);
 
             if (context.currentTime + thisTriggerArray[j] < context.currentTime + scheduleAheadTime){
                 

@@ -15,8 +15,13 @@ Sequencer.controller( 'Sequencer', [ 'SequencerService', '$scope', function( Seq
 
     $scope.createTimeArrays = function(){
         //make layers dynamic?
-        
+        //
+
         var convertedTime = 0;
+
+        for (var i = 0; i < triggerArray.length; i++) {
+            triggerArray[i] = [];
+        }
 
         for (var i = 0; i < $scope.sequence.length; i++){
             convertedTime = $scope.convertTime($scope.sequence[i].time);
@@ -41,5 +46,10 @@ Sequencer.controller( 'Sequencer', [ 'SequencerService', '$scope', function( Seq
         $scope.tempo = tempo;
     });
 
+    $scope.$watch('tempo', function(value) {
+        $scope.createTimeArrays();
+    });
+
     $scope.init();
+
 }]);

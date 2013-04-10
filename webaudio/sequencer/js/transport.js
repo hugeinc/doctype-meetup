@@ -9,6 +9,7 @@ Sequencer.controller( 'Transport', [ 'SequencerService', '$scope', function( Seq
 
     $scope.updateTempo = function() {
         SequencerService.maintainTempo( $scope.tempo );  
+        $('#sequencer-tempo').trigger('change');
     };
 
     $scope.$on( 'SequencerService.update', function( event, tempo ) {

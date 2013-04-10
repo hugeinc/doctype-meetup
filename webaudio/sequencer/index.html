@@ -11,7 +11,7 @@
 
     	<div ng-controller="Sequencer">
     		SEQUENCER
-      		TEMPO: <input id="tempo" ng-change="computeLength()" ng-model="tempo" ng-model-instant type="text" value="60">
+      		TEMPO (read only, will be hiden when done): <input id="sequencer-tempo" ng-model="tempo" ng-model-instant type="text" value="60">
     	</div>
 
 		
@@ -22,7 +22,7 @@
 			<!-- <input type="text" ng-model="newItem" /><input type="submit" ng-click="updateTempo()" /> -->
 
 			<div class="">Time elapsed: <input id="time-elapsed" ng-model="timeElapsed" ng-model-instant></div>
-			TRANSPORT TEMPO: <input id="tempo" ng-change="updateTempo()" ng-model="tempo" ng-model-instant type="text" value="60">
+			TRANSPORT TEMPO: <input id="tempo" ng-change="updateTempo(); " ng-model="tempo" ng-model-instant type="text" value="60">
 			START: <input id="start" ng-model="start" ng-model-instant>
 			END: <input id="end" ng-model="end" ng-model-instant>
 			LENGTH: <input id="length" ng-model="length" ng-model-instant>
