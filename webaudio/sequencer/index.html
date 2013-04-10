@@ -1,17 +1,39 @@
 <!DOCTYPE html>
 
+<html ng-app="sequencer">
 	<body>
 		<head>
 		</head>
 		<!-- audio test -->
 
-		test web page is the best web page of all
+		
+    	test web page is the best web page of all
+
+    	<div ng-controller="Sequencer">
+    		SEQUENCER
+      		TEMPO: <input id="tempo" ng-change="computeLength()" ng-model="tempo" ng-model-instant type="text" value="60">
+    	</div>
+
+		
+
+		<div ng-controller="Transport">
+			TRANSPORT
+
+			<!-- <input type="text" ng-model="newItem" /><input type="submit" ng-click="updateTempo()" /> -->
+
+			<div class="">Time elapsed: <input id="time-elapsed" ng-model="timeElapsed" ng-model-instant></div>
+			TRANSPORT TEMPO: <input id="tempo" ng-change="updateTempo()" ng-model="tempo" ng-model-instant type="text" value="60">
+			START: <input id="start" ng-model="start" ng-model-instant>
+			END: <input id="end" ng-model="end" ng-model-instant>
+			LENGTH: <input id="length" ng-model="length" ng-model-instant>
+		</div>
 
 		<script type="text/javascript" src="js/jquery-1.7.2-min.js"></script>
 		<script type="text/javascript" src="js/angular.js"></script>
 		<script type="text/javascript" src="js/underscore.js"></script>
 
 		<script type="text/javascript" src="js/audio-helpers.js"></script>
+		<script type="text/javascript" src="js/transport.js"></script>
 		<script type="text/javascript" src="js/audio.js"></script>
 
 	</body>
