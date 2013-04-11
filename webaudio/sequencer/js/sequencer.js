@@ -13,6 +13,11 @@ Sequencer.controller( 'Sequencer', [ 'SequencerService', '$scope', function( Seq
 
         var convertedTime = 0;
         var unorderedTimeArray = new Array();
+        var orderedTimeArray = new Array();
+
+        // so with next note, when you have a .25 and .5 
+        // for quarter beat, what you actually want to scedule is the difference, ie, .25 then .25 again.
+        var timeDiffArray = new Array();
 
         for (var i = 0; i < triggerArray.length; i++) {
             unorderedTimeArray[i] = new Array();
@@ -25,8 +30,28 @@ Sequencer.controller( 'Sequencer', [ 'SequencerService', '$scope', function( Seq
         }
         
         for (var i= 0; i < unorderedTimeArray.length; i++) {
-            triggerArray[i] = _.sortBy( unorderedTimeArray[i] );
-            console.log(triggerArray[i]);
+            orderedTimeArray[i] = _.sortBy( unorderedTimeArray[i] );
+            
+            //console.log(orderedTimeArray[i]);
+
+            timeDiffArray[i] = new Array();
+
+            timeDiffArray[i].push(orderedTimeArray[i][0]);
+
+            //console.log('first in time diff array:' + i + ': ' + timeDiffArray[i][0]);
+
+            for (var j = 0; j < orderedTimeArray[i].length - 1; j++) {
+                var thisValue = orderedTimeArray[i][j],
+                    nextValue = (orderedTimeArray[i][j + 1] !== undefined) ? orderedTimeArray[i][j + 1] : 0;
+
+                //console.log('next value:' + nextValue);
+
+                timeDiffArray[i].push(nextValue - thisValue);
+            }
+
+            triggerArray[i] = timeDiffArray[i];
+            //console.log('final array '+ i + ': ') 
+            //console.log(triggerArray[i]);
         }
     }
 
