@@ -8,12 +8,11 @@
 var sequenced = [
     {
         layer: 0,
-        //time: $scope.getTime(0)
-        time: .8 //in bars
+        time: 0
     },
     {
         layer: 1,
-        time: .1
+        time: .5
     },
     {
         layer: 2,
@@ -21,7 +20,7 @@ var sequenced = [
     },
     {
         layer: 1,
-        time: .9
+        time: 0
     },
     {
         layer: 3,
@@ -29,14 +28,14 @@ var sequenced = [
     },
     {
         layer: 2,
-        time: .4
+        time: .1
     },
     {
         layer: 0,
-        time: .5
+        time: .8
     },
     {
         layer: 3,
-        time: .75
+        time: .35
     }
 ]

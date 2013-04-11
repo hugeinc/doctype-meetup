@@ -6,7 +6,7 @@ Sequencer.controller( 'Sequencer', [ 'SequencerService', '$scope', function( Seq
     $scope.init = function(){
         console.log($scope.sequence);
 
-        $scope.createTimeArrays();
+        //$scope.createTimeArrays();
     }
 
     
@@ -14,26 +14,23 @@ Sequencer.controller( 'Sequencer', [ 'SequencerService', '$scope', function( Seq
     console.log($scope.sequence[1].time)
 
     $scope.createTimeArrays = function(){
-        //make layers dynamic?
-        //
 
         var convertedTime = 0;
+        var unorderedTimeArray = new Array();
 
         for (var i = 0; i < triggerArray.length; i++) {
-            triggerArray[i] = [];
+            unorderedTimeArray[i] = new Array();
+            triggerArray[i] = new Array();
         }
 
         for (var i = 0; i < $scope.sequence.length; i++){
             convertedTime = $scope.convertTime($scope.sequence[i].time);
-
-            console.log($scope.sequence[i].layer);
-
-            triggerArray[$scope.sequence[i].layer].push(convertedTime);
-            
+            unorderedTimeArray[$scope.sequence[i].layer].push(convertedTime);
         }
-
-        console.log('trigger array: ' );
-            console.log(triggerArray[0]);
+        
+        for (var i= 0; i < unorderedTimeArray.length; i++) {
+            triggerArray[i] = _.sortBy( unorderedTimeArray[i] );
+        }
     }
 
     $scope.convertTime = function(time) {
