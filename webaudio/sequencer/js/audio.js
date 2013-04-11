@@ -17,14 +17,12 @@ var scheduleAheadTime = .1; //var scheduleAheadTime = 0.1; in secs
 var lookahead = 25; // var lookahead = 25; in ms
 var timerID = 0;
 var nextNoteTime = 0;
-var tempo = 60;
+var nextNoteTime1 = 0;
+var nextNoteCount = 0;
+var nextNoteCount1 = 0;
 
 var bufferList = new Array();
 var triggerArray = new Array();
-var notesInQueue = [];
-var noteResolution = 0;   // 0 == 16th, 1 == 8th, 2 == quarter note
-var noteLength = 0.05;    // length of "beep" (in seconds)
-var timerID = 0;
 
 function init(){
     bindWindowActions();
@@ -70,32 +68,26 @@ function loadCallback(buffers){
     bufferList = buffers;
 }
 
-var nextNoteCount = 0;
 function nextNote(array, index) {
-    // Advance current note and time by a 16th note...
-    var secondsPerBeat = 60.0 / tempo;  // Notice this picks up the CURRENT 
-                      // tempo value to calculate beat length.
-    
-    //nextNoteTime += array[index] * secondsPerBeat;  // Add beat length to last beat time
 
     //NOTE: if next note time is 0 it won't fire, but .1 is fine
 
     // FOR PRES: set when it's 0, next note = 0
 
-    if (array[nextNoteCount] === 0){
-        nextNoteTime = context.currentTime;
-        //alert('0');
-    } else {
-        nextNoteTime += array[nextNoteCount] * secondsPerBeat;
-    }
+    // if (array[nextNoteCount] === 0){
+    //     nextNoteTime = context.currentTime;
+    //     //alert('0');
+    // } else {
+    //     nextNoteTime += array[nextNoteCount];
+    // }
 
-    
+    nextNoteTime += array[nextNoteCount];
 
-    console.log('count:' + nextNoteCount + 'value:' + array[nextNoteCount]);
+    //console.log('count:' + nextNoteCount + 'value:' + array[nextNoteCount]);
 
     nextNoteCount++;
 
-    nextNoteCount = nextNoteCount % 2;
+    nextNoteCount = nextNoteCount % array.length;
 
     current16thNote++;  // Advance the beat number, wrap to zero
     if (current16thNote == 16) {
@@ -103,7 +95,34 @@ function nextNote(array, index) {
     }
 }
 
-function scheduleNote( beatNumber, time ) {
+function nextNote1(array, index) {
+
+    //NOTE: if next note time is 0 it won't fire, but .1 is fine
+
+    // FOR PRES: set when it's 0, next note = 0
+
+    if (array[nextNoteCount1] === 0){
+        nextNoteTime1 = context.currentTime;
+        //alert('0');
+    } else {
+        nextNoteTime1 += array[nextNoteCount1];
+    }
+
+    console.log('nextNoteTime1' + nextNoteTime1);
+
+    //console.log('count:' + nextNoteCount + 'value:' + array[nextNoteCount]);
+
+    nextNoteCount1++;
+
+    nextNoteCount1 = nextNoteCount1 % array.length;
+
+    current16thNote++;  // Advance the beat number, wrap to zero
+    if (current16thNote == 16) {
+        current16thNote = 0;
+    }
+}
+
+function scheduleNote( time, bufferSound ) {
     // push the note on the queue, even if we're not playing.
   //   notesInQueue.push( { note: beatNumber, time: time } );
 
@@ -126,7 +145,9 @@ function scheduleNote( beatNumber, time ) {
   // osc.noteOn( time );
   // osc.noteOff( time + noteLength );
 
-  playSound(bufferList[0], time);
+  //playSound( time, bufferList[bufferSound]);
+  console.log(time);
+  playSound( time, bufferSound);
 }
 
 /***
@@ -134,24 +155,73 @@ function scheduleNote( beatNumber, time ) {
 */
 
 var index = 0;
+var index1 = 0;
 
-function scheduler(bufferList) {
-  console.log(nextNoteTime + 'I suck' + (context.currentTime + scheduleAheadTime))
-  // while there are notes that will need to play before the next interval, 
-  // schedule them and advance the pointer.
-  
-  index = index % triggerArray[0].length;
-
-  while (nextNoteTime < context.currentTime + scheduleAheadTime ) {
+function scheduler(triggerArray, bufferSound) {
+    //console.log(nextNoteTime + 'I suck' + (context.currentTime + scheduleAheadTime))
     
-    console.log(triggerArray[0][index]);
-    scheduleNote( current16thNote, nextNoteTime );
-    nextNote(triggerArray[0], index);
 
-    index++;
+    // while there are notes that will need to play before the next interval, 
+    // schedule them and advance the pointer.
+    
+    //alert(triggerArray.length);
+    
+    // for (var i = 1; i < 3; i++) {
 
-  }
-  timerID = window.setTimeout( scheduler, lookahead );
+    //     //console.log('trigger array:' + triggerArray[i]);
+    //     //console.log('buffer sound:' + bufferList[i]);
+
+    //     index = index % triggerArray[i].length;
+
+    //     console.log(i);
+
+    //     while (nextNoteTime < context.currentTime + scheduleAheadTime ) {
+            
+    //         console.log(triggerArray[i].length);
+
+    //         //console.log('next note time:' + triggerArray[i][index]);
+    //         scheduleNote( nextNoteTime, bufferList[i] );
+    //         nextNote(triggerArray[i], index);
+
+    //         index++;
+
+    //     }
+        
+    // }
+
+    index = index % triggerArray[0].length;
+    index1 = index1 % triggerArray[1].length;
+
+    while (nextNoteTime < context.currentTime + scheduleAheadTime ) {
+            
+            console.log(nextNoteTime);
+
+            //console.log('next note time:' + triggerArray[i][index]);
+            scheduleNote( nextNoteTime, bufferList[0] );
+            nextNote(triggerArray[0], index);
+
+            index++;
+
+        }
+
+    while (nextNoteTime1 < context.currentTime + scheduleAheadTime ) {
+            
+            console.log(triggerArray[1].length);
+
+            console.log(nextNoteTime1);
+
+            //console.log('next note time:' + triggerArray[i][index]);
+
+
+            scheduleNote( nextNoteTime1, bufferList[2] );
+            nextNote1(triggerArray[1], index1);
+
+            index1++;
+
+        }
+
+
+    timerID = window.setTimeout( function() {scheduler(triggerArray)}, lookahead );
 }
 
 function play() {
@@ -160,7 +230,11 @@ function play() {
   if (isPlaying) { // start playing
     current16thNote = 0;
     nextNoteTime = context.currentTime;
-    scheduler();  // kick off scheduling
+    nextNoteTime1 = context.currentTime;
+    //scheduler(triggerArray[0], 0);
+
+    scheduler(triggerArray);
+    //schedulerSetup();  // kick off scheduling
     return "stop";
   } else {
     window.clearTimeout( timerID );
@@ -205,35 +279,42 @@ function play() {
 
 
 
+function schedulerSetup() {
+    scheduler(triggerArray[0], 0);
+    
+    //scheduler(triggerArray[2], 1);
 
-//     // for (var i = 0; i < triggerArray.length; i++) {
+    for (var i = 0; i < triggerArray.length; i++) {
 
-//     //     thisTriggerArray = triggerArray[i];
+        thisTriggerArray = triggerArray[i];
 
-//     //     for (var j = 0; j < thisTriggerArray.length; j++) {
-//     //         //console.log(triggerArray[j]);
-//     //         //console.log(i);
-//     //         // IMPORTANT.. context currentTime needs to be reset, or else it will think all array members are less than schedule ahead time (in the past);
+        for (var j = 0; j < thisTriggerArray.length; j++) {
+            
+              
 
-//     //         //if (nextNoteTime < context.currentTime + scheduleAheadTime){
-//     //         //console.log(thisTriggerArray[j]);
-//     //         //if (context.currentTime + thisTriggerArray[j] < context.currentTime + scheduleAheadTime){
-//     //         //if (nextNoteTime < context.currentTime + scheduleAheadTime){
-//     //             //console.log('nextNote!:' + nextNoteTime);
-//     //             //playSound(bufferList[i], thisTriggerArray[j]);
-//     //             //nextNote(thisTriggerArray, j);
-//     //         //}
+            //console.log(triggerArray[j]);
+            //console.log(i);
+            // IMPORTANT.. context currentTime needs to be reset, or else it will think all array members are less than schedule ahead time (in the past);
 
-//     //     }
+            //if (nextNoteTime < context.currentTime + scheduleAheadTime){
+            //console.log(thisTriggerArray[j]);
+            //if (context.currentTime + thisTriggerArray[j] < context.currentTime + scheduleAheadTime){
+            //if (nextNoteTime < context.currentTime + scheduleAheadTime){
+                //console.log('nextNote!:' + nextNoteTime);
+                //playSound(bufferList[i], thisTriggerArray[j]);
+                //nextNote(thisTriggerArray, j);
+            //}
 
-//     // }
-//     /***
-//     ** SUPER IMPORTANT
-//     ** lookahead is waaaaaay shorter than scheduleahead time, so this will always check way more frequently than the notes scheduled could possibly be triggered
-//     ** NOTE: soooo, if you schedule the same sound twice, will it fire twice?
-//     */
-//     timerID = window.setTimeout( function(){scheduler(bufferList, lookahead)}, 25 );
-// }
+        }
+
+    }
+    /***
+    ** SUPER IMPORTANT
+    ** lookahead is waaaaaay shorter than scheduleahead time, so this will always check way more frequently than the notes scheduled could possibly be triggered
+    ** NOTE: soooo, if you schedule the same sound twice, will it fire twice?
+    */
+    //timerID = window.setTimeout( function(){scheduler(bufferList, lookahead)}, 25 );
+}
 
 // function nextNote(array, index) {
 //     //console.log('index' + parseInt(index) + 1);
@@ -248,7 +329,7 @@ function play() {
 //     //alert(array[index]);
 // }
 
-function playSound(sample, time) {
+function playSound( time, sample) {
     /***
     ** NOTE: needs to be reset every time it's played,
     */

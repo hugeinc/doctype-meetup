@@ -9,10 +9,6 @@ Sequencer.controller( 'Sequencer', [ 'SequencerService', '$scope', function( Seq
         //$scope.createTimeArrays();
     }
 
-    
-    console.log('first time');
-    console.log($scope.sequence[1].time)
-
     $scope.createTimeArrays = function(){
 
         var convertedTime = 0;
@@ -30,6 +26,7 @@ Sequencer.controller( 'Sequencer', [ 'SequencerService', '$scope', function( Seq
         
         for (var i= 0; i < unorderedTimeArray.length; i++) {
             triggerArray[i] = _.sortBy( unorderedTimeArray[i] );
+            console.log(triggerArray[i]);
         }
     }
 
