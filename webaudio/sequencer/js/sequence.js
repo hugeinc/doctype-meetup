@@ -8,17 +8,22 @@
 var sequenced = [
     {
         layer: 0,
-        time: .25
+        time: 0
     },
     
     {
         layer: 0,
-        time: .15
+        time: .25
     },
     {
         layer: 0,
-        time: .05
+        time: .75
     },
+    
+    // {
+    //     layer: 0,
+    //     time: 1
+    // },
     {
         layer: 1,
         time: .5
