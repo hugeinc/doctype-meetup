@@ -17,8 +17,14 @@ var sequenced = [
     },
     {
         layer: 0,
+        time: .5
+    },
+    
+    {
+        layer: 0,
         time: .75
     },
+    
     
     // {
     //     layer: 0,
@@ -26,17 +32,12 @@ var sequenced = [
     // },
     {
         layer: 1,
-        time: .5
+        time: 0.0
     },
     {
         layer: 1,
-        time: .75
+        time: .25
     }
-    // },
-    // {
-    //     layer: 1,
-    //     time: 0
-    // },
     // {
     //     layer: 0,
     //     time: .5

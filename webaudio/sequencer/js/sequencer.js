@@ -51,7 +51,7 @@ Sequencer.controller( 'Sequencer', [ 'SequencerService', '$scope', function( Seq
 
             triggerArray[i] = timeDiffArray[i];
             //console.log('final array '+ i + ': ') 
-            //console.log(triggerArray[i]);
+            console.log(triggerArray[i]);
         }
     }
 

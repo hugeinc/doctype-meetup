@@ -69,8 +69,11 @@ function loadCallback(buffers){
 }
 
 var singleBeat = false;
+var isNextNote1 = true;
 
-function nextNote1(array, index) {
+function nextNote1(array, index1) {
+
+    console.log('what\'s caaallliiiinnnnggg mmeeeeeeee');
 
     //NOTE: if next note time is 0 it won't fire, but .1 is fine
 
@@ -83,24 +86,48 @@ function nextNote1(array, index) {
     //     nextNoteTime1 += array[nextNoteCount1];
     // }
 
-    nextNoteTime1 += array[nextNoteCount1];
+    //nextNoteTime1 += array[index1];
 
-    //console.log('nextNoteTime1' + nextNoteTime1);
+    nextNoteTime1 += .5;
 
-    //console.log('count:' + nextNoteCount + 'value:' + array[nextNoteCount]);
+    console.log('nextNoteTime1' + nextNoteTime1);
 
-    nextNoteCount1++;
+    console.log('count:' + nextNoteCount1 + 'value:' + array[nextNoteCount1]);
+
+    
 
     nextNoteCount1 = nextNoteCount1 % array.length;
 
     // if (nextNoteCount == array.length){
     //     newBeat1 = false;
     // }
+//console.log('nextNoteCount1: ' + nextNoteCount1 + 'array.length: ' + array.length );
+    if (array.length > 1){
+        
 
-    current16thNote++;  // Advance the beat number, wrap to zero
-    if (current16thNote == 16) {
-        current16thNote = 0;
+        
+
+        if (nextNoteCount1 === array.length || singleBeat){
+            newBeat1 = false;
+
+//alert('poobucket homo ');
+            isNextNote1 = false;
+            //stop = true;
+            console.log('I should stop!');
+            nextNoteCount1 = 0;
+
+        } else {
+            nextNoteCount1 = nextNoteCount % array.length;
+        }
+
+        //console.log('count:' + nextNoteCount + 'value:' + array[nextNoteCount]);
+        
+    } else {
+        nextNoteCount1 = 0;
+        singleBeat = true;
     }
+
+    nextNoteCount1++;
 }
 
 function scheduleNote( time, bufferSound ) {
@@ -114,6 +141,7 @@ function scheduleNote( time, bufferSound ) {
 var stop = false;
 
 var isNextNote = true;
+
 
 function nextNote(array, index) {
 
@@ -136,8 +164,12 @@ function nextNote(array, index) {
     //nextNoteTime += array[nextNoteCount];
 
     nextNoteTime += array[index];
-    console.log('WHHHHHYYYYYYYY' + array[nextNoteCount]);
-// console.log('nextNoteCount: ' + nextNoteCount + 'nextNoteTime: ' + nextNoteTime);
+    //console.log('WHHHHHYYYYYYYY' + array[nextNoteCount]);
+ //console.log('nextNoteCount: ' +  nextNoteCount1 + 'array[nextNoteCount]: ' +  array[nextNoteCount] + 'nextNoteTime: ' + nextNoteTime);
+    
+
+
+
     //console.log('nextNoteCount: ' + nextNoteCount + 'array[nextNoteCount]: ' + array[nextNoteCount] + 'nextNoteTime: ' + nextNoteTime + 'array length: ' + array.length);
 
     //console.log('count:' + nextNoteCount + 'value:' + array[nextNoteCount]);
@@ -189,22 +221,26 @@ var newBeat = true;
 
 function checkBeat(){
     
-    oneBeat = 60 / $('#tempo').val();
+    //oneBeat = 60 / $('#tempo').val();
+    oneBeat = 60 / 60;
     contextBeat = Math.floor(context.currentTime / oneBeat);
     console.log('test');
 
     if (theBeat < contextBeat) {
         
         nextNoteTime = context.currentTime;
+        nextNoteTime1 = context.currentTime;
         theBeat++;
         newBeat = true;
         newBeat1 = true;
         console.log(theBeat + '/' + contextBeat);
         //console.log(Math.floor(context.currentTime));
         isNextNote = true;
+        isNextNote1 = true;
         console.log('played');
+        //alert('wtf');
         //playSound( 0, bufferList[0]);
-        scheduler(triggerArray);
+        //scheduler(triggerArray);
     }
     
     //console.log('new beat' + theBeat + 'context beat:' + Math.floor(context.currentTime / oneBeat));
@@ -229,16 +265,16 @@ console.log(nextNoteTime);
 
         }
 
-    // while (nextNoteTime1 < context.currentTime + scheduleAheadTime && newBeat1) {
+    // while (nextNoteTime1 < context.currentTime + scheduleAheadTime && isNextNote1 === true) {
             
     //         //console.log(triggerArray[1].length);
 
     //         //console.log(nextNoteTime1);
 
     //         //console.log('next note time:' + triggerArray[i][index]);
+    //         console.log(isNextNote1);
 
-
-    //         scheduleNote( nextNoteTime1, bufferList[2] );
+    //         scheduleNote( nextNoteTime1, bufferList[3] );
     //         nextNote1(triggerArray[1], index1);
 
     //         index1++;
@@ -251,14 +287,8 @@ console.log(nextNoteTime);
             
                 scheduler(triggerArray); 
             
-            
-
-            //checkBeat();
         } , lookahead );
-    //}
-   
-    
-    
+
 }
 var beatInterval;
 
