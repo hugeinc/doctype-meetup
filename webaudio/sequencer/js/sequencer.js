@@ -4,6 +4,7 @@ Sequencer.controller( 'Sequencer', [ 'SequencerService', '$scope', function( Seq
     $scope.sequence = sequenced; //in sequence.js
     $scope.timeArrayByLayer = new Array();
 
+    $scope.hasPlayed = false;
     $scope.init = function(){
         console.log($scope.sequence);
 
@@ -89,7 +90,22 @@ Sequencer.controller( 'Sequencer', [ 'SequencerService', '$scope', function( Seq
     });
 
     $scope.$watch('tempo', function(value) {
+        // In the gheetttoooooooo
+        
+        if ($scope.hasPlayed) {
+            play();
+        }
+
         $scope.createTimeArrays();
+
+        if($scope.hasPlayed) {
+            setTimeout(play, 300);
+        }
+
+        if(!$scope.hasPlayed){
+            $scope.hasPlayed = true;
+        }
+
     });
 
     $scope.init();
