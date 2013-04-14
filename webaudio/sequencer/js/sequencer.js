@@ -21,10 +21,10 @@ Sequencer.controller( 'Sequencer', [ 'SequencerService', '$scope', function( Seq
 
         var testTriggerArray = new Array();
 
-        for (var i = 0; i < triggerArray.length; i++) {
-             //unorderedTimeArray[i] = new Array();
-             triggerArray[i] = new Array();
-         }
+        // for (var i = 0; i < triggerArray.length; i++) {
+        //      //unorderedTimeArray[i] = new Array();
+        //      triggerArray[i] = new Array();
+        //  }
 
          unorderedTimeArray[0] = new Array();
          unorderedTimeArray[1] = new Array();
@@ -33,16 +33,22 @@ Sequencer.controller( 'Sequencer', [ 'SequencerService', '$scope', function( Seq
 
         // seperate scope.sequence into layers to sort by time
         for (var i = 0; i < $scope.sequence.length; i++){
-            
+
             triggerArray[i] = new Array;
+
             unorderedTimeArray[$scope.sequence[i].layer].push($scope.sequence[i].time);
 
         }
 
+
+        /**
+            I DON'T THINK I NEED THIS
+        **/
         // make times the DIFFERENCE between the notes for scheduling, not the percentage of a bar
         // ie, if the sequence was .25, .5, the second value would fire .5 seconds after the first, not .25 like we want.
         // also converts that second difference based on tempo (bpm);
         for (var i = 0; i < unorderedTimeArray.length; i++){
+
             timeDiffArray[i] = new Array();
             orderedTimeArray[i] = new Array();
 
@@ -65,18 +71,19 @@ Sequencer.controller( 'Sequencer', [ 'SequencerService', '$scope', function( Seq
         var triggerArrayIndex = 0;
 
         for (var i = 0; i < timeDiffArray.length; i++){
-            console.log(timeDiffArray.length);
-            console.log('timeDiffArray i' + i);
-            console.log('layer number:' + unorderedTimeArray.length);
+            //console.log(timeDiffArray.length);
+            //console.log('timeDiffArray i' + i);
+            //console.log('layer number:' + unorderedTimeArray.length);
 
             for (var j = 0; j < timeDiffArray[i].length; j++) {
                 var trigger = triggerArray[triggerArrayIndex];
 
                 trigger.time = orderedTimeArray[i][j];
+
                 trigger.nextNoteTime = timeDiffArray[i][j];
                 trigger.layer = i;
 
-                console.log('trigger array j: ' + triggerArrayIndex);
+                //console.log('trigger array j: ' + triggerArrayIndex);
                 triggerArrayIndex++;
             }
         }
@@ -86,33 +93,16 @@ Sequencer.controller( 'Sequencer', [ 'SequencerService', '$scope', function( Seq
 
         triggerArray = _.sortBy(triggerArray, 'time');
 
-        console.log('triggerArray: ');
-        console.log(triggerArray);
-        
-        // for (var i= 0; i < unorderedTimeArray.length; i++) {
-        //     orderedTimeArray[i] = _.sortBy( unorderedTimeArray[i] );
-            
-        //     //console.log(orderedTimeArray[i]);
+        //finaly, we must loop through times, and subtract last time value from this time value in that order to calculate next note time, 
+        // ie, if we have two sounds scheduled at .25 bars, it will fire the first, then the next .25 bars later instead of the same time
 
-        //     timeDiffArray[i] = new Array();
+        for (var i = 0; i < triggerArray.length; i++){
+            var thisValue = triggerArray[i].time,
+                lastValue = (i > 0) ? triggerArray[i - 1].time : 0;
 
-        //     timeDiffArray[i].push(orderedTimeArray[i][0]);
+            triggerArray[i].nextNoteTime = thisValue - lastValue;
+        }
 
-        //     //console.log('first in time diff array:' + i + ': ' + timeDiffArray[i][0]);
-
-        //     for (var j = 0; j < orderedTimeArray[i].length - 1; j++) {
-        //         var thisValue = orderedTimeArray[i][j],
-        //             nextValue = (orderedTimeArray[i][j + 1] !== undefined) ? orderedTimeArray[i][j + 1] : 0;
-
-        //         //console.log('next value:' + nextValue);
-
-        //         timeDiffArray[i].push(nextValue - thisValue);
-        //     }
-
-        //     triggerArray[i] = timeDiffArray[i];
-        //     //console.log('final array '+ i + ': ') 
-        //     console.log(triggerArray[i]);
-        //}
     }
 
     $scope.convertTime = function(time) {

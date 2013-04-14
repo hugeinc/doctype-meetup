@@ -10,49 +10,31 @@ var sequenced = [
         layer: 0,
         time: 0
     },
-    
     {
         layer: 0,
-        time: .5
+        time: .3
     },
     
-    {
-        layer: 0,
-        time: .75
-    },
-    
-    
-    // {
-    //     layer: 0,
-    //     time: 1
-    // },
-    {
-        layer: 1,
-        time: .75
-    },
-    {
-        layer: 1,
-        time: .25
-    },
-
-    {
-        layer: 0,
-        time: .25
-    },
-    {
-        layer: 0,
-        time: .5
-    },
     {
         layer: 2,
-        time: 1
-    },
-    {
-        layer: 0,
-        time: .8
+        time: .23
     },
     {
         layer: 3,
-        time: .35
+        time: .7
+    },
+    
+    {
+        layer: 0,
+        time: .75
+    },
+    {
+        layer: 1,
+        time: 0.25
+    },
+    {
+        layer: 1,
+        time: .75
     }
+
 ]
