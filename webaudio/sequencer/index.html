@@ -12,6 +12,17 @@
     	<div ng-controller="Sequencer">
     		SEQUENCER
       		TEMPO (read only, will be hiden when done): <input id="sequencer-tempo" ng-model="tempo" ng-model-instant type="text" value="60">
+
+      		<ul style="width:100%; border:1px solid blue; padding:0;">
+
+	      		<li ng-repeat="layer in displayTimeArrayByLayer" ng-click="addTrigger()" style="width:100%; border:1px solid red; padding:0; position:relative; list-style:none; height:30px;">
+	      			
+	      			<div ng-repeat="time in displayTimeArrayByLayer[$index]" style="position:absolute; left:{{time}}%; height:100%; width:4px; background-color:orange" ng-click="alert('woot');">
+	      				
+	      			</div>
+	      		</li>
+
+	      	</ul>
     	</div>
 
 		

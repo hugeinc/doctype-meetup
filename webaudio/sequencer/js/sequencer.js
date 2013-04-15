@@ -3,6 +3,7 @@ Sequencer.controller( 'Sequencer', [ 'SequencerService', '$scope', function( Seq
     $scope.tempo = SequencerService.tempo;
     $scope.sequence = sequenced; //in sequence.js
     $scope.timeArrayByLayer = new Array();
+    $scope.displayTimeArrayByLayer = new Array();
 
     $scope.hasPlayed = false;
     $scope.init = function(){
@@ -31,13 +32,25 @@ Sequencer.controller( 'Sequencer', [ 'SequencerService', '$scope', function( Seq
 
         for (var i = 0; i < $scope.layers + 1; i++) {
             $scope.timeArrayByLayer[i] = new Array();
+            $scope.displayTimeArrayByLayer[i] = new Array();
         }
     }
 
+    //TODO, make display left percent divided by bars
+
     // seperate scope.sequence into layers for display
     $scope.seperateTimesByLayer = function() {
-        for (var i = 0; i < $scope.sequence.length; i++){
-            $scope.timeArrayByLayer[$scope.sequence[i].layer].push($scope.sequence[i].time);
+        for (var i = 0; i < $scope.sequence.length; i++) {
+
+            var time = $scope.sequence[i].time;
+            var timeString = time + '';
+            var strippedTime = (timeString !== '0') ? timeString.split('.')[1] : '0';
+            
+            console.log(time + ',' + strippedTime)
+
+            strippedTime = (strippedTime.length === 1) ? strippedTime + '0' : strippedTime;
+            $scope.displayTimeArrayByLayer[$scope.sequence[i].layer].push(strippedTime);
+            $scope.timeArrayByLayer[$scope.sequence[i].layer].push(time);
         }
     }
 
@@ -48,6 +61,8 @@ Sequencer.controller( 'Sequencer', [ 'SequencerService', '$scope', function( Seq
 
         for (var i = 0; i < $scope.layers + 1; i++){
             $scope.timeArrayByLayer[i] = _.sortBy( $scope.timeArrayByLayer[i] );
+
+            console.log($scope.timeArrayByLayer[i]);
 
             //console.log($scope.timeArrayByLayer[i]);
 
@@ -84,6 +99,10 @@ Sequencer.controller( 'Sequencer', [ 'SequencerService', '$scope', function( Seq
         return (tempoedTime);
     }
 
+    $scope.addTrigger = function() {
+        alert('sup');
+    }
+
     $scope.$on( 'SequencerService.update', function( event, tempo ) {
         $scope.tempo = tempo;
         oneBeat = 60 / $('#tempo').val();
@@ -91,7 +110,7 @@ Sequencer.controller( 'Sequencer', [ 'SequencerService', '$scope', function( Seq
 
     $scope.$watch('tempo', function(value) {
         // In the gheetttoooooooo
-        
+
         if ($scope.hasPlayed) {
             play();
         }

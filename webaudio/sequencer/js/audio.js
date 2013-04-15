@@ -92,7 +92,7 @@ function nextNote(array, index) {
 }
 
 /*
-    TODO: this and play should go in transport.
+    TODO: this and play should go in transport.js.
 */
 function checkBeat(){
     //oneBeat = 60 / 60; // in sequencer now

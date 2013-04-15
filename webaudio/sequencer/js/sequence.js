@@ -10,9 +10,19 @@ var sequenced = [
         layer: 0,
         time: 0
     },
+
+    //Wow, this works... go me, need to fix display tho to account for bars
+    // {
+    //     layer: 0,
+    //     time: 1.25
+    // },
+    // {
+    //     layer: 0,
+    //     time: 1.5
+    // },
     {
         layer: 0,
-        time: .3
+        time: .30
     },
     
     {
@@ -21,7 +31,7 @@ var sequenced = [
     },
     {
         layer: 3,
-        time: .7
+        time: .70
     },
     
     {
