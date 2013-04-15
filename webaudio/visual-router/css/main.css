@@ -1,0 +1,57 @@
+.section {
+	padding: 20px 0 40px 0;
+	border-bottom: 1px solid #ccc;
+}
+body, button, select {
+	color: #333;
+	font-family: 'Ovo', serif;
+}
+h1 {
+	padding-bottom: 20px;
+	border-bottom: 2px solid #999;
+}
+p {
+	color: #555;
+}
+.utilities .btn-group {
+	float: right;
+}
+
+.stage {
+	position: relative;
+}
+.window { 
+	border:1px solid #aaa;
+	
+	box-shadow: 2px 2px 19px #aaa;
+	border-radius:0.5em;
+	opacity:0.9;
+	
+	width:100px;
+	height:70px;
+	line-height:1.1;
+
+	text-align: center;
+	z-index: 20;
+	position: absolute;
+	
+	background-color: #eeeeef;
+	color: black;
+
+	padding: 40px 10px 10px 10px;
+	font-size: 14px;
+}
+.window.wave-visualizer,
+.window.frequency-visualizer {
+	width: 300px;
+	height: 200px;
+}
+.active {
+	border:1px dotted green;
+}
+.hover {
+	border:1px dotted red;
+}
+._jsPlumb_connector { z-index:4; }
+._jsPlumb_endpoint, .endpointTargetLabel, .endpointSourceLabel{ z-index:21;cursor:pointer; }
+
