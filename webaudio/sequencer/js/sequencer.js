@@ -1,11 +1,21 @@
 Sequencer.controller( 'Sequencer', [ 'SequencerService', '$scope', function( SequencerService, $scope ) {
     
     $scope.tempo = SequencerService.tempo;
-    $scope.sequence = sequenced; //in sequence.js
+
+    //biggest ug here, if I make the index for next note + 1, it works for sequence1
+    theSequence = 0;
+    if (theSequence === 1) {
+        $scope.sequence = sequenced1;
+    } else { 
+        $scope.sequence = sequenced;
+    }
+
+    $scope.removing = false;
+    $scope.hasPlayed = false;
+
     $scope.timeArrayByLayer = new Array();
     $scope.displayTimeArrayByLayer = new Array();
 
-    $scope.hasPlayed = false;
     $scope.init = function(){
         console.log($scope.sequence);
 
@@ -23,7 +33,7 @@ Sequencer.controller( 'Sequencer', [ 'SequencerService', '$scope', function( Seq
         $scope.calculateNextNoteTime();
     }
 
-    // Sets up sequence arrays by layer
+    // Sets up sequence arrays by layer, finds out how many bars there are (should break out :/)
     $scope.setUpLayers = function() {
         $scope.layers = 0;
 
@@ -34,6 +44,11 @@ Sequencer.controller( 'Sequencer', [ 'SequencerService', '$scope', function( Seq
             $scope.timeArrayByLayer[i] = new Array();
             $scope.displayTimeArrayByLayer[i] = new Array();
         }
+
+        //find out bars
+        $scope.sequence = _.sortBy($scope.sequence, 'time');
+        $scope.bars = Math.ceil($scope.sequence[$scope.sequence.length - 1].time);
+        console.log($scope.bars);
     }
 
     //TODO, make display left percent divided by bars
@@ -43,13 +58,19 @@ Sequencer.controller( 'Sequencer', [ 'SequencerService', '$scope', function( Seq
         for (var i = 0; i < $scope.sequence.length; i++) {
 
             var time = $scope.sequence[i].time;
-            var timeString = time + '';
-            var strippedTime = (timeString !== '0') ? timeString.split('.')[1] : '0';
-            
-            console.log(time + ',' + strippedTime)
+            //var timeString = time + '';
 
-            strippedTime = (strippedTime.length === 1) ? strippedTime + '0' : strippedTime;
-            $scope.displayTimeArrayByLayer[$scope.sequence[i].layer].push(strippedTime);
+            var displayTime = time * 100;
+
+            //console.log(timeString);
+
+            //var strippedTime = (timeString !== '0') ? timeString.split('.')[1] : '0';
+            
+            console.log('layer: ' + $scope.sequence[i].layer + ', time: '+ time + ',' + displayTime)
+
+            displayTime = (displayTime / $scope.bars);
+            $scope.displayTimeArrayByLayer[$scope.sequence[i].layer].push(displayTime);
+            //make seperate array with id, put in layers too, also need to make a scope count, so when I add a new one it's unique
             $scope.timeArrayByLayer[$scope.sequence[i].layer].push(time);
         }
     }
@@ -100,7 +121,16 @@ Sequencer.controller( 'Sequencer', [ 'SequencerService', '$scope', function( Seq
     }
 
     $scope.addTrigger = function() {
-        alert('sup');
+        if (!$scope.removing) {
+            //alert('add');
+        }
+        $scope.removing = false;
+    }
+
+
+    $scope.removeTrigger = function() {
+        //alert('remove');
+        $scope.removing = true;
     }
 
     $scope.$on( 'SequencerService.update', function( event, tempo ) {

@@ -17,7 +17,7 @@
 
 	      		<li ng-repeat="layer in displayTimeArrayByLayer" ng-click="addTrigger()" style="width:100%; border:1px solid red; padding:0; position:relative; list-style:none; height:30px;">
 	      			
-	      			<div ng-repeat="time in displayTimeArrayByLayer[$index]" style="position:absolute; left:{{time}}%; height:100%; width:4px; background-color:orange" ng-click="alert('woot');">
+	      			<div ng-repeat="time in displayTimeArrayByLayer[$index]" style="position:absolute; left:{{time}}%; height:100%; width:4px; background-color:orange" ng-click="removeTrigger();">
 	      				
 	      			</div>
 	      		</li>
@@ -47,6 +47,7 @@
 		<!-- helper js/default json -->
 		<script type="text/javascript" src="js/audio-helpers.js"></script>
 		<script type="text/javascript" src="js/sequence.js"></script>
+		<script type="text/javascript" src="js/sequence1.js"></script>
 
 		<!-- audio api js/kick off for angular -->
 		<script type="text/javascript" src="js/audio.js"></script>
