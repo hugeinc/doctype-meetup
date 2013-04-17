@@ -1,0 +1,45 @@
+body, button, select {
+	color: #333;
+	font-family: 'Ovo', serif;
+}
+
+.wrapper {
+	padding: 20px 0 40px 0;
+}
+
+h1 {
+	padding-bottom: 20px;
+	margin-bottom: 20px;
+	border-bottom: 2px solid #999;
+}
+/*
+#chaos-wrapper{
+	float:right;
+	width:400px;
+}*/
+
+#chaos-pad {
+	height:200px;
+	width:200px;
+	background-color:#0088cc;
+}
+
+#sequencer {
+	margin-bottom:20px;
+}
+
+#transport {
+	width:200px;
+}
+
+#transport input{
+	width:50px;
+	text-align: center;
+}
+
+canvas {
+	margin-left: 500px;
+	border: 1px solid;
+}
+
+

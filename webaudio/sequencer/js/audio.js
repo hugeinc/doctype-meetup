@@ -2,10 +2,10 @@
 *** ONLY WORKS FOR CHROME
 ***
 *** Unquantized sequencer using angular for sequence states
-*** There's totally gonna be a chaos pad zomg
+*** There's totally a chaos pad zomg
  */
 
-// Angular sequencer app
+// kick off angular sequencer app
 var Sequencer = angular.module('sequencer', []);
 
 // Samples!
@@ -30,25 +30,39 @@ var singleBeat = false;
 var isNextNote = true;
 var index = 0;
 
-// Teaching the computer what a beat is bars
+// Teaching the computer what a beat is vars
 var oneBeat = 60 / 60;
 var theBeat = 0;
 var contextBeat = 0;
 var newBeat = true;
 
-// Arrays filled up with important stuff (sample list, master trigger signature respectively)
+// Arrays filled up with important stuff (sample list, master trigger signature, routing order respectively)
 var bufferList = new Array();
 var triggerArray = new Array();
+var routeArray = new Array();
 
 // Once everything is kicked off, vars for the things being triggered
 var noteLength = .3;
 var LFOArray;
-var gain, reverb, lowpass, square, sin;
+var gain, reverb, lowPass, square, sin;
+
+// chaos pad
+var $pad = $('#chaos-pad');
+var $padWidth = $pad.width(),
+    $padHeight = $pad.height();
+var cursorX, cursorY;
+var lowPassIsOn = false,
+    freqIsOn = false;
 
 function init(){
     bindWindowActions();
     bufferLoad();
     createLFOArray();
+    //initSpectrumBox();
+    bindRouter();
+    checkChaosSettings();
+    chaosPad();
+    
 }
 
 function bindWindowActions(){
@@ -58,6 +72,8 @@ function bindWindowActions(){
 }
 
 function bindPlay(e){
+    e.preventDefault();
+    
     if (e.which === 32) {
         play(bufferList);
     }
@@ -162,7 +178,7 @@ function scheduler(triggerArray, bufferSound) {
         index = index % triggerArray.length;
         scheduleNote( nextNoteTime, bufferList[triggerArray[index].layer] );
         
-        console.log('NEXT NOTE TIME: '+nextNoteTime);
+        console.log('NEXT NOTE TIME: ' + nextNoteTime);
         nextNote(triggerArray[index].nextNoteTime, index);
         
         index++;   
@@ -186,7 +202,7 @@ function playAsset( time, asset) {
 }
 
 function playOsc( time ) {
-    
+
     setOscGain();
     setOscReverb();
     setOscLowPassFilter();
@@ -206,7 +222,7 @@ function playOsc( time ) {
 /** PLUGINS **/
 function setOscGain() {
     gain = context.createGainNode();
-    gain.gain.value = .18;
+    gain.gain.value = .2;
 }
 
 function setOscReverb() {
@@ -214,6 +230,8 @@ function setOscReverb() {
     //NEED IMPULSE RESPONSE SAMPLE
     var reverbBuffer = bufferList[3];
     reverb.buffer = reverbBuffer;
+
+    //routeArray.push(reverb);
 }
 
 function setOscLowPassFilter() {
@@ -222,12 +240,16 @@ function setOscLowPassFilter() {
     //lowPass.frequency.value = 1000; // Vanilla set cutoff to static 1000 HZ
     lowPass.frequency.setValueCurveAtTime(LFOArray, context.currentTime, noteLength);
     lowPass.Q.value = 10; // filter resonance
+
+    //routeArray.push(lowPass);
 }
 
 function setOscCompressor() {
     oscCompressor = context.createDynamicsCompressor();
     oscCompressor.ratio.value = 200;
     oscCompressor.threshold.value = 25;
+
+    //routeArray.push(oscCompressor);
 }
 /** END PLUGINS **/
 
@@ -235,7 +257,7 @@ function setOscCompressor() {
 function createSquareOsc( time ) {
     square = context.createOscillator();
 
-    square.frequency.value = 100.0;
+    square.frequency.value = (freqIsOn) ? 100.0 * cursorX : 100.0;
     square.gain = .5;
     square.type = 1;
     square.noteOn( time );
@@ -244,7 +266,7 @@ function createSquareOsc( time ) {
 
 function createSinOsc( time ) {
     sin = context.createOscillator();
-    sin.frequency.value = 300.0;
+    sin.frequency.value = (freqIsOn) ? 100.0 * cursorY : 100.0;
     sin.type = 0;
 
     sin.noteOn( time );
@@ -252,22 +274,122 @@ function createSinOsc( time ) {
 }
 /** END OSCILLATORS **/
 
+
+/** CHAOS PAD **/
+function chaosPad() {
+    // for chaos pad x and y
+    cursorY = 0;
+    cursorX = 0;
+
+    $pad.mousemove(function(e){
+
+        /** TODO: only change these when the command key is on **/
+
+        cursorX = (window.Event) ? e.pageX : event.clientX;
+        cursorX = cursorX - $pad.offset().left;
+        cursorY = (window.Event) ? e.pageY : event.clientY;
+        cursorY = cursorY - $pad.offset().left;
+
+        var section = $padWidth * 30;
+
+        cursorX = Math.floor($padWidth / section * cursorX) * .1 * 2.5;
+        cursorY = Math.floor($padWidth / section * cursorY) * .1 * 2.5;
+
+        console.log(cursorX);
+        createLFOArray();
+
+    });
+    
+}
+
+function checkChaosSettings() {
+    var $input = $('#chaos-settings input');
+    var $lowpass = $('#chaos-lowpass');
+    var $freq = $('#chaos-freq');
+
+    $input.click(function(){
+
+        lowPassIsOn = ($lowpass.prop('checked') === true) ? true : false;
+        freqIsOn = ($freq.prop('checked') === true) ? true : false;
+
+        console.log('lowpass is on: ' + lowPassIsOn + ', freq is on:' + freqIsOn);
+    });
+}
+
+/** OSC ROUTING **/
+/** TODO: make routing dynamic **/
+function bindRouter() {
+    var $routerOptions = $('#router input');
+
+    $routerOptions.click(function(e){
+        routeArray = new Array();
+        $routerOptions.each(function(){
+            var $this = $(this);
+            if ($this.prop('checked') === true) {
+
+                if ($(this).index() === 0) {
+                    routeArray.push( 'reverb' );
+                } else if ($(this).index() === 1) {
+                    routeArray.push( 'lowPass' );
+                } else if ($(this).index() === 2) {
+                    routeArray.push( 'oscCompressor' );
+                }
+
+            }
+                
+        });
+
+    });
+}
 function configureConnections() {
     square.connect( gain );
     sin.connect( gain );
 
-    gain.connect( reverb );
-    reverb.connect( lowPass );
-    lowPass.connect(oscCompressor);
+    console.log('routeArray.length'+routeArray.length);
+
+    if (routeArray.length === 0) {
+        gain.connect( oscCompressor );
+    } else {
+
+        var i=0;
+
+        if (routeArray[i] === 'reverb') {
+            gain.connect( reverb );
+            if (routeArray[i + 1] === undefined) {
+                //alert(routeArray[i + 1]);
+                reverb.connect(oscCompressor);
+            } else {
+                reverb.connect(lowPass);
+                lowPass.connect(oscCompressor);
+            }
+            i++;
+        } 
+
+        if (routeArray[i] === 'lowPass') {
+            gain.connect( lowPass );
+            lowPass.connect(context.destination);
+            i++;
+        } 
+
+        //didn't work with lfo, but did with reverb
+        //gain.connect( routeArray[i] );
+        //routeArray[i].connect( context.destination );
+
+    }
+    
     oscCompressor.connect(context.destination);
+
 }
 
 // from http://chimera.labs.oreilly.com/books/1234000001552/ch02.html#s02_6
 // Need to make an lfo sin multiplier for lowpass... can't figure out how to make it work like the gain example :(
-function createLFOArray(){
+function createLFOArray() {
     var DURATION = noteLength;
-    var FREQUENCY = 4;
+    var FREQUENCY = (lowPassIsOn) ? 2.0 * cursorY : 2.0;
+    //var FREQUENCY = 2 * cursorY;
     var SCALE = 1;
+
+    var chaosFreqMultiplier = 3000 * cursorX;
 
     // Split the time into valueCount discrete steps.
     var valueCount = 4096;
@@ -276,19 +398,31 @@ function createLFOArray(){
 
     for (var i = 0; i < valueCount; i++) {
         var percent = (i / valueCount) * DURATION*FREQUENCY;
-        values[i] = Math.abs(1 + (Math.sin(percent * 2*Math.PI) * SCALE) * 3000); 
+        values[i] = Math.abs(1 + (Math.sin(percent * 2 * Math.PI) * SCALE) * ((lowPassIsOn) ? chaosFreqMultiplier : 3000)); 
         // Set the last value to one, to restore playbackRate to normal at the end.
         if (i == valueCount - 1) {
-            values[i] = 1 * 3000;
+            values[i] = 1 * ((lowPassIsOn) ? chaosFreqMultiplier : 3000);
         }
     }
 
-    console.log(values);
+    //console.log(values);
 
     LFOArray = values;
 }
 
-// this is a osc controlling a node example that works, but only for gain as far as I can tell
+// visualizer didn't work for some reason
+function initSpectrumBox() {
+
+    wavebox = new SpectrumBox(2048, 1000, 'spectrum', context);
+    wavebox.setType(SpectrumBox.Types.TIME);
+    wavebox.getCanvasContext().fillStyle = "#da4f49";
+    // visualNodes.push(wavebox);
+    // wavebox.getAudioNode();
+
+    // alert('sup');
+}
+
+// this is an osc controlling a node example that works, but only for gain as far as I can tell
 function lfodParamTest() {
     // This works, but doesn't translate to lowshelf
 
