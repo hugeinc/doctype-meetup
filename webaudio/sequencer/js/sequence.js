@@ -8,6 +8,23 @@
 
 var sequenced = [
     {
+        layer: 4,
+        time: 0
+    },
+
+    {
+        layer: 4,
+        time: .5
+    },
+    
+
+    {
+        layer: 4,
+        time: 1.5
+    },
+
+
+    {
         layer: 0,
         time: .0
     },
@@ -32,60 +49,65 @@ var sequenced = [
         time: 1.5
     },
 
-    {
-        layer: 0,
-        time: 1.75
-    },
+    // {
+    //     layer: 0,
+    //     time: 1.75
+    // },
 
-    {
-        layer: 4,
-        time: 0
-    },
-    {
-        layer: 4,
-        time: .75
-    },
-    {
-        layer: 4,
-        time: 1.5
-    },
     
     {
         layer: 3,
         time: .23
     },
     {
-        layer: 2,
-        time: .5
-    },
-    {
-        layer: 2,
-        time: 1.5
-    },
-    {
-        layer: 2,
-        time: 1.5
-    },
-    {
-        layer: 1,
-        time: .5
-    },
-    {
-        layer: 1,
+        layer: 3,
         time: 1.1
     },
     {
+        layer: 2,
+        time: .5
+    },
+    {
+        layer: 2,
+        time: 1.25
+    },
+    // {
+    //     layer: 2,
+    //     time: 1.5
+    // },
+    {
+        layer: 1,
+        time: .2
+    },
+    {
+        layer: 1,
+        time: .4
+    },
+    {
+        layer: 1,
+        time: .5
+    },
+    {
+        layer: 1,
+        time: .75
+    },
+    {
+        layer: 1,
+        time: 1.25
+    },
+    {
         layer: 1,
         time: 1.5
-    },
-    {
-        layer: 1,
-        time: 1.75
-    },
-    {
-        layer: 1,
-        time: 1.85
     }
+    // {
+    //     layer: 1,
+    //     time: 1.75
+    // }
+    // ,
+    // {
+    //     layer: 1,
+    //     time: 1.85
+    // }
 
 
     // {

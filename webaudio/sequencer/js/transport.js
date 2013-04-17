@@ -3,6 +3,7 @@ Sequencer.controller( 'Transport', [ 'SequencerService', '$scope', function( Seq
     $scope.start = 0;
     $scope.end = 10;
 
+    /** $scope.length is not used yet **/
     $scope.computeLength = function(){
         $scope.length = ($scope.end - $scope.start) * (60 / $scope.tempo);
     }
