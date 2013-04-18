@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Webaudio - Doctype Html</title>
+    <title>Web Audio API - Doctype Html</title>
     
     <meta charset="utf-8">
     
@@ -48,7 +48,7 @@
 
 
     <div class="slide">
-      <h4>Source &amp; Destination</h4>
+      <h4>Connecting a Source to Destination </h4>
 
       
       <img src="img/source-destination.jpg" class="centered" />
@@ -66,7 +66,23 @@ source.noteOn(0);
     </div>
     
     <div class="slide">
-      <h4>Wait... how do I load a sound?</h4>
+      <h4>Wait! Why is it webkitAudioContext?</h4>
+<pre>
+function getAudioContext() {
+    if (typeof AudioContext !== "undefined") {
+        context = new AudioContext();
+    } else if (typeof webkitAudioContext !== "undefined") { 
+        context = new webkitAudioContext();
+    } else {
+        throw new Error('AudioContext not supported.');
+    }
+}
+</pre>
+
+    </div>
+
+    <div class="slide">
+      <h4>Ok... and what's loadSound look like?</h4>
 <pre>
 function loadSound(url) {
   var request = new XMLHttpRequest();
@@ -84,8 +100,53 @@ function loadSound(url) {
 
     </div>
 
+    
+
     <div class="slide">
-      <h4>Modular Routing</h4>
+      <h4>Connecting Gain (volume)</h4>
+
+      
+      <img src="img/source-gain-destination.png" class="centered" style="margin-top: -20px;" />
+      
+
+<pre>
+var audioContext = new webkitAudioContext(),
+    source = loadSound("chirp.wav");
+
+source.connect(audioContext.destination);
+
+// Play the sound
+source.noteOn(0);
+</pre>
+    </div>
+
+    <div class="slide">
+      <h4>Connecting Gain (volume) cont...</h4>
+
+<pre>
+var audioContext = new webkitAudioContext(),
+    source = loadSound("chirp.wav");
+
+// Create a gain node
+var gainNode = audioContext.createGainNode();
+gainNode.gain.value = 0.5;
+
+// Connect source -> gain -> speaker
+source.connect(gainNode);
+gainNode.connect(audioContext.destination);
+
+// Play the sound
+source.noteOn(0);
+</pre>
+    </div>
+
+    <div class="slide">
+        <h4>A more practical example</h4>
+        <img src="img/source-multi-gain.png" class="centered" style="margin-top: -20px;" />
+    </div>
+
+    <div class="slide">
+      <h4>This is called Modular Routing</h4>
       <img src="img/modular-routing.jpg" class="centered" style="margin-top: -20px;" />
     </div>
     
@@ -207,8 +268,9 @@ function sync(timeArray) {
         <h4>Challenges</h4>
         <ul>
             <li>Two highly technical disciplines merging</li>
-            <li>Not many examples</li>
-            <li>Bad browser support (coming soon...)</li>
+            <li>Not many resources</li>
+            <li>When you break something, you get punished</li>
+            <li>Poor browser support (but! more coming soon...)</li>
             <li>Asynchronous behavior between loading and scheduling sounds</li>
         </ul>
 
@@ -235,8 +297,9 @@ function sync(timeArray) {
     
     <div class="slide">
       <h4>Handy resources.</h4>
-      <p><a href="#">TODO</a></p>
-      <p><a href="#">TODO</a></p>
+      <p><a href="https://dvcs.w3.org/hg/audio/raw-file/tip/webaudio/specification.html#AnalyserNode" target="_blank">Web Audio API - W3C Editor's Draft</a></p>
+      <p><a href="http://creativejs.com/resources/web-audio-api-getting-started/">CreativeJS - Web Audio API – Getting started</a></p>
+        <p><a href="http://creativejs.com/resources/web-audio-api-getting-started/">HTML5 Rocks - Getting Started with Web Audio API</a></p>
     </div>
     
     <div class="slide black invert white-border">
