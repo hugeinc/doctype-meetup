@@ -16,6 +16,10 @@
     <script src="js/main.js"></script>
     <link rel="stylesheet" type="text/css" href="css/styles.css" />
     
+    <!-- syntax highlighting -->
+    <script src="libs/js/prism.js"></script>
+    <link rel="stylesheet" type="text/css" href="libs/css/prism.css" />
+    
 </head>
 
 <body class="hidden">
@@ -55,6 +59,7 @@
       
 
 <pre>
+<code class="language-javascript">
 var audioContext = new webkitAudioContext(),
     source = loadSound("chirp.wav");
 
@@ -62,12 +67,14 @@ source.connect(audioContext.destination);
 
 // Play the sound
 source.noteOn(0);
+</code>
 </pre>
     </div>
     
     <div class="slide">
       <h4>Wait... how do I load a sound?</h4>
 <pre>
+<code class="language-javascript">
 function loadSound(url) {
   var request = new XMLHttpRequest();
   request.open('GET', url, true);
@@ -80,6 +87,7 @@ function loadSound(url) {
   }
   request.send();
 }
+</code>
 </pre>
 
     </div>
@@ -147,13 +155,15 @@ function loadSound(url) {
             <li>sound.start(0) enables you to schedule in the future!</li>
 
 <pre>
+<code class="language-javascript">
 var sound1 = loadSound("snare.wav"),
     sound2 = loadSound("bass.wav");
 
 sound.start(0);
 sound.start(500);
+</code>
 </pre>
-        <ol>
+        <ol class="smaller">
             <li>It pushes each start into its own thread, not relying on the original event cycle, thus making js multi-threaded (!)
             </li>
             <li>It's tied to the system clock now, so the resolution goes from .01 to .0000001 (40 sounds at the same time will fire at once to our ears)</li>
@@ -175,6 +185,7 @@ sound.start(500);
         <p>Things change... We need a synchronizer! (video games, sequencer, etc...)</p>
 
 <pre>
+<code class="language-javascript">
 function sync(timeArray) {
     var i = 0;
     // Lookahead to see what needs scheduling, like youtube buffer
@@ -188,6 +199,7 @@ function sync(timeArray) {
         sync(timeArray); 
     } , 25 );  // This 25 is way shorter than the sync lookahead
 }
+</code>
 </pre>
     
     
