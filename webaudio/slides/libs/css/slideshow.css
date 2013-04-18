@@ -648,6 +648,9 @@ div.author::before {
   left: 20px;
   bottom: 20px;
 }
+.black.slide {
+  background: #000;
+}
 .magentabg{
 	background-color: #ED228E;
 	color: #fff;

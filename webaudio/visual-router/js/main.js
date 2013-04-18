@@ -195,7 +195,7 @@
 							console.log("create a target lowpass node: ", targetId);
 
 							nodes[targetId] = context.createConvolver();
-							nodes[targetId].buffer = sources[sourceId].buffer;
+							nodes[targetId].buffer = sources[targetId].buffer;
 						} else if( nodeTargetType === "wave-visualizer" ) {
 							var canvasId = $(connections[i].target).find("canvas").attr("id");
 
@@ -282,7 +282,7 @@
 				} else if( type === "destination" ) {
 					addNode("Speakers (Destination)", "destination", "top");
 				} else if( type === "reverb" ) {
-					addReverbNode("Reverb", "audio/groundhogday.wav");
+					addReverbNode("Reverb", "audio/echo.wav");
 				} else if( type === "gain" ) {
 					addNode("Gain", "gain");
 				} else if( type === "lowpass" ) {

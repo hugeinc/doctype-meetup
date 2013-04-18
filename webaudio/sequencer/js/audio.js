@@ -2,10 +2,10 @@ var Sequencer = angular.module('sequencer', []);
 
 var sampleArray = 
     [
-        '../assets/FH2_Kick_26.wav',
-        '../assets/FH2_Hat_09.wav',
-        '../assets/FH2_Crash_02.wav',
-        '../assets/FH2_Snare_05.wav'
+        'assets/FH2_Kick_26.wav',
+        'assets/FH2_Hat_09.wav',
+        'assets/FH2_Crash_02.wav',
+        'assets/FH2_Snare_05.wav'
     ]
 
 var isPlaying = false;

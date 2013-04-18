@@ -26,13 +26,226 @@
             Web Audio Meetup
             </h1>
             <p class="smaller">Introduction to the web audio API.</p>
-            <p class="smaller">April 19, 2013</p>
+            <p class="smaller">April 18, 2013</p>
         </div>
         
+        <div class="slide">
+            <br /><br /><br /><br /><br />
+            <img src="img/not-audio-tag.png" width="100%" />
+
+        </div>
+        
+        <div class="slide">
+            <h4>It's more like...</h4>
+            <img src="img/modular-routing.png" width="100%" style="margin-top: -40px;" />
+        </div>
         
         <div class="slide magenta invert white-border">
-            <h1 class="v-center bigger white">Get started.</h1>
+            <h1 class="v-center bigger white">Hello World?</h1>
         </div>
+
+
+
+    <div class="slide">
+      <h4>Source &amp; Destination</h4>
+
+      
+      <img src="img/source-destination.jpg" class="centered" />
+      
+
+<pre>
+var audioContext = new webkitAudioContext(),
+    source = loadSound("chirp.wav");
+
+source.connect(audioContext.destination);
+
+// Play the sound
+source.noteOn(0);
+</pre>
+    </div>
+    
+    <div class="slide">
+      <h4>Wait... how do I load a sound?</h4>
+<pre>
+function loadSound(url) {
+  var request = new XMLHttpRequest();
+  request.open('GET', url, true);
+  request.responseType = 'arraybuffer';
+
+  request.onload = function() {
+    context.decodeAudioData(request.response, function(buffer) {
+      source = buffer;
+    }, onSoundLoadError);
+  }
+  request.send();
+}
+</pre>
+
+    </div>
+
+    <div class="slide">
+      <h4>Modular Routing</h4>
+      <img src="img/modular-routing.jpg" class="centered" style="margin-top: -20px;" />
+    </div>
+    
+    <div class="slide">
+        <h4>Types of Nodes</h4>
+        <ul>
+            <li>Source / Destination</li>
+            <li>Gain</li>
+            <li>Convolver (convolution reverb)</li>
+            <li>Panner</li>
+            <li>Oscillator</li>
+            <li>Biquad Filter</li>
+            <li>Analyzer</li>
+            <li>Compressor</li>
+            <li>Delay</li>
+            <li><a href="../visual-router" target="_blank">and more!</a></li>
+        </ul>
+    </div>
+
+    <div class="slide magenta invert white-border">
+      <h1 class="bigger white" style="line-height: 1.1;">
+        Timing is everything
+      </h1>
+    </div>
+
+     <div class="slide">
+        <h4 style="margin-top: 0px;">The Event Cycle</h4>
+        <img src="img/timers.png" class="centered" width="600" />
+
+        <p>Life in a single thread <span style="font-size: 18px;">(*diagram from <a href="#">ejohn.org</a>)</span></p>
+
+    </div>
+
+    <div class="slide">
+        
+        <h4> How this applies to audio</h4>
+
+        <p>
+            <strong>Problems</strong>
+        </p>
+        <ol>
+            <li>In a timeout, there's the possibility of hearing time distortion 50ms for sound vs. 200ms for animations (humans are extremely sensitive to 2 sounds not being at the same time)</li>
+            <li>You're tied to the browser's single-threaded model (processor bogged down)</li>
+            <li>Time event cycle for JS time resolution is around .01 (bad for concurrent sounds)</li>
+        </ol>
+        <br />
+        <p>
+            relying on setTimeout = 
+            <a href="http://www.html5rocks.com/en/tutorials/audio/scheduling/badmetronome.html" target="_blank">
+                Bad Metronome
+            </a>
+        </p>
+    </div>
+
+     <div class="slide">
+        TODO: make sure it's in ms
+        <h4>This is where the API shines: sound.start(ms)</h4>
+        
+        <ul>
+            <li>sound.start(0) enables you to schedule in the future!</li>
+
+<pre>
+var sound1 = loadSound("snare.wav"),
+    sound2 = loadSound("bass.wav");
+
+sound.start(0);
+sound.start(500);
+</pre>
+            <li>It does this by pushing each start into its own thread, making js multi-threaded</li>
+            <li>It's tied to the system clock now, so the resolution goes from .01 to .0000001 (40 sounds at the same time will fire at once to our ears)</li>
+        </ul>
+        <!-- <p>
+            Why don't you just use sound.start(0) and the whole sequence?
+        </p> -->
+
+    </div>
+
+    <div class="slide magenta invert white-border">
+      <h1 class="v-center bigger white">Sequencer</h1>
+    </div>
+
+    <div class="slide">
+        
+        <h4>So why not schedule everything at play?</h4>
+
+        <p>Things change... We need a synchronizer! (video games, sequencer, etc...)</p>
+
+<pre>
+function sync(timeArray) {
+    var i = 0;
+    // Lookahead to see what needs scheduling, like youtube buffer
+    while( nextNoteTime < context.currentTime + 100 ) {
+        scheduleSound( nextNoteTime, source );
+        nextNoteTime = getNextNote(timeArray[i].nextNoteTime, i);
+        i++;   
+    }
+    
+    timerID = window.setTimeout( function() {
+        sync(timeArray); 
+    } , 25 );  // This 25 is way shorter than the sync lookahead
+}
+</pre>
+    
+    
+
+        <!-- <p>
+            Why don't you just use sound.start(0) and the whole sequence?
+        </p> -->
+
+    </div>
+
+    <div class="slide magenta invert white-border">
+      <h1 class=" bigger white">Dynamic Sequencer</h1>
+    </div>
+
+    <div class="slide">
+        
+        <h4>Challenges</h4>
+        <ul>
+            <li>Two highly technical disciplines merging</li>
+            <li>Not many examples</li>
+            <li>Bad browser support (coming soon...)</li>
+            <li>Asynchronous behavior between loading and scheduling sounds</li>
+        </ul>
+
+    </div>
+
+    <div class="slide">
+        <h4>Browsers</h4>
+        <ul>
+            <li>Chrome</li>
+            <li>Safari / Mobile Safari 6+</li>
+        </ul>
+
+      <h4>File Formats</h4>
+      <ul>
+            <li>OGG</li>
+            <li>Wav</li>
+            <li>MP3 (Webkit)</li>
+        </ul>
+    </div>
+
+    <div class="slide magenta invert white-border">
+      <h1 class=" bigger white">What this all means.</h1>
+    </div>
+    
+    <div class="slide">
+      <h4>Handy resources.</h4>
+      <p><a href="#">TODO</a></p>
+      <p><a href="#">TODO</a></p>
+    </div>
+    
+    <div class="slide black invert white-border">
+      <h1 class="v-center bigger white">Questions?</h1>
+    </div>
+    
+    <div class="slide magenta invert white-border">
+      <h1 class="v-center bigger white">Done.</h1>
+    </div>
+
+
     </div>
 </body>
 </html>
