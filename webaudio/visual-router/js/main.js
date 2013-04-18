@@ -172,6 +172,7 @@
 							visualNodes.push(frequencybox);
 						} else if( nodeSourceType === "microphone" ) {
 							nodes[sourceId] = microphoneNode;
+							sourceNodes.push( nodes[sourceId] );
 						}
 					}			
 
@@ -233,15 +234,23 @@
 				console.log("play!");
 
 				for(var i=0; i<sourceNodes.length; i++) {
-					sourceNodes[i].noteOn(0);
+					if( typeof sourceNodes[i].noteOn === "function" ) {
+						sourceNodes[i].noteOn(0);	
+					}
 				}
+				
 			});
 
 			$(".btn-stop").click(function(e) {
 				e.preventDefault();
 			
 				for(var i=0; i<sourceNodes.length; i++) {
-					sourceNodes[i].noteOff(0);
+					try {
+						sourceNodes[i].noteOff(0);	
+					} catch(e) {
+						// Stop the mic
+						sourceNodes[i].disconnect();	
+					}					
 				}			
 			});
 		}
