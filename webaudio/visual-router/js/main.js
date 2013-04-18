@@ -151,7 +151,7 @@
 							nodes[sourceId].type = type; 
 
 							console.log("biquad node: ", nodes[sourceId]);
-						} else if( nodeSourceType === "reverb" ) {
+						} else if( nodeSourceType === "convolution" ) {
 							nodes[sourceId] = context.createConvolver();
 							nodes[sourceId].buffer = sources[sourceId].buffer;
 						} else if( nodeSourceType === "wave-visualizer" ) {
@@ -173,6 +173,11 @@
 						} else if( nodeSourceType === "microphone" ) {
 							nodes[sourceId] = microphoneNode;
 							sourceNodes.push( nodes[sourceId] );
+						} else if( nodeSourceType === "oscillator" ) {
+							nodes[sourceId] = context.createOscillator();
+						    nodes[sourceId].frequency.value = 30.0;
+						    nodes[sourceId].type = 0;
+						    sourceNodes.push( nodes[sourceId] );
 						}
 					}			
 
@@ -192,8 +197,8 @@
 							nodes[targetId].type = type; 
 
 							console.log("biquad node: ", nodes[targetId]);
-						} else if( nodeTargetType === "reverb" ) {
-							console.log("create a target reverb node: ", targetId);
+						} else if( nodeTargetType === "convolution" ) {
+							console.log("create a target convolution node: ", targetId);
 
 							nodes[targetId] = context.createConvolver();
 							nodes[targetId].buffer = sources[targetId].buffer;
@@ -215,7 +220,12 @@
 							visualNodes.push(frequencybox);
 						} else if( nodeTargetType === "microphone" ) {
 							nodes[targetId] = microphoneNode;
-						}	
+						} else if( nodeTargetType === "oscillator" ) {
+							nodes[targetId] = context.createOscillator();
+						    nodes[targetId].frequency.value = 30.0;
+						    nodes[targetId].type = 0;
+						    sourceNodes.push( nodes[targetId] );
+						}
 					} 
 
 					if( nodeTargetType === "destination" ) {
@@ -284,8 +294,8 @@
 					addSourceNode($this.text() + " (Source)", $this.data("url"));
 				} else if( type === "destination" ) {
 					addNode("Speakers (Destination)", "destination", "top");
-				} else if( type === "reverb" ) {
-					addReverbNode("Reverb", "audio/echo.wav");
+				} else if( type === "convolution" ) {
+					addReverbNode($this.text(), $this.data("url"));
 				} else if( type === "gain" ) {
 					addNode("Gain", "gain");
 				} else if( type === "biquad" ) {
@@ -308,6 +318,8 @@
 							microphoneNode = mediaStreamSource;	
 						});
 					});
+				} else if( type === "oscillator" ) {
+					addNode($this.text(), type, "bottom");
 				}
 
 				
@@ -358,7 +370,7 @@
 		 * Configuration to add a reverb
 		 */
 		function addReverbNode(displayTitle, audioPath) {
-			addNode(displayTitle, "reverb", null, function($windowInstance) {
+			addNode(displayTitle, "convolution", null, function($windowInstance) {
 				var audioUrl = audioPath,
 					id = $windowInstance.attr("id");
 

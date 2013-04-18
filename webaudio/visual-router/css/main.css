@@ -14,10 +14,11 @@ p {
 	color: #555;
 }
 .utilities .btn-group {
-	float: right;
+	float: left;
 }
 
 .stage {
+	clear: both;
 	position: relative;
 }
 .window { 
@@ -56,5 +57,5 @@ p {
 ._jsPlumb_endpoint, .endpointTargetLabel, .endpointSourceLabel{ z-index:21;cursor:pointer; }
 
 .utilities .btn-group {
-	margin-left: 10px;
+	margin-right: 10px;
 }
