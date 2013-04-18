@@ -2,7 +2,7 @@
 *** ONLY WORKS FOR CHROME
 ***
 *** Unquantized sequencer using angular for sequence states
-*** There's totally a chaos pad zomg
+*** There's totally a chaos pad zomg (it wasn't until after a while my friend pointed out it's kaos. no regrets)
  */
 
 // kick off angular sequencer app
@@ -14,10 +14,12 @@ var sampleArray =
         '../assets/FH2_Kick_26.wav',
         '../assets/FH2_Hat_09.wav',
         '../assets/FH2_Snare_05.wav',
-        '../assets/l960big_empty_church.wav',
+        '../assets/l960big_empty_church.wav'
+        //'../assets/littlebomber_-_Oogregre.mp3'
         //,'../assets/l960lg_brrite_chamber.wav' //nother impulse reponse
         
     ]
+bufferLoaded = false;
 
 // Scheduling vars
 var isPlaying = false;
@@ -68,14 +70,20 @@ function init(){
 function bindWindowActions(){
     $(document).on('keydown', function(e){
         bindPlay(e);
+        //bindNyan(e);
     });
 }
 
 function bindPlay(e){
-
     if (e.which === 32) {
         e.preventDefault();
         play(bufferList);
+    }
+}
+
+function bindNyan(e){
+    if (e.which === 78) {
+        playNyan();
     }
 }
 
@@ -91,6 +99,8 @@ function bufferLoad() {
 
 function loadCallback(buffers){
     bufferList = buffers;
+    bufferLoaded = true;
+    $('.loading').addClass('hidden');
 }
 
 function scheduleNote( time, bufferSound ) {
@@ -156,17 +166,21 @@ function checkBeat(){
 function play() {
     isPlaying = !isPlaying;
     
-    if (isPlaying) { // start playing
-        console.log('triggerArray: ');
-        console.log(triggerArray);
+    if (bufferLoaded) {
+        if (isPlaying) { // start playing
+            console.log('triggerArray: ');
+            console.log(triggerArray);
 
-        //kick it off
-        scheduler(triggerArray);
+            //kick it off
+            scheduler(triggerArray);
         
-    } else {
-        window.clearTimeout( timerID );
-        console.log('stop');
+        } else {
+            window.clearTimeout( timerID );
+            console.log('stop');
+        }
     }
+
+    
 }
 
 function scheduler(triggerArray, bufferSound) {
@@ -214,10 +228,6 @@ function playOsc( time ) {
 
     configureConnections();
 
-    /** NOTE:
-        SIDE CHAIN
-        need a context.send or something that doesn't connect to destination
-    **/
 }
 
 /** PLUGINS **/
@@ -275,8 +285,7 @@ function createSinOsc( time ) {
 }
 /** END OSCILLATORS **/
 
-
-/** CHAOS PAD **/
+/** KAOS PAD **/
 function chaosPad() {
     // for chaos pad x and y
     cursorY = 0;
@@ -298,7 +307,6 @@ function chaosPad() {
 
         console.log('CURSOR Y' + cursorY);
 
-        console.log(cursorX);
         createLFOArray();
 
     });
@@ -457,6 +465,36 @@ function playSample( time, asset ) {
 
     source.start(time);
 }
+
+/**
+    nyan.. not gonna, rampto needs to be tested more, wasn't working as per example
+    http://chimera.labs.oreilly.com/books/1234000001552/ch02.html#s02_5
+**/
+
+function playNyan() {
+    if (bufferLoaded) {
+        var source = context.createBufferSource();
+        source.buffer = bufferList[4];
+        
+
+        nyanGain = context.createGainNode();
+        //nyanGain.gain.value = 0;
+
+        nyanGain.gain.linearRampToValueAtTime(.5, context.currentTime + 20);
+
+        // setTimeout(function(){
+        //     nyanGain.gain.exponentialRampToValueAtTime(0, context.currentTime + 4);
+        // }, 4.5);
+
+        source.connect(nyanGain);
+        nyanGain.connect(context.destination);
+
+        source.start(0);
+        console.log(source);
+    }
+    
+}
+
 
 init();
 
