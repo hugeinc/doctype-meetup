@@ -34,7 +34,7 @@ p {
 	text-align: center;
 	z-index: 20;
 	position: absolute;
-	
+	top: 40px;
 	background-color: #eeeeef;
 	color: black;
 
@@ -55,3 +55,6 @@ p {
 ._jsPlumb_connector { z-index:4; }
 ._jsPlumb_endpoint, .endpointTargetLabel, .endpointSourceLabel{ z-index:21;cursor:pointer; }
 
+.utilities .btn-group {
+	margin-left: 10px;
+}

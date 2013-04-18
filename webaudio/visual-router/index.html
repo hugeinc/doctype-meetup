@@ -23,20 +23,69 @@
 
 			<div class="utilities">
 				<div class="btn-group add-node-menu">
-				  <button class="btn">Add Node</button>
+				  <button class="btn">Visualizers</button>
 				  <button class="btn dropdown-toggle" data-toggle="dropdown">
 				    <span class="caret"></span>
 				  </button>
 				  <ul class="dropdown-menu">
-				    <li><a href="#" data-type="microphone">Microphone</a></li>
-				    <li><a href="#" data-type="source">Source</a></li>
-				    <li><a href="#" data-type="source2">Movie Quote</a></li> 
-				    <li><a href="#" data-type="gain">Gain</a></li>
-				    <li><a href="#" data-type="lowpass">Lowpass</a></li>
-				    <li><a href="#" data-type="reverb">Reverb</a></li>
 				    <li><a href="#" data-type="wave-visualizer">Wave Visualizer</a></li>
 				    <li><a href="#" data-type="frequency-visualizer">Frequency Visualizer</a></li>
+				  </ul>
+				</div>
+
+				<div class="btn-group add-node-menu">
+				  <button class="btn">Biquad Filters</button>
+				  <button class="btn dropdown-toggle" data-toggle="dropdown">
+				    <span class="caret"></span>
+				  </button>
+				  <ul class="dropdown-menu">
+				    <li><a href="#" data-type="biquad" data-value="0">Low pass</a></li>
+				    <li><a href="#" data-type="biquad" data-value="1">High pass</a></li>
+				    <li><a href="#" data-type="biquad" data-value="2">Band pass</a></li>
+				    <li><a href="#" data-type="biquad" data-value="3">Low shelf</a></li>
+				    <li><a href="#" data-type="biquad" data-value="4">High shelf</a></li>
+				    <li><a href="#" data-type="biquad" data-value="5">Peaking filter</a></li>
+				    <li><a href="#" data-type="biquad" data-value="6">Notch filter</a></li>
+				    <li><a href="#" data-type="biquad" data-value="7">All pass filter</a></li>
+				  </ul>
+				</div>
+
+				<!-- 
+				<div class="btn-group add-node-menu">
+				  <button class="btn">Convolution</button>
+				  <button class="btn dropdown-toggle" data-toggle="dropdown">
+				    <span class="caret"></span>
+				  </button>
+				  <ul class="dropdown-menu">
+				    <li><a href="#" data-type="convolution" data-value="0">Telephone</a></li>
+				    <li><a href="#" data-type="convolution" data-value="2">Muffler</a></li>
+				    <li><a href="#" data-type="convolution" data-value="1">Echo Chamber</a></li>
+				  </ul>
+				</div>
+				-->
+				
+				<div class="btn-group add-node-menu">
+				  <button class="btn">Other</button>
+				  <button class="btn dropdown-toggle" data-toggle="dropdown">
+				    <span class="caret"></span>
+				  </button>
+				  <ul class="dropdown-menu">
+				    <li><a href="#" data-type="gain">Gain</a></li>
+				    <li><a href="#" data-type="reverb">Reverb</a></li>
 				    <li><a href="#" data-type="destination">Destination</a></li>
+				  </ul>
+				</div>
+
+				<div class="btn-group add-node-menu">
+				  <button class="btn">Source</button>
+				  <button class="btn dropdown-toggle" data-toggle="dropdown">
+				    <span class="caret"></span>
+				  </button>
+				  <ul class="dropdown-menu">
+				  	<li><a href="#" data-type="microphone">Microphone</a></li>
+				    <li><a href="#" data-type="source" data-url="audio/groundhogday.wav">Bill Murray</a></li>
+				    <li><a href="#" data-type="source" data-url="audio/empirestrikes3.wav">Darth Vader</a></li>
+				    <li><a href="#" data-type="source" data-url="audio/laughing-gull.mp3">Seagull</a></li> 
 				  </ul>
 				</div>
 			</div>

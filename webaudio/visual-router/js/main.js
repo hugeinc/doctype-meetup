@@ -142,11 +142,15 @@
 
 							nodes[sourceId] = context.createGainNode();
 							nodes[sourceId].gain.value = 2;
-						} else if( nodeSourceType === "lowpass" ) {
-							console.log("create a source lowpass node: ", sourceId);
+						} else if( nodeSourceType === "biquad" ) {
+							console.log("create a target biquad node: ", sourceId);
+
+							var type = connections[i].source.data("value");
 							nodes[sourceId] = context.createBiquadFilter();
-							nodes[sourceId].type = 1; // Low-pass filter. See BiquadFilterNode docs
-							nodes[sourceId].frequency.value = 440; // Set cutoff to 440 HZ
+							console.log("type: ", type);
+							nodes[sourceId].type = type; 
+
+							console.log("biquad node: ", nodes[sourceId]);
 						} else if( nodeSourceType === "reverb" ) {
 							nodes[sourceId] = context.createConvolver();
 							nodes[sourceId].buffer = sources[sourceId].buffer;
@@ -167,13 +171,6 @@
 							nodes[sourceId] = frequencybox.getAudioNode();
 							visualNodes.push(frequencybox);
 						} else if( nodeSourceType === "microphone" ) {
-							// console.log("create microphone node!");
-
-							// navigator.webkitGetUserMedia({ audio: true }, function(stream) {
-							// 	console.log("successfully granted microphone access!");
-							//     var mediaStreamSource = context.createMediaStreamSource( stream );
-							//     nodes[sourceId] = mediaStreamSource;
-							// });
 							nodes[sourceId] = microphoneNode;
 						}
 					}			
@@ -185,14 +182,17 @@
 							nodes[targetId] = context.createGainNode();
 							nodes[targetId].gain.value = 2.5;	
 							
-						} else if( nodeTargetType === "lowpass" ) {
-							console.log("create a target lowpass node: ", targetId);
-
+						} else if( nodeTargetType === "biquad" ) {
+							console.log("create a target biquad node: ", targetId);
+							
+							var type = connections[i].target.data("value");
 							nodes[targetId] = context.createBiquadFilter();
-							nodes[targetId].type = 0; 
-							nodes[targetId].frequency.value = 440; // Set cutoff to 440 HZ
+							console.log("type: ", type);
+							nodes[targetId].type = type; 
+
+							console.log("biquad node: ", nodes[targetId]);
 						} else if( nodeTargetType === "reverb" ) {
-							console.log("create a target lowpass node: ", targetId);
+							console.log("create a target reverb node: ", targetId);
 
 							nodes[targetId] = context.createConvolver();
 							nodes[targetId].buffer = sources[targetId].buffer;
@@ -213,13 +213,7 @@
 							nodes[targetId] = frequencybox.getAudioNode();
 							visualNodes.push(frequencybox);
 						} else if( nodeTargetType === "microphone" ) {
-							// console.log("create microphone node!");
 							nodes[targetId] = microphoneNode;
-							//navigator.webkitGetUserMedia({ audio: true }, function(stream) {
-								// console.log("successfully granted microphone access!");
-							 //    var mediaStreamSource = context.createMediaStreamSource( stream );
-							 //    nodes[targetId] = mediaStreamSource;
-							//});
 						}	
 					} 
 
@@ -273,20 +267,22 @@
 			$(".add-node-menu a").click(function(e) {
 				e.preventDefault();
 
-				var type = $(this).data("type");
+				var $this = $(this),
+					type = $this.data("type"),
+					value = $this.data("value");
 
 				if( type === "source" ) {
-					addSourceNode("Seagull (Source)", "audio/laughing-gull.mp3");
-				} else if( type === "source2" ) {
-					addSourceNode("Groundhog Day (Source)", "audio/groundhogday.wav");
+					addSourceNode($this.text() + " (Source)", $this.data("url"));
 				} else if( type === "destination" ) {
 					addNode("Speakers (Destination)", "destination", "top");
 				} else if( type === "reverb" ) {
-					addReverbNode("Reverb", "audio/echo.wav");
+					addReverbNode("Reverb", "audio/filter-telephone.wav");
 				} else if( type === "gain" ) {
 					addNode("Gain", "gain");
-				} else if( type === "lowpass" ) {
-					addNode("Lowpass Filter", "lowpass");
+				} else if( type === "biquad" ) {
+					addNode($this.text(), "biquad", null, function($windowInstance) {
+						$windowInstance.data("value", value);
+					});
 				} else if( type === "wave-visualizer" ) {
 					addNode('<canvas id="wavebox-' + canvasIndex + '" width=300 height=200></canvas>', 'wave-visualizer');
 					canvasIndex++;
