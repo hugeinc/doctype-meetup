@@ -14,7 +14,7 @@
 			<h1>
 				Sequencer
 			</h1>
-		
+
 	    	<div ng-controller="Sequencer" id="sequencer">
 
 	      		<ul style="width:100%; padding:0; margin:0;">
@@ -38,10 +38,16 @@
 
 				<form id="router" class="form-inline span3">
 					<div>
-						<label class="checkbox"><input type="checkbox" value="reverb"></checkbox> reverb</label>
+						<label class="checkbox">
+							<input type="checkbox" id="reverb" value="reverb">
+							</checkbox> reverb
+						</label>
 					</div>
 					<div>
-						<label class="checkbox"><input type="checkbox" value="lowPass"></checkbox> low pass filter</label>
+						<label class="checkbox">
+							<input type="checkbox" id="lowpass" value="lowPass">
+							</checkbox> low pass filter
+						</label>
 					</div>
 				</form>
 

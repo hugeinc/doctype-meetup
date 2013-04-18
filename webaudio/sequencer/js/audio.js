@@ -16,6 +16,7 @@ var sampleArray =
         '../assets/FH2_Snare_05.wav',
         '../assets/l960big_empty_church.wav',
         //,'../assets/l960lg_brrite_chamber.wav' //nother impulse reponse
+        
     ]
 
 // Scheduling vars
@@ -71,9 +72,9 @@ function bindWindowActions(){
 }
 
 function bindPlay(e){
-    e.preventDefault();
-    
+
     if (e.which === 32) {
+        e.preventDefault();
         play(bufferList);
     }
 }
@@ -200,6 +201,7 @@ function playAsset( time, asset) {
     }
 }
 
+/** TODO: Pretty sure the effects don't need **/
 function playOsc( time ) {
 
     setOscGain();
@@ -265,7 +267,7 @@ function createSquareOsc( time ) {
 
 function createSinOsc( time ) {
     sin = context.createOscillator();
-    sin.frequency.value = (freqIsOn) ? 100.0 * cursorY : 100.0;
+    sin.frequency.value = (freqIsOn) ? 200.0 * cursorY : 200.0;
     sin.type = 0;
 
     sin.noteOn( time );
@@ -287,12 +289,14 @@ function chaosPad() {
         cursorX = (window.Event) ? e.pageX : event.clientX;
         cursorX = cursorX - $pad.offset().left;
         cursorY = (window.Event) ? e.pageY : event.clientY;
-        cursorY = cursorY - $pad.offset().left;
+        cursorY = cursorY - $pad.offset().top;
 
         var section = $padWidth * 30;
 
-        cursorX = Math.floor($padWidth / section * cursorX) * .1 * 2.5;
-        cursorY = Math.floor($padWidth / section * cursorY) * .1 * 2.5;
+        cursorX = Math.floor($padWidth / section * cursorX) * .1 * 2.5 + .1;
+        cursorY = Math.floor($padWidth / section * cursorY) * .1 * 5 + .1;
+
+        console.log('CURSOR Y' + cursorY);
 
         console.log(cursorX);
         createLFOArray();
@@ -302,12 +306,11 @@ function chaosPad() {
 }
 
 function checkChaosSettings() {
-    var $input = $('#chaos-settings input');
+    var $input = $('#chaos-settings').find('input');
     var $lowpass = $('#chaos-lowpass');
     var $freq = $('#chaos-freq');
 
-    $input.click(function(){
-
+    $input.click(function() {
         lowPassIsOn = ($lowpass.prop('checked') === true) ? true : false;
         freqIsOn = ($freq.prop('checked') === true) ? true : false;
 
@@ -318,22 +321,21 @@ function checkChaosSettings() {
 /** OSC ROUTING **/
 /** TODO: make routing dynamic **/
 function bindRouter() {
-    var $routerOptions = $('#router input');
+    var $routerOptions = $('#router').find('input');
 
     $routerOptions.click(function(e){
         routeArray = new Array();
+
         $routerOptions.each(function(){
             var $this = $(this);
+
             if ($this.prop('checked') === true) {
 
-                if ($(this).index() === 0) {
+                if ($(this).attr('id') === 'reverb') {
                     routeArray.push( 'reverb' );
-                } else if ($(this).index() === 1) {
+                } else if ($(this).attr('id') === 'lowpass') {
                     routeArray.push( 'lowPass' );
-                } else if ($(this).index() === 2) {
-                    routeArray.push( 'oscCompressor' );
                 }
-
             }
                 
         });

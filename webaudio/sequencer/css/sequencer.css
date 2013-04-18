@@ -28,9 +28,29 @@ h1 {
 	margin-bottom:20px;
 }
 
-#transport {
-	width:200px;
+#sequencer .layers {
+	width:100%; 
+	padding:0; 
+	margin:0;
 }
+
+#sequencer .layers .layer {
+	width:100%;  
+	border-bottom: 1px solid #999; 
+	padding:0; 
+	position:relative; 
+	list-style:none; 
+	height:40px;
+}
+
+#sequencer .layers .layer .trigger {
+	position:absolute;
+	height:80%; 
+	width:4px; 
+	background-color:#0088cc; 
+	margin-top:10px;
+}
+
 
 #transport input{
 	width:50px;
