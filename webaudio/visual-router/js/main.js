@@ -173,6 +173,11 @@
 						} else if( nodeSourceType === "microphone" ) {
 							nodes[sourceId] = microphoneNode;
 							sourceNodes.push( nodes[sourceId] );
+						} else if( nodeSourceType === "oscillator" ) {
+							nodes[sourceId] = context.createOscillator();
+						    nodes[sourceId].frequency.value = 30.0;
+						    nodes[sourceId].type = 0;
+						    sourceNodes.push( nodes[sourceId] );
 						}
 					}			
 
@@ -215,7 +220,12 @@
 							visualNodes.push(frequencybox);
 						} else if( nodeTargetType === "microphone" ) {
 							nodes[targetId] = microphoneNode;
-						}	
+						} else if( nodeTargetType === "oscillator" ) {
+							nodes[targetId] = context.createOscillator();
+						    nodes[targetId].frequency.value = 30.0;
+						    nodes[targetId].type = 0;
+						    sourceNodes.push( nodes[targetId] );
+						}
 					} 
 
 					if( nodeTargetType === "destination" ) {
@@ -308,6 +318,8 @@
 							microphoneNode = mediaStreamSource;	
 						});
 					});
+				} else if( type === "oscillator" ) {
+					addNode($this.text(), type, "bottom");
 				}
 
 				
