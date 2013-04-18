@@ -13,6 +13,7 @@
     <!-- references to custom stuff goes here. -->
     <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
     <script src="js/script.js"></script>
+    <script src="js/main.js"></script>
     <link rel="stylesheet" type="text/css" href="css/styles.css" />
     
 </head>
@@ -127,7 +128,6 @@ function loadSound(url) {
         </p>
         <ol>
             <li>In a timeout, there's the possibility of hearing time distortion 50ms for sound vs. 200ms for animations (humans are extremely sensitive to 2 sounds not being at the same time)</li>
-            <li>You're tied to the browser's single-threaded model (processor bogged down)</li>
             <li>Time event cycle for JS time resolution is around .01 (bad for concurrent sounds)</li>
         </ol>
         <br />
@@ -153,7 +153,9 @@ var sound1 = loadSound("snare.wav"),
 sound.start(0);
 sound.start(500);
 </pre>
-            <li>It does this by pushing each start into its own thread, making js multi-threaded</li>
+        <ol>
+            <li>It pushes each start into its own thread, not relying on the original event cycle, thus making js multi-threaded (!)
+            </li>
             <li>It's tied to the system clock now, so the resolution goes from .01 to .0000001 (40 sounds at the same time will fire at once to our ears)</li>
         </ul>
         <!-- <p>
