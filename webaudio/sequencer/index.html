@@ -3,58 +3,93 @@
 <html ng-app="sequencer">
 	<body>
 		<head>
+			<link href="css/bootstrap.min.css" rel="stylesheet" type="text/css">
+			<link href="http://fonts.googleapis.com/css?family=Ovo" rel="stylesheet" type="text/css">
+			<link href="css/sequencer.css" rel="stylesheet" type="text/css">
+			
 		</head>
-		<!-- audio test -->
 
+		<div class="container">
+			
+			<h1>
+				Sequencer
+			</h1>
 		
-    	test web page is the best web page of all
+	    	<div ng-controller="Sequencer" id="sequencer">
 
-    	<div ng-controller="Sequencer">
-    		SEQUENCER
-      		TEMPO (read only, will be hiden when done): <input id="sequencer-tempo" ng-model="tempo" ng-model-instant type="text" value="60">
+	      		<ul style="width:100%; padding:0; margin:0;">
 
-      		<ul style="width:100%; border:1px solid blue; padding:0;">
+		      		<li ng-repeat="layer in displayTimeArrayByLayer" ng-click="addTrigger()" style="width:100%;  border-bottom: 1px solid #999; padding:0; position:relative; list-style:none; height:40px;">
+		      			
+		      			<div ng-repeat="time in displayTimeArrayByLayer[$index]" style="position:absolute; left:{{time}}%; height:80%; width:4px; background-color:#0088cc; margin-top:10px;" ng-click="removeTrigger();">
+		      				
+		      			</div>
+		      		</li>
 
-	      		<li ng-repeat="layer in displayTimeArrayByLayer" ng-click="addTrigger()" style="width:100%; border:1px solid red; padding:0; position:relative; list-style:none; height:30px;">
-	      			
-	      			<div ng-repeat="time in displayTimeArrayByLayer[$index]" style="position:absolute; left:{{time}}%; height:100%; width:4px; background-color:orange" ng-click="alert('woot');">
-	      				
-	      			</div>
-	      		</li>
+		      	</ul>
+	    	</div>
 
-	      	</ul>
-    	</div>
+	    	<div class="row"> 
 
-		
+				<form ng-controller="Transport" id="transport" class="form-inline span3">
+					<label>tempo:</label> 
+					<input id="tempo" ng-change="updateTempo(); " ng-model="tempo" class="small" ng-model-instant type="text" value="60">
+				</form>
 
-		<div ng-controller="Transport">
-			TRANSPORT
+				<form id="router" class="form-inline span3">
+					<div>
+						<label class="checkbox"><input type="checkbox" value="reverb"></checkbox> reverb</label>
+					</div>
+					<div>
+						<label class="checkbox"><input type="checkbox" value="lowPass"></checkbox> low pass filter</label>
+					</div>
+				</form>
 
-			<!-- <input type="text" ng-model="newItem" /><input type="submit" ng-click="updateTempo()" /> -->
+				<div id="chaos-wrapper" class="span6">
 
-			<div class="">Time elapsed: <input id="time-elapsed" ng-model="timeElapsed" ng-model-instant></div>
-			TRANSPORT TEMPO: <input id="tempo" ng-change="updateTempo(); " ng-model="tempo" ng-model-instant type="text" value="60">
-			START: <input id="start" ng-model="start" ng-model-instant>
-			END: <input id="end" ng-model="end" ng-model-instant>
-			LENGTH: <input id="length" ng-model="length" ng-model-instant>
+					<form id="chaos-settings" class="form-inline">
+						<div>
+							<label class="checkbox">
+								<input id="chaos-freq" type="checkbox" value="frequency"></checkbox> 
+								osc frequencies ( x is square, y is sin )
+							</label>
+						</div>
+						<div>
+							<label class="checkbox">
+								<input id="chaos-lowpass" type="checkbox" value="lowpass"></checkbox> 
+								lowpass ( x is lowpass frequency, y is lowpass lfo rate )
+							</label>
+						</div>
+					</form>
+
+					<div id="chaos-pad">
+
+					</div>
+					
+				</div>
+
+			</div>
+
 		</div>
 
 		<!-- frameworks -->
-		<script type="text/javascript" src="js/jquery-1.7.2-min.js"></script>
-		<script type="text/javascript" src="js/angular.js"></script>
-		<script type="text/javascript" src="js/lodash.js"></script>
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script>
+		<script src="js/angular.js"></script>
+		<script src="js/lodash.js"></script>
 
 		<!-- helper js/default json -->
-		<script type="text/javascript" src="js/audio-helpers.js"></script>
-		<script type="text/javascript" src="js/sequence.js"></script>
+		<script src="js/audio-helpers.js"></script>
+		<!--<script src="js/spectrum.js"></script>-->
+		<script src="js/sequence.js"></script>
+		<script src="js/sequence1.js"></script>
 
 		<!-- audio api js/kick off for angular -->
-		<script type="text/javascript" src="js/audio.js"></script>
+		<script src="js/audio.js"></script>
 
 		<!-- angular stuff, handles the backing models for the sequence arrays -->
-		<script type="text/javascript" src="js/service.js"></script>
-		<script type="text/javascript" src="js/sequencer.js"></script>
-		<script type="text/javascript" src="js/transport.js"></script>
+		<script src="js/service.js"></script>
+		<script src="js/sequencer.js"></script>
+		<script src="js/transport.js"></script>
 		
 	</body>
 </html>
