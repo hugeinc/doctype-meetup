@@ -276,7 +276,7 @@
 				} else if( type === "destination" ) {
 					addNode("Speakers (Destination)", "destination", "top");
 				} else if( type === "reverb" ) {
-					addReverbNode("Reverb", "audio/filter-telephone.wav");
+					addReverbNode("Reverb", "audio/echo.wav");
 				} else if( type === "gain" ) {
 					addNode("Gain", "gain");
 				} else if( type === "biquad" ) {
