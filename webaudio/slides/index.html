@@ -74,6 +74,7 @@ source.noteOn(0);
     <div class="slide">
       <h4>Wait! Why is it webkitAudioContext?</h4>
 <pre>
+<code class="language-javascript">
 function getAudioContext() {
     if (typeof AudioContext !== "undefined") {
         context = new AudioContext();
@@ -83,6 +84,7 @@ function getAudioContext() {
         throw new Error('AudioContext not supported.');
     }
 }
+</code>
 </pre>
 
     </div>
@@ -118,6 +120,7 @@ function loadSound(url) {
       
 
 <pre>
+<code class="language-javascript">
 var audioContext = new webkitAudioContext(),
     source = loadSound("chirp.wav");
 
@@ -125,6 +128,7 @@ source.connect(audioContext.destination);
 
 // Play the sound
 source.noteOn(0);
+</code>
 </pre>
     </div>
 
@@ -132,6 +136,7 @@ source.noteOn(0);
       <h4>Connecting Gain (volume) cont...</h4>
 
 <pre>
+<code class="language-javascript">
 var audioContext = new webkitAudioContext(),
     source = loadSound("chirp.wav");
 
@@ -145,6 +150,7 @@ gainNode.connect(audioContext.destination);
 
 // Play the sound
 source.noteOn(0);
+</code>
 </pre>
     </div>
 
