@@ -151,7 +151,7 @@
 							nodes[sourceId].type = type; 
 
 							console.log("biquad node: ", nodes[sourceId]);
-						} else if( nodeSourceType === "reverb" ) {
+						} else if( nodeSourceType === "convolution" ) {
 							nodes[sourceId] = context.createConvolver();
 							nodes[sourceId].buffer = sources[sourceId].buffer;
 						} else if( nodeSourceType === "wave-visualizer" ) {
@@ -192,8 +192,8 @@
 							nodes[targetId].type = type; 
 
 							console.log("biquad node: ", nodes[targetId]);
-						} else if( nodeTargetType === "reverb" ) {
-							console.log("create a target reverb node: ", targetId);
+						} else if( nodeTargetType === "convolution" ) {
+							console.log("create a target convolution node: ", targetId);
 
 							nodes[targetId] = context.createConvolver();
 							nodes[targetId].buffer = sources[targetId].buffer;
@@ -284,8 +284,8 @@
 					addSourceNode($this.text() + " (Source)", $this.data("url"));
 				} else if( type === "destination" ) {
 					addNode("Speakers (Destination)", "destination", "top");
-				} else if( type === "reverb" ) {
-					addReverbNode("Reverb", "audio/echo.wav");
+				} else if( type === "convolution" ) {
+					addReverbNode($this.text(), $this.data("url"));
 				} else if( type === "gain" ) {
 					addNode("Gain", "gain");
 				} else if( type === "biquad" ) {
@@ -358,7 +358,7 @@
 		 * Configuration to add a reverb
 		 */
 		function addReverbNode(displayTitle, audioPath) {
-			addNode(displayTitle, "reverb", null, function($windowInstance) {
+			addNode(displayTitle, "convolution", null, function($windowInstance) {
 				var audioUrl = audioPath,
 					id = $windowInstance.attr("id");
 
