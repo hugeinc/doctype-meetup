@@ -58,24 +58,18 @@
       <img src="img/source-destination.jpg" class="centered" />
       
 
-<pre>
-<code class="language-javascript">
-var audioContext = new webkitAudioContext(),
+<pre><code class="language-javascript">var audioContext = new webkitAudioContext(),
     source = loadSound("chirp.wav");
 
 source.connect(audioContext.destination);
 
 // Play the sound
-source.noteOn(0);
-</code>
-</pre>
+source.noteOn(0);</code></pre>
     </div>
     
     <div class="slide">
       <h4>Wait! Why is it webkitAudioContext?</h4>
-<pre>
-<code class="language-javascript">
-function getAudioContext() {
+<pre><code class="language-javascript">function getAudioContext() {
     if (typeof AudioContext !== "undefined") {
         context = new AudioContext();
     } else if (typeof webkitAudioContext !== "undefined") { 
@@ -83,17 +77,13 @@ function getAudioContext() {
     } else {
         throw new Error('AudioContext not supported.');
     }
-}
-</code>
-</pre>
+}</code></pre>
 
     </div>
 
     <div class="slide">
       <h4>Ok... and what's loadSound look like?</h4>
-<pre>
-<code class="language-javascript">
-function loadSound(url) {
+<pre><code class="language-javascript">function loadSound(url) {
   var request = new XMLHttpRequest();
   request.open('GET', url, true);
   request.responseType = 'arraybuffer';
@@ -104,9 +94,7 @@ function loadSound(url) {
     }, onSoundLoadError);
   }
   request.send();
-}
-</code>
-</pre>
+}</code></pre>
 
     </div>
 
@@ -114,30 +102,14 @@ function loadSound(url) {
 
     <div class="slide">
       <h4>Connecting Gain (volume)</h4>
-
-      
       <img src="img/source-gain-destination.png" class="centered" style="margin-top: -20px;" />
-      
-
-<pre>
-<code class="language-javascript">
-var audioContext = new webkitAudioContext(),
-    source = loadSound("chirp.wav");
-
-source.connect(audioContext.destination);
-
-// Play the sound
-source.noteOn(0);
-</code>
-</pre>
     </div>
+
 
     <div class="slide">
       <h4>Connecting Gain (volume) cont...</h4>
 
-<pre>
-<code class="language-javascript">
-var audioContext = new webkitAudioContext(),
+<pre><code class="language-javascript">var audioContext = new webkitAudioContext(),
     source = loadSound("chirp.wav");
 
 // Create a gain node
@@ -149,9 +121,7 @@ source.connect(gainNode);
 gainNode.connect(audioContext.destination);
 
 // Play the sound
-source.noteOn(0);
-</code>
-</pre>
+source.noteOn(0);</code></pre>
     </div>
 
     <div class="slide">
@@ -186,6 +156,7 @@ source.noteOn(0);
       </h1>
     </div>
 
+
      <div class="slide">
         <h4 style="margin-top: 0px;">The Event Cycle</h4>
         <img src="img/timers.png" class="centered" width="600" />
@@ -203,11 +174,10 @@ source.noteOn(0);
         </p>
         <ol>
             <li>In a timeout, there's the possibility of hearing time distortion 50ms for sound vs. 200ms for animations (humans are extremely sensitive to 2 sounds not being at the same time)</li>
-            <li>Time event cycle for JS time resolution is around .01 (bad for concurrent sounds)</li>
+            <li>The fastest interval js can have is around 10ms, so even if there was a completely clear event cycle 5 sounds played at the same time would sound off. </li>
         </ol>
         <br />
         <p>
-            relying on setTimeout = 
             <a href="http://www.html5rocks.com/en/tutorials/audio/scheduling/badmetronome.html" target="_blank">
                 Bad Metronome
             </a>
@@ -215,47 +185,56 @@ source.noteOn(0);
     </div>
 
      <div class="slide">
-        TODO: make sure it's in ms
-        <h4>This is where the API shines: sound.start(ms)</h4>
+        <h4>This is where the API shines: sound.start()</h4>
         
-        <ul>
-            <li>sound.start(0) enables you to schedule in the future!</li>
+        <p>sound.start(0) enables you to schedule in the future!</p>
 
-<pre>
-<code class="language-javascript">
-var sound1 = loadSound("snare.wav"),
+<pre><code class="language-javascript">var sound1 = loadSound("snare.wav"),
     sound2 = loadSound("bass.wav");
 
+// note: time in seconds
 sound.start(0);
-sound.start(500);
-</code>
-</pre>
+sound.start(5);</code></pre>
+
         <ol class="smaller">
-            <li>It pushes each start into its own thread, not relying on the original event cycle, thus making js multi-threaded (!)
+            <li>It pushes each start into its own thread, not relying on the original event cycle, thus making js multi-threaded
             </li>
             <li>It's tied to the system clock now, so the resolution goes from .01 to .0000001 (40 sounds at the same time will fire at once to our ears)</li>
         </ul>
-        <!-- <p>
-            Why don't you just use sound.start(0) and the whole sequence?
-        </p> -->
-
     </div>
 
     <div class="slide magenta invert white-border">
       <h1 class="v-center bigger white">Sequencer</h1>
     </div>
 
+     <div class="slide">
+        
+        <h4>So now that we have sound.start, why not just fire everything at play?</h4>
+        <p>
+            Times change based on user input. Here is an event script:
+        </p>
+
+        <pre><code class="language-javascript">var triggerArray = [
+    { callback: makeSound(), time: 0 },
+    { callback: enemyAppears(), time: .5 },
+    { callback: changeBackgroundMusic(), time: .5 },
+    { callback: jump(), time: 1 }    
+];</code></pre>
+    <br />
+        <p>
+            Though the callbacks will usually be static, times probably won't. So how do we solve for that?
+        </p>
+    </div>
+
     <div class="slide">
         
-        <h4>So why not schedule everything at play?</h4>
+        <h4>We need a synchronizer!</h4>
 
-        <p>Things change... We need a synchronizer! (video games, sequencer, etc...)</p>
+        <p>Good for video games, sequencer, user-input etc...</p>
 
-<pre>
-<code class="language-javascript">
-function sync(timeArray) {
+<pre><code class="language-javascript">function sync(timeArray) {
     var i = 0;
-    // Lookahead to see what needs scheduling, like youtube buffer
+    // Lookahead to see what needs scheduling, like a buffer
     while( nextNoteTime < context.currentTime + 100 ) {
         scheduleSound( nextNoteTime, source );
         nextNoteTime = getNextNote(timeArray[i].nextNoteTime, i);
@@ -265,31 +244,29 @@ function sync(timeArray) {
     timerID = window.setTimeout( function() {
         sync(timeArray); 
     } , 25 );  // This 25 is way shorter than the sync lookahead
-}
-</code>
-</pre>
-    
-    
+}</code></pre>
 
-        <!-- <p>
-            Why don't you just use sound.start(0) and the whole sequence?
-        </p> -->
+    </div>
 
+    <div class="slide black invert white-border">
+      <h1 class=" bigger white">Dynamic Sequencer</h1>
     </div>
 
     <div class="slide magenta invert white-border">
-      <h1 class=" bigger white">Dynamic Sequencer</h1>
+      <h1 class=" bigger white">What this all means.</h1>
     </div>
+
+    
 
     <div class="slide">
         
         <h4>Challenges</h4>
         <ul>
+            <li>When you break something, you get punished</li>
             <li>Two highly technical disciplines merging</li>
             <li>Not many resources</li>
-            <li>When you break something, you get punished</li>
-            <li>Poor browser support (but! more coming soon...)</li>
             <li>Asynchronous behavior between loading and scheduling sounds</li>
+            <li>Poor browser support (but! more coming soon...)</li>
         </ul>
 
     </div>
@@ -301,23 +278,36 @@ function sync(timeArray) {
             <li>Safari / Mobile Safari 6+</li>
         </ul>
 
+    <!-- 
       <h4>File Formats</h4>
       <ul>
             <li>OGG</li>
             <li>Wav</li>
             <li>MP3 (Webkit)</li>
         </ul>
+    -->
     </div>
 
-    <div class="slide magenta invert white-border">
-      <h1 class=" bigger white">What this all means.</h1>
-    </div>
-    
     <div class="slide">
-      <h4>Handy resources.</h4>
-      <p><a href="https://dvcs.w3.org/hg/audio/raw-file/tip/webaudio/specification.html#AnalyserNode" target="_blank">Web Audio API - W3C Editor's Draft</a></p>
-      <p><a href="http://creativejs.com/resources/web-audio-api-getting-started/">CreativeJS - Web Audio API – Getting started</a></p>
+        <h4>Handy resources.</h4>
+        <p><a href="https://dvcs.w3.org/hg/audio/raw-file/tip/webaudio/specification.html#AnalyserNode" target="_blank">Web Audio API - W3C Editor's Draft</a></p>
+        <p><a href="http://creativejs.com/resources/web-audio-api-getting-started/">CreativeJS - Web Audio API – Getting started</a></p>
         <p><a href="http://creativejs.com/resources/web-audio-api-getting-started/">HTML5 Rocks - Getting Started with Web Audio API</a></p>
+        <p>
+            <a href="http://www.html5rocks.com/en/tutorials/audio/scheduling/">
+                A Tale of Two Clocks - Scheduling Web Audio with Precision
+            </a>
+        </p>
+        <p>
+            <a href="http://www.mazbox.com/synths/dubstep/">
+                JavaScript Dubstep Generator
+            </a>
+        </p>
+        <p>
+            <a href="https://github.com/ofmlabs">
+                ofmlabs - github
+            </a>
+        </p>    
     </div>
     
     <div class="slide black invert white-border">
