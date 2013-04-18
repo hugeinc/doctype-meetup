@@ -6,6 +6,7 @@
 		viewPercentages = {},
 		windowHeight = 0,
 		$sections = [],
+		areAllSoundsLoaded = false,
 		context = new webkitAudioContext();
 
 	$(function() {
@@ -13,8 +14,11 @@
 		$sections = $(".section");
 		windowHeight = $window.height();
 		
+		var totalSections = $sections.length,
+			loadedSections = 0;
+
 		// Setup initial state, defaulting to zero
-		for(var i=0; i<$sections.length; i++) {
+		for(var i=0; i<totalSections; i++) {
 			var sectionName = $sections.eq(i).data("section");
 
 			var viewPercentageInstance = viewPercentages[ sectionName ] = {};
@@ -22,55 +26,51 @@
 			viewPercentageInstance.height = $sections.eq(i).height();
 			viewPercentageInstance.top = $sections.eq(i).position().top;
 
-			loadSound("/bird-watching/audio/" + sectionName + ".mp3");
+			loadSound("audio/" + sectionName + ".mp3", function() {
+				loadedSections++;
+
+				if( loadedSections === totalSections ) {
+					handleAllSoundsLoaded();
+				}
+			});
 		}
 
+		setupScrollListener();
+	});
+	
+	function setupScrollListener() {
 		$window.scroll(function(e) {
-			var scrollTop = $(e.target).scrollTop();
-			// console.log(scrollTop, ": ", windowHeight)
-			setViewPercentages(scrollTop);
+			if( areAllSoundsLoaded === true ) {
+				var scrollTop = $(e.target).scrollTop();
+				setViewPercentages(scrollTop);
 
-			var k = 0;
-			for( var i in viewPercentages ) { 
-				// var sources = viewPercentages[i];
-				var source = sources[k];
-				source.gainNode.gain.value = viewPercentages[i].percentShowing;
+				var k = 0;
+				for( var i in viewPercentages ) { 
+					var source = sources[k];
+					source.gainNode.gain.value = viewPercentages[i].percentShowing;
 
-				k++;
+					k++;
+				}
 			}
 		});
+	}
 
-		setTimeout(function() {
-			for( var i=0; i<soundBuffer.length; i++ ) {
-				var sound = createSource(soundBuffer[i]);
-				sound.gainNode.gain.value = 0;
-		    	sound.source.noteOn(0);	
-		    	sources.push(sound);
-			}
+	function handleAllSoundsLoaded() {
+		areAllSoundsLoaded = true;
 
-			var element = sources[0];
-			
-			// var x = parseInt(element.value) / parseInt(element.max);
+		for( var i=0; i<soundBuffer.length; i++ ) {
+			var sound = createSource(soundBuffer[i]);
+			sound.gainNode.gain.value = 0;
+	    	sound.source.noteOn(0);	
+	    	sources.push(sound);
+		}
 
-			// // Use an equal-power crossfading curve:
-			// var gain1 = Math.cos(x * 0.5*Math.PI);
-			// var gain2 = Math.cos((1.0 - x) * 0.5*Math.PI);
-			// element.gainNode.gain.value = gain2;
-			// element.gainNode.gain.value = 1;
-			// sources[1].gainNode.gain.value = .05;
-			// this.ctl2.gainNode.gain.value = gain2;
-		}, 3000);
-
-	});
+		$window.trigger("scroll");
+	}
 
 	function setViewPercentages( windowTop ) {
 		var windowUpperLimit = windowTop,
 			windowLowerLimit = windowTop + windowHeight;
-
-		// console.log("windowUpperLimit: ", windowUpperLimit);
-		// console.log("windowLowerLimit: ", windowLowerLimit);
-		// console.log("========");
-		// console.clear();
 
 		for(var i=0; i<$sections.length; i++) {
 			var $section = $sections.eq(i),
@@ -81,10 +81,6 @@
 			var sectionData = viewPercentages[sectionName],
 				sectionUpperLimit = sectionData.top,
 				sectionLowerLimit = sectionUpperLimit + sectionData.height;
-
-			// console.log("sectionUpperLimit: ", sectionUpperLimit);
-			// console.log("sectionLowerLimit: ", sectionLowerLimit);
-			// console.log("----------");
 
 			if( (sectionUpperLimit >= windowUpperLimit && sectionUpperLimit <= windowLowerLimit) ) {
 				sectionData.percentShowing = 1;
@@ -97,7 +93,7 @@
 		}
 	}
 
-	function loadSound(url) {
+	function loadSound(url, cbf) {
 	  var request = new XMLHttpRequest();
 	  request.open('GET', url, true);
 	  request.responseType = 'arraybuffer';
@@ -106,8 +102,10 @@
 	  request.onload = function() {
 	    context.decodeAudioData(request.response, function(buffer) {
 	      soundBuffer.push(buffer);
+	      cbf();
 	    }, function() {});
 	  }
+
 	  request.send();
 	}
 
@@ -133,60 +131,5 @@
 		};
 	}
 
-	return;
-
-	var CrossfadeSample = {};
-
-	CrossfadeSample.play = function() {
-	  // Create two sources.
-	  this.ctl1 = createSource(BUFFERS.drums);
-	  this.ctl2 = createSource(BUFFERS.organ);
-	  // Mute the second source.
-	  this.ctl1.gainNode.gain.value = 0;
-	  // Start playback in a loop
-	  this.ctl1.source.noteOn(0);
-	  this.ctl2.source.noteOn(0);
-	  // Set the initial crossfade to be just source 1.
-	  this.crossfade(0);
-
-	  function createSource(buffer) {
-	    var source = context.createBufferSource();
-	    var gainNode = context.createGainNode();
-	    source.buffer = buffer;
-	    // Turn on looping
-	    source.loop = true;
-	    // Connect source to gain.
-	    source.connect(gainNode);
-	    // Connect gain to destination.
-	    gainNode.connect(context.destination);
-
-	    return {
-	      source: source,
-	      gainNode: gainNode
-	    };
-	  }
-	};
-
-	CrossfadeSample.stop = function() {
-	  this.ctl1.source.noteOff(0);
-	  this.ctl2.source.noteOff(0);
-	};
-
-	// Fades between 0 (all source 1) and 1 (all source 2)
-	CrossfadeSample.crossfade = function(element) {
-	  var x = parseInt(element.value) / parseInt(element.max);
-	  // Use an equal-power crossfading curve:
-	  var gain1 = Math.cos(x * 0.5*Math.PI);
-	  var gain2 = Math.cos((1.0 - x) * 0.5*Math.PI);
-	  this.ctl1.gainNode.gain.value = gain1;
-	  this.ctl2.gainNode.gain.value = gain2;
-	};
-
-	CrossfadeSample.toggle = function() {
-	  this.playing ? this.stop() : this.play();
-	  this.playing = !this.playing;
-	};
-
-	
 
 })();
