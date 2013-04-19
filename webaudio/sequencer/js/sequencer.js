@@ -4,7 +4,7 @@ Sequencer.controller( 'Sequencer', [ 'SequencerService', '$scope', function( Seq
 
     // biggest bug here, if I make the index for next note + 1 this app break but is accurate for a whole squence, 
     //                   if it's just index it loops and a beat is accurate, but next note fires inaccurately
-    theSequence = 1;
+    theSequence = 0;
     if (theSequence === 1) {
         $scope.sequence = sequenced1;
     } else { 

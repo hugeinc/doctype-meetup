@@ -11,12 +11,12 @@ var Sequencer = angular.module('sequencer', []);
 // Samples!
 var sampleArray = 
     [
-        '../assets/FH2_Kick_26.wav',
-        '../assets/FH2_Hat_09.wav',
-        '../assets/FH2_Snare_05.wav',
-        '../assets/l960big_empty_church.wav'
+        'assets/FH2_Kick_26.wav',
+        'assets/FH2_Hat_09.wav',
+        'assets/FH2_Snare_05.wav',
+        //'assets/l960big_empty_church.wav'
         //'../assets/littlebomber_-_Oogregre.mp3'
-        //,'../assets/l960lg_brrite_chamber.wav' //nother impulse reponse
+        'assets/l960lg_brrite_chamber.wav' //nother impulse reponse
         
     ]
 bufferLoaded = false;
