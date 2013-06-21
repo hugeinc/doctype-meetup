@@ -1,0 +1,347 @@
+
+@import url(http://fonts.googleapis.com/css?family=Lato:100,300,400,700,900,100italic,300italic,400italic,700italic,900italic)
+@import 'compass/reset'
+@import 'compass'
+
+$FOOTER_HEIGHT: 70px
+
+$easeInOutQuint: cubic-bezier(0.860, 0.000, 0.070, 1.000)
+$easeOutQuint: cubic-bezier(0.230, 1.000, 0.320, 1.000)
+$easeInQuint: cubic-bezier(0.755, 0.050, 0.855, 0.060)
+
+html, body
+
+    font-family: 'Lato', sans-serif
+    background: #1b1b1b
+    height: 100%
+
+*
+    +box-sizing( border-box )
+
+::selection
+
+    background: #55564e
+
+// Bespoke.js styles
+
+.bespoke-parent
+
+    +perspective( 600px )
+    position: absolute
+    overflow: hidden
+    bottom: $FOOTER_HEIGHT
+    right: 0
+    left: 0
+    top: 0
+
+.bespoke-slide
+
+    +transform( translate3d( 0, 0, 1px ) )
+    background: #fff
+    position: absolute
+    height: 100%
+    width: 100%
+    left: 0
+    top: 0
+
+.bespoke-inactive
+
+    display: none
+
+.bespoke-before-1,
+.bespoke-after-1,
+
+    display: block
+
+.bespoke-active
+
+    +transition( all 0.6s $easeOutQuint 0.35s )
+    +transform( scale(1.0) )
+    z-index: 20
+    opacity: 1
+
+.bespoke-before
+
+    +transition( all 0.8s $easeInOutQuint )
+    +transform( translate3d(110%,0,0) )
+    z-index: 30
+
+.bespoke-after
+
+    +transition( all 0.8s $easeInOutQuint )
+    +transform( scale(0.8) )
+    z-index: 10
+    opacity: 0
+
+// Custom styles
+
+.bespoke-slide
+
+    -webkit-font-smoothing: subpixel-antialiased
+    +box-shadow( 0 0 0 20px #000 )
+    text-transform: uppercase
+    line-height: 1.5
+    font-weight: 100
+    font-size: 19px
+    background: #06b3db
+    text-align: center
+    display: table
+    color: #fff
+
+    sub
+
+        font-size: 12px
+
+    article
+
+        vertical-align: middle
+        display: table-cell
+        width: 50%
+
+    h1, h2, h3
+
+        text-transform: uppercase
+        word-spacing: 0.2em
+        font-weight: 100
+
+    h1
+
+        letter-spacing: -1px
+        line-height: 1.5
+        font-size: 72px
+
+    h2
+
+        letter-spacing: -1px
+        line-height: 1.5
+        font-size: 48px
+        width: 100%
+
+    h3
+
+        font-size: 24px
+
+    a
+
+        text-decoration: none
+        color: #fff
+
+    ul, ol
+
+        margin: 20px 0
+
+        li
+
+            margin: 5px 0
+
+            .aside
+
+                margin-bottom: 8px
+                line-height: 1
+                font-style: italic
+                font-size: 15px
+                display: block
+                opacity: 0.8
+
+    em
+
+        font-style: italic
+
+    &.left
+
+        article
+
+            padding-left: 10%
+            text-align: left
+
+        li
+
+            list-style-position: inside
+            margin-left: 40px
+            list-style: disc
+
+            .aside
+
+                margin-left: 20px
+
+    &.right
+
+        article
+
+            padding-right: 10%
+            text-align: right
+
+    &.video
+
+        background: #1b1b1b
+
+    pre, code
+
+        text-transform: none
+        font-family: Consolas, Monaco, "Courier New", Courier, monospace
+        line-height: 1.25
+        font-weight: 100
+
+    pre.snippet
+
+        +inline-block()
+        background: darken( #06b3db, 10% )
+        text-align: left
+        font-size: 13px
+        max-width: 960px
+        padding: 20px
+        margin: 20px auto 0 auto
+
+        .comment
+
+            opacity: 0.5
+            color: #fff
+
+    .code
+
+        $padding: 20px
+
+        +box-sizing( content-box )
+        background: #272822
+        text-align: left
+        font-size: 13px
+        overflow: scroll
+        padding: $padding
+        height: 100%
+        width: 100%
+        left: 0
+        top: 0
+
+        .diff
+
+            $border: 1px dashed fade-out( #fff, 0.8 )
+
+            +inline-block()
+            border-bottom: $border
+            border-top: $border
+            background: darken( #272822, 2% )
+            position: relative
+            padding: 10px 0 10px $padding
+            margin: 10px 0
+            width: 100%
+            left: -$padding
+            
+    .demo
+
+        background: #fff
+        position: absolute
+        height: 100%
+        width: 100%
+        right: 0
+        top: 0
+
+    .play
+
+        background: fade-out( #06b3db, 0.05 )
+        font-size: 48px
+        position: absolute
+        height: 100%
+        width: 100%
+        right: 0
+        top: 0
+
+        &:after
+
+            $size: 100px
+
+            +border-radius( 3px )
+            background: fade-out( #06b3db, 0.2 )
+            margin-left: $size * -0.5
+            margin-top: $size * -0.5
+            line-height: $size
+            font-size: 48px
+            position: absolute
+            content: '\25B6'
+            display: block
+            height: $size
+            width: $size
+            left: 50%
+            top: 50%
+
+    &.split
+
+        .code, .demo
+
+            width: 50%
+
+        .play
+
+            width: 50%
+
+    .diagram
+
+        background-position: center
+        background-repeat: no-repeat
+        background-size: contain
+
+        &.right-center
+
+            background-position: right center
+
+        &.left-center
+
+            background-position: left center
+
+    .bespoke-bullet
+
+        +transition( transform 0.3s $easeOutQuint, opacity 0.3s $easeOutQuint )
+        +translate3d( 40px, 0, 0 )
+        opacity: 0
+
+        &.bespoke-bullet-active
+
+            +translate3d( 0, 0, 0 )
+            opacity: 1
+
+.footer
+
+    text-transform: uppercase
+    line-height: $FOOTER_HEIGHT
+    background: #1b1b1b
+    position: absolute
+    height: $FOOTER_HEIGHT
+    bottom: 0
+    color: #fff
+    width: 100%
+
+    hgroup
+
+        position: absolute
+        left: 20px
+
+        h1, h2, h3
+
+            +inline-block()
+            font-size: 16px
+
+        h2
+
+            font-weight: 300
+            opacity: 0.8
+
+        h3
+
+            margin-left: 8px
+            font-weight: 100
+            opacity: 0.4
+
+    cite
+
+        font-weight: 100
+        font-size: 14px
+        position: absolute
+        opacity: 0.5
+        right: 20px
+        color: #ccc
+
+        a
+
+            text-decoration: none
+            margin-left: 8px
+            font-weight: 300
+            color: #fff

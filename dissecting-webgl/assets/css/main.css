@@ -1,0 +1,465 @@
+@import url(http://fonts.googleapis.com/css?family=Lato:100,300,400,700,900,100italic,300italic,400italic,700italic,900italic);
+/* line 17, ../../../../../../../../../Library/Ruby/Gems/1.8/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font: inherit;
+  font-size: 100%;
+  vertical-align: baseline;
+}
+
+/* line 22, ../../../../../../../../../Library/Ruby/Gems/1.8/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+html {
+  line-height: 1;
+}
+
+/* line 24, ../../../../../../../../../Library/Ruby/Gems/1.8/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+ol, ul {
+  list-style: none;
+}
+
+/* line 26, ../../../../../../../../../Library/Ruby/Gems/1.8/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+/* line 28, ../../../../../../../../../Library/Ruby/Gems/1.8/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+caption, th, td {
+  text-align: left;
+  font-weight: normal;
+  vertical-align: middle;
+}
+
+/* line 30, ../../../../../../../../../Library/Ruby/Gems/1.8/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+q, blockquote {
+  quotes: none;
+}
+/* line 103, ../../../../../../../../../Library/Ruby/Gems/1.8/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+q:before, q:after, blockquote:before, blockquote:after {
+  content: "";
+  content: none;
+}
+
+/* line 32, ../../../../../../../../../Library/Ruby/Gems/1.8/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+a img {
+  border: none;
+}
+
+/* line 116, ../../../../../../../../../Library/Ruby/Gems/1.8/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section, summary {
+  display: block;
+}
+
+/* line 12, main.sass */
+html, body {
+  font-family: "Lato", sans-serif;
+  background: #1b1b1b;
+  height: 100%;
+}
+
+/* line 18, main.sass */
+* {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+/* line 21, main.sass */
+::selection {
+  background: #55564e;
+}
+
+/* line 27, main.sass */
+.bespoke-parent {
+  -webkit-perspective: 600px;
+  -moz-perspective: 600px;
+  -ms-perspective: 600px;
+  -o-perspective: 600px;
+  perspective: 600px;
+  position: absolute;
+  overflow: hidden;
+  bottom: 70px;
+  right: 0;
+  left: 0;
+  top: 0;
+}
+
+/* line 37, main.sass */
+.bespoke-slide {
+  -webkit-transform: translate3d(0, 0, 1px);
+  -moz-transform: translate3d(0, 0, 1px);
+  -ms-transform: translate3d(0, 0, 1px);
+  -o-transform: translate3d(0, 0, 1px);
+  transform: translate3d(0, 0, 1px);
+  background: white;
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  left: 0;
+  top: 0;
+}
+
+/* line 47, main.sass */
+.bespoke-inactive {
+  display: none;
+}
+
+/* line 51, main.sass */
+.bespoke-before-1,
+.bespoke-after-1 {
+  display: block;
+}
+
+/* line 56, main.sass */
+.bespoke-active {
+  -webkit-transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+  -webkit-transition-delay: 0.35s;
+  -moz-transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1) 0.35s;
+  -o-transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1) 0.35s;
+  transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1) 0.35s;
+  -webkit-transform: scale(1);
+  -moz-transform: scale(1);
+  -ms-transform: scale(1);
+  -o-transform: scale(1);
+  transform: scale(1);
+  z-index: 20;
+  opacity: 1;
+}
+
+/* line 63, main.sass */
+.bespoke-before {
+  -webkit-transition: all 0.8s cubic-bezier(0.86, 0, 0.07, 1);
+  -moz-transition: all 0.8s cubic-bezier(0.86, 0, 0.07, 1);
+  -o-transition: all 0.8s cubic-bezier(0.86, 0, 0.07, 1);
+  transition: all 0.8s cubic-bezier(0.86, 0, 0.07, 1);
+  -webkit-transform: translate3d(110%, 0, 0);
+  -moz-transform: translate3d(110%, 0, 0);
+  -ms-transform: translate3d(110%, 0, 0);
+  -o-transform: translate3d(110%, 0, 0);
+  transform: translate3d(110%, 0, 0);
+  z-index: 30;
+}
+
+/* line 69, main.sass */
+.bespoke-after {
+  -webkit-transition: all 0.8s cubic-bezier(0.86, 0, 0.07, 1);
+  -moz-transition: all 0.8s cubic-bezier(0.86, 0, 0.07, 1);
+  -o-transition: all 0.8s cubic-bezier(0.86, 0, 0.07, 1);
+  transition: all 0.8s cubic-bezier(0.86, 0, 0.07, 1);
+  -webkit-transform: scale(0.8);
+  -moz-transform: scale(0.8);
+  -ms-transform: scale(0.8);
+  -o-transform: scale(0.8);
+  transform: scale(0.8);
+  z-index: 10;
+  opacity: 0;
+}
+
+/* line 78, main.sass */
+.bespoke-slide {
+  -webkit-font-smoothing: subpixel-antialiased;
+  -webkit-box-shadow: 0 0 0 20px black;
+  -moz-box-shadow: 0 0 0 20px black;
+  box-shadow: 0 0 0 20px black;
+  text-transform: uppercase;
+  line-height: 1.5;
+  font-weight: 100;
+  font-size: 19px;
+  background: #06b3db;
+  text-align: center;
+  display: table;
+  color: white;
+}
+/* line 91, main.sass */
+.bespoke-slide sub {
+  font-size: 12px;
+}
+/* line 95, main.sass */
+.bespoke-slide article {
+  vertical-align: middle;
+  display: table-cell;
+  width: 50%;
+}
+/* line 101, main.sass */
+.bespoke-slide h1, .bespoke-slide h2, .bespoke-slide h3 {
+  text-transform: uppercase;
+  word-spacing: 0.2em;
+  font-weight: 100;
+}
+/* line 107, main.sass */
+.bespoke-slide h1 {
+  letter-spacing: -1px;
+  line-height: 1.5;
+  font-size: 72px;
+}
+/* line 113, main.sass */
+.bespoke-slide h2 {
+  letter-spacing: -1px;
+  line-height: 1.5;
+  font-size: 48px;
+  width: 100%;
+}
+/* line 120, main.sass */
+.bespoke-slide h3 {
+  font-size: 24px;
+}
+/* line 124, main.sass */
+.bespoke-slide a {
+  text-decoration: none;
+  color: white;
+}
+/* line 129, main.sass */
+.bespoke-slide ul, .bespoke-slide ol {
+  margin: 20px 0;
+}
+/* line 133, main.sass */
+.bespoke-slide ul li, .bespoke-slide ol li {
+  margin: 5px 0;
+}
+/* line 137, main.sass */
+.bespoke-slide ul li .aside, .bespoke-slide ol li .aside {
+  margin-bottom: 8px;
+  line-height: 1;
+  font-style: italic;
+  font-size: 15px;
+  display: block;
+  opacity: 0.8;
+}
+/* line 146, main.sass */
+.bespoke-slide em {
+  font-style: italic;
+}
+/* line 152, main.sass */
+.bespoke-slide.left article {
+  padding-left: 10%;
+  text-align: left;
+}
+/* line 157, main.sass */
+.bespoke-slide.left li {
+  list-style-position: inside;
+  margin-left: 40px;
+  list-style: disc;
+}
+/* line 163, main.sass */
+.bespoke-slide.left li .aside {
+  margin-left: 20px;
+}
+/* line 169, main.sass */
+.bespoke-slide.right article {
+  padding-right: 10%;
+  text-align: right;
+}
+/* line 174, main.sass */
+.bespoke-slide.video {
+  background: #1b1b1b;
+}
+/* line 178, main.sass */
+.bespoke-slide pre, .bespoke-slide code {
+  text-transform: none;
+  font-family: Consolas, Monaco, "Courier New", Courier, monospace;
+  line-height: 1.25;
+  font-weight: 100;
+}
+/* line 185, main.sass */
+.bespoke-slide pre.snippet {
+  display: -moz-inline-stack;
+  display: inline-block;
+  vertical-align: middle;
+  *vertical-align: auto;
+  zoom: 1;
+  *display: inline;
+  background: #058aa9;
+  text-align: left;
+  font-size: 13px;
+  max-width: 960px;
+  padding: 20px;
+  margin: 20px auto 0 auto;
+}
+/* line 195, main.sass */
+.bespoke-slide pre.snippet .comment {
+  opacity: 0.5;
+  color: white;
+}
+/* line 200, main.sass */
+.bespoke-slide .code {
+  -webkit-box-sizing: content-box;
+  -moz-box-sizing: content-box;
+  box-sizing: content-box;
+  background: #272822;
+  text-align: left;
+  font-size: 13px;
+  overflow: scroll;
+  padding: 20px;
+  height: 100%;
+  width: 100%;
+  left: 0;
+  top: 0;
+}
+/* line 215, main.sass */
+.bespoke-slide .code .diff {
+  display: -moz-inline-stack;
+  display: inline-block;
+  vertical-align: middle;
+  *vertical-align: auto;
+  zoom: 1;
+  *display: inline;
+  border-bottom: 1px dashed rgba(255, 255, 255, 0.2);
+  border-top: 1px dashed rgba(255, 255, 255, 0.2);
+  background: #22221d;
+  position: relative;
+  padding: 10px 0 10px 20px;
+  margin: 10px 0;
+  width: 100%;
+  left: -20px;
+}
+/* line 229, main.sass */
+.bespoke-slide .demo {
+  background: white;
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  right: 0;
+  top: 0;
+}
+/* line 238, main.sass */
+.bespoke-slide .play {
+  background: rgba(6, 179, 219, 0.95);
+  font-size: 48px;
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  right: 0;
+  top: 0;
+}
+/* line 248, main.sass */
+.bespoke-slide .play:after {
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  -ms-border-radius: 3px;
+  -o-border-radius: 3px;
+  border-radius: 3px;
+  background: rgba(6, 179, 219, 0.8);
+  margin-left: -50px;
+  margin-top: -50px;
+  line-height: 100px;
+  font-size: 48px;
+  position: absolute;
+  content: "\25B6";
+  display: block;
+  height: 100px;
+  width: 100px;
+  left: 50%;
+  top: 50%;
+}
+/* line 268, main.sass */
+.bespoke-slide.split .code, .bespoke-slide.split .demo {
+  width: 50%;
+}
+/* line 272, main.sass */
+.bespoke-slide.split .play {
+  width: 50%;
+}
+/* line 276, main.sass */
+.bespoke-slide .diagram {
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+/* line 282, main.sass */
+.bespoke-slide .diagram.right-center {
+  background-position: right center;
+}
+/* line 286, main.sass */
+.bespoke-slide .diagram.left-center {
+  background-position: left center;
+}
+/* line 290, main.sass */
+.bespoke-slide .bespoke-bullet {
+  -webkit-transition: -webkit-transform 0.3s cubic-bezier(0.23, 1, 0.32, 1), opacity 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+  -moz-transition: -moz-transform 0.3s cubic-bezier(0.23, 1, 0.32, 1), opacity 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+  -o-transition: -o-transform 0.3s cubic-bezier(0.23, 1, 0.32, 1), opacity 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+  transition: transform 0.3s cubic-bezier(0.23, 1, 0.32, 1), opacity 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+  -webkit-transform: translate3d(40px, 0, 0);
+  -moz-transform: translate3d(40px, 0, 0);
+  -ms-transform: translate3d(40px, 0, 0);
+  -o-transform: translate3d(40px, 0, 0);
+  transform: translate3d(40px, 0, 0);
+  opacity: 0;
+}
+/* line 296, main.sass */
+.bespoke-slide .bespoke-bullet.bespoke-bullet-active {
+  -webkit-transform: translate3d(0, 0, 0);
+  -moz-transform: translate3d(0, 0, 0);
+  -ms-transform: translate3d(0, 0, 0);
+  -o-transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0);
+  opacity: 1;
+}
+
+/* line 301, main.sass */
+.footer {
+  text-transform: uppercase;
+  line-height: 70px;
+  background: #1b1b1b;
+  position: absolute;
+  height: 70px;
+  bottom: 0;
+  color: white;
+  width: 100%;
+}
+/* line 312, main.sass */
+.footer hgroup {
+  position: absolute;
+  left: 20px;
+}
+/* line 317, main.sass */
+.footer hgroup h1, .footer hgroup h2, .footer hgroup h3 {
+  display: -moz-inline-stack;
+  display: inline-block;
+  vertical-align: middle;
+  *vertical-align: auto;
+  zoom: 1;
+  *display: inline;
+  font-size: 16px;
+}
+/* line 322, main.sass */
+.footer hgroup h2 {
+  font-weight: 300;
+  opacity: 0.8;
+}
+/* line 327, main.sass */
+.footer hgroup h3 {
+  margin-left: 8px;
+  font-weight: 100;
+  opacity: 0.4;
+}
+/* line 333, main.sass */
+.footer cite {
+  font-weight: 100;
+  font-size: 14px;
+  position: absolute;
+  opacity: 0.5;
+  right: 20px;
+  color: #cccccc;
+}
+/* line 342, main.sass */
+.footer cite a {
+  text-decoration: none;
+  margin-left: 8px;
+  font-weight: 300;
+  color: white;
+}

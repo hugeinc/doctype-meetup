@@ -1,0 +1,86 @@
+<!doctype html>
+<html>
+<head><meta name="author" content="Justin Windle">
+    <style> html, body { margin: 0; } </style>
+</head>
+<body>
+    <canvas id="canvas"></canvas>
+
+    <script id="vs" type="x-vert-shader">
+
+    // Attributes
+    attribute vec3 aVertexPosition;
+
+    void main() {
+
+        // Set the vertex position
+        gl_Position = vec4( aVertexPosition, 1.0 );
+    }
+
+    </script>
+
+    <script id="fs" type="x-frag-shader">
+
+    precision mediump float;
+
+    void main() {
+
+        // Set the fragment color
+        gl_FragColor = vec4( 0.2, 0.1, 0.4, 1.0 );
+    }
+
+    </script>
+    
+    <script>
+
+    // Retrieve and setup the canvas we'll be using for rendering
+    var canvas = document.getElementById( 'canvas' );
+    canvas.height = window.innerHeight;
+    canvas.width = window.innerWidth;
+
+    // Retrieve the WebGL context from the canvas
+    var gl = canvas.getContext( 'webgl' ) || canvas.getContext( 'experimental-webgl' );
+
+    // If the context doesn't exist, we don't have WebGL. Tears.
+    if ( !gl ) throw "This is not the WebGL context you're looking for";
+
+    // Ask WebGL for new vertex and fragment shaders
+    var vs = gl.createShader( gl.VERTEX_SHADER );
+    var fs = gl.createShader( gl.FRAGMENT_SHADER );
+
+    // Set the GLSL ES source of each shader
+    gl.shaderSource( vs, document.getElementById( 'vs' ).textContent );
+    gl.shaderSource( fs, document.getElementById( 'fs' ).textContent );
+
+    // Compile shaders
+    gl.compileShader( vs );
+    gl.compileShader( fs );
+
+    // Check that the shaders compiled correctly
+    if ( !gl.getShaderParameter( vs, gl.COMPILE_STATUS ) )
+        throw gl.getShaderInfoLog( vs );
+
+    if ( !gl.getShaderParameter( fs, gl.COMPILE_STATUS ) )
+        throw gl.getShaderInfoLog( fs );
+
+    // Create a shader program and attach each shader
+    var program = gl.createProgram();
+    gl.attachShader( program, vs );
+    gl.attachShader( program, fs );
+
+    // Link the program
+    gl.linkProgram( program );
+
+    // Check that the program linked correctly
+    if ( !gl.getProgramParameter( program, gl.LINK_STATUS ) )
+        throw gl.getProgramInfoLog( program );
+
+    // Tell WebGL to use the newly created program
+    gl.useProgram( program );
+
+    // Retrieve the attribute locations from the shader program
+    program.aVertexPositionLoc = gl.getAttribLocation( program, 'aVertexPosition' );
+
+    </script>
+</body>
+</html>

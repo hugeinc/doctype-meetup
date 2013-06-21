@@ -1,0 +1,541 @@
+<!doctype html>
+<html>
+    <head>
+        <title></title>
+        <link rel="stylesheet" href="assets/css/vendor/monokai.css">
+        <link rel="stylesheet" href="assets/css/main.css">
+    </head>
+    <body>
+        <article class="slides">
+
+            <!-- Introduction -->
+
+            <section>
+                <article>
+                    <h1>Good Evening</h1>
+                </article>
+            </section>
+            <section class="video" data-video="assets/video/portfolio.mp4"></section>
+            <section>
+                <article>
+                    <h1>WebGL</h1>
+                </article>
+            </section>
+            <section>
+                <article>
+                    <h2 data-bespoke-bullet>Line-up</h2>
+                    <ul>
+                        <li data-bespoke-bullet>What is WebGL?</li>
+                        <li data-bespoke-bullet>Why learn it?</li>
+                        <li data-bespoke-bullet>WebGL Fundamentals</li>
+                        <li data-bespoke-bullet>Making something cool</li>
+                        <li data-bespoke-bullet>Making something cooler</li>
+                    </ul>
+                </article>
+            </section>
+            <section>
+                <article>
+                    <h2 data-bespoke-bullet>What is WebGL</h2>
+                    <ul>
+                        <li data-bespoke-bullet>OpenGL ES (embedded systems) 2.0 for the web</li>
+                        <li data-bespoke-bullet>GPU accelerated graphics, image processing &amp; physics</li>
+                        <li data-bespoke-bullet>Based on OpenGL ~ creating juicy graphics since 1992</li>
+                        <li data-bespoke-bullet>Released in March 2011 ~ tried &amp; tested</li>
+                        <li data-bespoke-bullet>Good browser support across desktop &amp; mobile</li>
+                        <li data-bespoke-bullet>Programmable pipeline (vertex &amp; fragment shaders)</li>
+                        <li data-bespoke-bullet>Exposed through the HTML5 canvas ~ no plugins!</li>
+                        <li data-bespoke-bullet>State machine</li>
+                        <li data-bespoke-bullet>Fucking awesome</li>
+                    </ul>
+                </article>
+            </section>
+            <section class="left">
+                <article>
+                    <h2 data-bespoke-bullet>Browser Support</h2>
+                    <h3 data-bespoke-bullet>Desktop</h3>
+                    <ul>
+                        <li data-bespoke-bullet>Chrome</li>
+                        <li data-bespoke-bullet>Firefox (<sub>v</sub>4+)</li>
+                        <li data-bespoke-bullet>Safari (<sub>v</sub>5.1+)</li>
+                        <li data-bespoke-bullet>Opera (<sub>v</sub>12+)</li>
+                        <li data-bespoke-bullet>IE 11?</li>
+                    </ul>
+                    <h3 data-bespoke-bullet>Mobile</h3>
+                    <ul>
+                        <li data-bespoke-bullet>Chrome for Android (<sub>v</sub>25+)</li>
+                        <li data-bespoke-bullet>Firefox for Android (<sub>v</sub>19+)</li>
+                        <li data-bespoke-bullet>Opera (<sub>v</sub>12+)</li>
+                        <li data-bespoke-bullet>Blackberry (<sub>v</sub>10+)</li>
+                        <li data-bespoke-bullet>iOS 7?</li>
+                    </ul>
+                </article>
+            </section>
+            <section>
+                <article>
+                    <h2 data-bespoke-bullet>Why learn WebGL?</h2>
+                    <p>&ldquo; It looks weird and doesn't feel like JavaScript :`( &rdquo;</p>
+                    <p data-bespoke-bullet>Quit your jibber jabber</p>
+                    <ul>
+                        <li data-bespoke-bullet>It's good to learn new things</li>
+                        <li data-bespoke-bullet>It's ridiculously fast</li>
+                        <li data-bespoke-bullet>(Thousands of times faster than 2D canvas)</li>
+                        <li data-bespoke-bullet>Not just for 3D ~ WebGL is a 2D API</li>
+                        <li data-bespoke-bullet>Increasing browser support and, and&hellip; mobile!<span class="aside">Just think, apps and games at near native speeds</span></li>
+                        <li data-bespoke-bullet>It's the future <span class="aside">(OK, maybe a tiny part of it)</span></li>
+                        <li data-bespoke-bullet><br/><em>And</em></li>
+                        <li data-bespoke-bullet>some better reasons, from a few friends&hellip;</li>
+                    </ul>
+                </article>
+            </section>
+            <section class="video" data-video="assets/video/showcase.mp4"></section>
+            <section class="left">
+                <article>
+                    <h2>Frameworks</h2>
+                    <p data-bespoke-bullet>Butlers to bind your buffers&hellip;</p>
+                    <ul>
+                        <li data-bespoke-bullet>
+                            <a href="http://threejs.org/">THREE.js</a>
+                            <span class="aside">Popuar, free &amp; well supported. Can also render to Canvas, CSS &amp; SVG</span>
+                        </li>
+                        <li data-bespoke-bullet>
+                            <a href="http://biz.turbulenz.com/turbulenz">Turbulenz</a>
+                            <span class="aside">Full game engine</span>
+                        </li>
+                        <li data-bespoke-bullet>
+                            <a href="http://processingjs.org/">ProcessingJS</a>
+                            <span class="aside">Processing in the browser!</span>
+                        </li>
+                        <li data-bespoke-bullet>
+                            <a href="http://www.cubicvr.org/cubicvr-js/webgl-cubicvr">CubicVR</a>
+                        </li>
+                        <li data-bespoke-bullet>
+                            <a href="http://www.ambiera.com/copperlicht/">Copperlicht</a>
+                        </li>
+                        <li data-bespoke-bullet>
+                            <a href="http://spidergl.org/">SpiderGL</a>
+                        </li>
+                        <li data-bespoke-bullet>
+                            <a href="http://www.senchalabs.org/philogl/">PhiloGL</a>
+                        </li>
+                        <li data-bespoke-bullet>
+                            A3, GLGE, GLOW, J3D, LightGL, o3D, MathBox&hellip;
+                        </li>
+                    </ul>
+                    <h3 data-bespoke-bullet>2D</h3>
+                    <ul>
+                        <li data-bespoke-bullet>
+                            <a href="http://jonobr1.github.io/two.js/">TWO.js</a>
+                            <span class="aside">Can also render to Canvas &amp; SVG</span>
+                        </li>
+                        <li data-bespoke-bullet>
+                            <a href="https://github.com/GoodBoyDigital/pixi.js/">Pixi.js</a>
+                            <span class="aside">Flash-like API</span>
+                        </li>
+                        <li data-bespoke-bullet>
+                            <a href="https://github.com/funkaster/ChesterGL">ChesterGL</a>
+                        </li>
+                        <li data-bespoke-bullet>
+                            <a href="http://labs.hyperandroid.com/static/caat/">CAAT</a>
+                        </li>
+                    </ul>
+                </article>
+            </section>
+            <section>
+                <article>
+                    <h2>Don't worry, we're about to see some code</h2>
+                </article>
+            </section>
+            <section>
+                <article>
+                    <h3>Just a quick note about&hellip;</h3>
+                </article>
+            </section>
+            <section>
+                <article>
+                    <h2 data-bespoke-bullet>The GPU</h2>
+                    <ul>
+                        <li data-bespoke-bullet>CPU ~ a few cores, optimised for serial processing</li>
+                        <li data-bespoke-bullet>GPU ~ thousands of cores, optimised for parallel processing</li>
+                        <li data-bespoke-bullet>Parallelism gives us speed</li>
+                        <li data-bespoke-bullet>Speed + graphics = &hearts;</li>
+                    </ul>
+                </article>
+            </section>
+            <section>
+                <article>
+                    <h1>OK</h1>
+                    <h3>Let's get started</h3>
+                </article>
+            </section>
+            <section>
+                <article>
+                    <h1>WebGL Fundamentals</h1>
+                </article>
+            </section>
+            <section class="left">
+                <article>
+                    <h2 data-bespoke-bullet>The leprechaun's organs</h2>
+                    <ul>
+                        <li data-bespoke-bullet>Context <span class="aside">The leprechaun's ears ~ Holds the API &amp; state<br/>Retrieved from an HTML5 canvas</span></li>
+                        <li data-bespoke-bullet>Buffer (VBO)<span class="aside">The leprechaun's stomach ~ holds vertex &amp; index data<br/>Is the input to the pipeline</span></li>
+                        <li data-bespoke-bullet>Framebuffer (FBO)<span class="aside">An alternative render target, used for drawing off screen<br/>The default rendering buffer is an FBO</span></li>
+                        <li data-bespoke-bullet>Renderbuffer <span class="aside">Can be attached to an FBO and rendered to</span></li>
+                        <li data-bespoke-bullet>Texture <span class="aside">Image data I/O ~ can be read from in shaders<br/>Can also be rendered to from an FBO</span></li>
+                        <li data-bespoke-bullet>Program <span class="aside">A Vertex + Fragment shader linked together</span></li>
+                        <li data-bespoke-bullet>Vertex Shader <span class="aside">Runs on each vertex ~ outputs the final vertex position<br/>Gets attached to a program</span></li>
+                        <li data-bespoke-bullet>Fragment Shader <span class="aside">Runs on every fragment (a sort of pixel) ~ outputs the final color<br/>Gets attached to a program</span></li>
+                        <li data-bespoke-bullet>UniformLocation <span class="aside">Used to set constants in a program<br/>Uniforms can be accessed in vertex &amp; fragment shaders</span></li>
+                    </ul>
+                </article>
+            </section>
+            <section>
+                <article>
+                    <h1 data-bespoke-bullet>&lt;3</h1>
+                    <h2 data-bespoke-bullet>( As in, less than <em>THREE.js</em> )</h2>
+                    <h3 data-bespoke-bullet>Bare-metal WebGL ~ No pain, no gain&hellip;</h3>
+                </article>
+            </section>
+            
+            <!-- Hello World -->
+
+            <section>
+                <article>
+                    <h2>Hello World!</h2>
+                </article>
+            </section>
+            <section>
+                <article>
+                    <h3 data-bespoke-bullet>Check this out&hellip;</h3>
+                    <pre data-bespoke-bullet class="snippet">
+                        // Retrieve and setup the canvas we'll be using for rendering
+                        var canvas = document.getElementById( 'canvas' );
+
+                        // Retrieve the WebGL context from the canvas
+                        var gl = canvas.getContext( 'webgl' ) || canvas.getContext( 'experimental-webgl' );
+
+                        // If the context doesn't exist, we don't have WebGL. Tears.
+                        if ( !gl ) throw "This is not the WebGL context you're looking for";
+
+                        // Set the clearColor attribute
+                        gl.clearColor( 0.82, 0.28, 0.35, 1.0 );
+
+                        // Clear the color component of the screen buffer
+                        gl.clear( gl.COLOR_BUFFER_BIT );
+                    </pre>
+                </article>
+            </section>
+            <section data-demo="examples/00-hello-world.html" data-auto="true"></section>
+            <section>
+                <article>
+                    <h2 data-bespoke-bullet>Thank you, goodnight!</h2>
+                </article>
+            </section>
+
+            <!-- Shaders -->
+
+            <section>
+                <article>
+                    <h2 data-bespoke-bullet>Shaders</h2>
+                    <h3 data-bespoke-bullet>Written in GLSL ES</h3>
+                    <p data-bespoke-bullet>The OpenGL ES Shading Language</p>
+                    <p data-bespoke-bullet>Based on the syntax of the C</p>
+                </article>
+            </section>
+            <section class="left">
+                <article class="diagram right-center" style="background-image:url(assets/img/shaders.png)">
+                    <h2>Shaders</h2>
+                    <p>Vertex + Fragment = Program</p>
+                </article>
+            </section>
+            <section>
+                <article>
+                    <h2 data-bespoke-bullet>Vertex Shader</h2>
+                    <pre data-bespoke-bullet class="snippet">
+                        attribute vec3 aVertexPosition;
+
+                        void main() {
+                            gl_Position = vec4( aVertexPosition, 1.0 );
+                        }
+                    </pre>
+                </article>
+            </section>
+            <section>
+                <article>
+                    <h2 data-bespoke-bullet>Fragment Shader</h2>
+                    <pre data-bespoke-bullet class="snippet">
+                        void main() {
+                            gl_FragColor = vec4( 1.0, 0.0, 1.0, 1.0 );
+                        }
+                    </pre>
+                </article>
+            </section>
+            <section>
+                <article>
+                    <h2 data-bespoke-bullet>Shaders &amp; Programs</h2>
+                    <pre data-bespoke-bullet class="snippet">
+                        var vs = gl.createShader( gl.VERTEX_SHADER );
+                        var fs = gl.createShader( gl.FRAGMENT_SHADER );
+
+                        gl.shaderSource( vs, document.getElementById( 'vs' ).textContent );
+                        gl.shaderSource( fs, document.getElementById( 'fs' ).textContent );
+
+                        gl.compileShader( vs );
+                        gl.compileShader( fs );
+
+                        var program = gl.createProgram();
+                        gl.attachShader( program, vs );
+                        gl.attachShader( program, fs );
+
+                        gl.linkProgram( program );
+                        gl.useProgram( program );
+                    </pre>
+                </article>
+            </section>
+            <section>
+                <article>
+                    <h2 data-bespoke-bullet>Debugging Shaders</h2>
+                    <h3>Querying the state machine</h3>
+                    <pre data-bespoke-bullet class="snippet">
+                        // Check that a shader compiled correctly
+                        if ( !gl.getShaderParameter( vs, gl.COMPILE_STATUS ) ) {
+                            throw gl.getShaderInfoLog( vs );
+                        }
+
+                        // Check that a program linked correctly
+                        if ( !gl.getProgramParameter( program, gl.LINK_STATUS ) ) {
+                            throw gl.getProgramInfoLog( program );
+                        }
+                    </pre>
+                </article>
+            </section>
+            <section>
+                <article>
+                    <h2 data-bespoke-bullet>Attributes</h2>
+                    <p data-bespoke-bullet>Unique for each vertex</p>
+                    <pre data-bespoke-bullet class="snippet">
+                        // Get the address of the attribute in the shader program
+                        var aVertexPositionLoc = gl.getAttribLocation( program, 'aVertexPosition' );
+
+                        // Enable this array for vertex data
+                        gl.enableVertexAttribArray( aVertexPositionLoc );
+
+                        // Describe the data: 3 x float, not normalised or interleaved, no offset
+                        gl.vertexAttribPointer( aVertexPositionLoc, 3, gl.FLOAT, false, 0, 0 );
+
+                        // Buffer in vertex data...
+                    </pre>
+                </article>
+            </section>
+            <section>
+                <article>
+                    <h2 data-bespoke-bullet>Uniforms</h2>
+                    <p data-bespoke-bullet>Constant for every vertex / fragment</p>
+                    <pre data-bespoke-bullet class="snippet">
+                        // Get the address of the uniform in the shader program
+                        var uMyUniformLoc = gl.getUniformLocation( program, 'uMyUniform' );
+
+                        // Set uniform value: in this case a 4 component vector of floats (4f)
+                        gl.uniform4f( uMyUniformLoc, 1.0, 1.0, 1.0, 1.0 );
+                    </pre>
+                </article>
+            </section>
+            <section>
+                <article>
+                    <h2 data-bespoke-bullet>Varyings</h2>
+                    <p data-bespoke-bullet>Interpolated from vertex to fragment shaders</p>
+                    <pre data-bespoke-bullet class="snippet">
+                        // Vertex shader
+                        attribute vec3 aVertexPosition;
+                        varying float vTheGreenValue;
+                        void main() {
+                            vTheGreenValue = aVertexPosition.x;
+                            gl_Position = vec4( aVertexPosition, 1.0 );
+                        }
+
+                        // Fragment shader
+                        varying float vTheGreenValue;
+                        void main() {
+                            gl_FragColor = vec4( 1.0, vTheGreenValue, 1.0, 1.0 );
+                        }
+                    </pre>
+                </article>
+            </section>
+
+            <!-- <section data-code="examples/04-shaders.html" data-diff="9-20,22-30"></section>
+            <section data-code="examples/05-shaders-debug.html" data-diff="59-65,74-77"></section> -->
+            
+            <!-- Geometry -->
+
+            <section>
+                <article>
+                    <h2>Geometry</h2>
+                </article>
+            </section>
+            <section class="left">
+                <article class="diagram right-center" style="background-image:url(assets/img/buffers.png)">
+                    <h2>Vertex Buffers</h2>
+                    <h3>(VBO)</h3>
+                </article>
+            </section>
+            <section>
+                <article>
+                    <h2 data-bespoke-bullet>Filling vertex buffers</h2>
+                    <pre data-bespoke-bullet class="snippet">
+                        // Create a buffer to hold the geometry
+                        var vertexBuffer = gl.createBuffer();
+
+                        // Bind the buffer to the ARRAY_BUFFER bind point
+                        gl.bindBuffer( gl.ARRAY_BUFFER, vertexBuffer );
+
+                        // Fill the buffer with the vertex data
+                        gl.bufferData( gl.ARRAY_BUFFER, vertices, gl.STATIC_DRAW );
+                    </pre>
+                </article>
+            </section>
+            <section data-both="examples/03-plane.html" __data-diff="26-28,31-32,87-142"></section>
+
+            <!-- Drawing Modes -->
+
+            <section class="left">
+                <article class="diagram right-center" style="background-image:url(assets/img/drawing.png)">
+                    <h2>Drawing Modes</h2>
+                </article>
+            </section>
+
+            <!-- The Pipeline -->
+
+            <section>
+                <article>
+                    <h2>The Pipeline</h2>
+                </article>
+            </section>
+            <section class="left">
+                <article class="diagram center" style="background-image:url(assets/img/pipeline.png)"></article>
+            </section>
+            
+            <!-- Transform -->
+
+            <section>
+                <article>
+                    <h2>Transform</h2>
+                </article>
+            </section>
+            <section class="left">
+                <article class="diagram right-center" style="background-image:url(assets/img/modelview.png)">
+                    <h2>ModelView Matrix</h2>
+                    <p>Local &gt; world &gt; view transform</p>
+                </article>
+            </section>
+            <section data-both="examples/04-plane-transform.html" data-diff="8,15-17,20-22,24,95,103-106,128-134,143-144,147-148,155-163"></section>
+            
+            <!-- Perspective -->
+
+            <section>
+                <article>
+                    <h2>Perspective</h2>
+                </article>
+            </section>
+            <section class="left">
+                <article class="diagram right-center" style="background-image:url(assets/img/perspective.png)">
+                    <h2>The Projection Matrix</h2>
+                    <p>Converts the viewing frustum into a cuboid,<br/>shrinking distant objects</p>
+                </article>
+            </section>
+            <section data-both="examples/05-plane-perspective.html" data-diff="16,24-25,96,137-142,165,170"></section>
+            
+            <!-- Light -->
+
+            <section>
+                <article>
+                    <h2>Lights</h2>
+                </article>
+            </section>
+            <section class="left">
+                <article class="diagram right-center" style="background-image:url(assets/img/lighting.png)">
+                    <h2>Phong Shading</h2>
+                    <h3>Phong-Lambert illumination</h3>
+                </article>
+            </section>
+            <section data-both="examples/06-plane-light.html" data-diff="8,15,20-25,30-36,39,48-49,51-52,55-59,62-93,147,152,154-155,157,159-160,189-206,220-223,250-255,259,268-283"></section>
+            
+            <!-- Texture -->
+
+            <section>
+                <article>
+                    <h2>Texture</h2>
+                    <h3>Loading and sampling textures</h3>
+                </article>
+            </section>
+            <section data-both="examples/07-plane-light-texture.html" data-diff="16,25,37-39,56,63,84,87,90-94,158,235-281"></section>
+
+            <!-- 10x -->
+
+            <section>
+                <article>
+                    <h2 data-bespoke-bullet>Cranking it up a notch</h2>
+                    <h3 data-bespoke-bullet>Getting physical with Framebuffers</h3>
+                </article>
+            </section>
+            <section class="left">
+                <article class="diagram right-center" style="background-image:url(assets/img/physics.png)">
+                    <h2>Physics</h2>
+                    <p>Preserving state on with the GPU</p>
+                </article>
+            </section>
+            <section class="left">
+                <article>
+                    <h2 data-bespoke-bullet>We need to&hellip;</h2>
+                    <ul>
+                        <li data-bespoke-bullet>Upload particles once ~ compute all physics on the GPU</li>
+                        <li data-bespoke-bullet>Use an emitter and keep inactive particles off the screen</li>
+                        <li data-bespoke-bullet>Enable OES_texture_float to use floats in textures</li>
+                        <li data-bespoke-bullet>Use a texture to preserve position &amp; velocity</li>
+                        <li data-bespoke-bullet>Provide 2 data slots per particle to do this</li>
+                        <li data-bespoke-bullet>Use an FBO to render off screen to the data texture</li>
+                    </ul>
+                </article>
+            </section>
+            <section data-code="examples/10-gpu-particles.html"></section>
+            <section>
+                <article>
+                    <h2><a target="_blank" href="examples/10-gpu-particles.html">Demo</a></h2>
+                </article>
+            </section>
+            <section>
+                <article>
+                    <h2 data-bespoke-bullet>Connecting toys</h2>
+                    <h3 data-bespoke-bullet>LEAP Motion</h3>
+                </article>
+            </section>
+            <section data-demo="examples/11-leap-visualiser.html" data-auto="true"></section>
+            <section>
+                <article>
+                    <h2><a target="_blank" href="examples/12-gpu-particles-leap.html">Demo</a></h2>
+                </article>
+            </section>
+
+            <!-- Fin -->
+
+            <section>
+                <article>
+                    <h1>Cheers!</h1>
+                    <h3>@soulwire</h3>
+                </article>
+            </section>
+            
+        </article>
+        <footer class="footer">
+            <hgroup>
+                <h2>Dissecting WebGL</h2>
+                <h3>HUGE, 20.06.13</h3>    
+            </hgroup>
+            <cite>Justin Windle <a href="#">@soulwire</a></cite>
+        </footer>
+        <script src="assets/js/vendor/bespoke.min.js"></script>
+        <script src="assets/js/vendor/bespoke-hash.min.js"></script>
+        <script src="assets/js/vendor/bespoke-bullets.min.js"></script>
+        <script src="assets/js/vendor/highlight.min.js"></script>
+        <script src="assets/js/vendor/jquery.min.js"></script>
+        <script src="assets/js/main.js"></script>
+    </body>
+</html>

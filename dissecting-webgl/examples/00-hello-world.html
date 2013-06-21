@@ -1,0 +1,29 @@
+<!doctype html>
+<html>
+<head><meta name="author" content="Justin Windle">
+    <style> html, body { margin: 0; } </style>
+</head>
+<body>
+    <canvas id="canvas"></canvas>
+    <script>
+
+    // Retrieve and setup the canvas we'll be using for rendering
+    var canvas = document.getElementById( 'canvas' );
+    canvas.height = window.innerHeight;
+    canvas.width = window.innerWidth;
+
+    // Retrieve the WebGL context from the canvas
+    var gl = canvas.getContext( 'webgl' ) || canvas.getContext( 'experimental-webgl' );
+
+    // If the context doesn't exist, we don't have WebGL. Tears.
+    if ( !gl ) throw "This is not the WebGL context you're looking for";
+
+    // Set the clearColor attribute
+    gl.clearColor( 0.82, 0.28, 0.35, 1.0 );
+
+    // Clear the color component of the screen buffer
+    gl.clear( gl.COLOR_BUFFER_BIT );
+
+    </script>
+</body>
+</html>

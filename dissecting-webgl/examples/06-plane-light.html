@@ -1,0 +1,286 @@
+<!doctype html>
+<html>
+<head><meta name="author" content="Justin Windle">
+    <style> html, body { margin: 0; } </style>
+</head>
+<body>
+    <canvas id="canvas"></canvas>
+    <script src="lib/dat.gui.min.js"></script>
+    <script src="lib/gl-matrix.min.js"></script>
+
+    <script id="vs" type="x-vert-shader">
+
+    // Attributes
+    attribute vec3 aVertexPosition;
+    attribute vec3 aVertexNormal;
+
+    // Uniforms
+    uniform mat4 uPerspectiveMatrix;
+    uniform mat4 uModelViewMatrix;
+    uniform mat4 uNormalMatrix;
+
+    // Varyings
+    varying vec3 vPosition;
+    varying vec3 vNormal;
+    varying vec3 vEye;
+
+    void main() {
+
+        // Compute the vertex world coordinate
+        vPosition = vec3( uModelViewMatrix * vec4( aVertexPosition, 1.0 ) );
+
+        // Transform the normal so that it's still perpendicular to the vertex
+        vNormal = vec3( uNormalMatrix * vec4( aVertexNormal, 1.0 ) );
+
+        // Camera is at origin so the eye is just -position
+        vEye = -vPosition;
+
+        // Set the vertex position and apply perspective
+        gl_Position = uPerspectiveMatrix * vec4( vPosition, 1.0 );
+    }
+
+    </script>
+
+    <script id="fs" type="x-frag-shader">
+
+    precision mediump float;
+
+    const float LIGHT_ATTENUATION = 0.01;
+
+    // Uniforms
+    uniform vec3 uLightPosition;
+    uniform vec4 uLightColor;
+    uniform vec4 uMaterialColor;
+
+    // Varyings
+    varying vec3 vPosition;
+    varying vec3 vNormal;
+    varying vec3 vEye;
+
+    void main() {
+
+        // Ensure the light position is a unit vector
+        vec3 L = normalize( uLightPosition );
+
+        // Ensure the interpolated normal is a unit vector
+        vec3 N = normalize( vNormal );
+
+        // Ensure the interpolated eye vector is normalised
+        vec3 E = normalize( vEye );
+
+        // Compute the R term for specular reflection
+        vec3 R = reflect( -L, N );
+
+        // Delta between the light and the vertex, used to compute light attenuation
+        float distance = length( uLightPosition - vPosition );
+
+        // Compute the attenuation of light as it gets further from the surface: a = 1/1+k*d^2
+        float attenuation = 1.0 / ( 1.0 + ( LIGHT_ATTENUATION * pow( distance, 2.0 ) ) );
+
+        // Compute Lambertian coefficient: F = N·L
+        float lambert = max( dot( N, L ), 0.0 );
+
+        // Diffuse color is the combination of material and light
+        vec4 diffuse = uMaterialColor * uLightColor * lambert * attenuation;
+
+        // Calculate specular highlights: R = 2N(N·L) - L
+        float specular = pow( max( dot( R, E ), 0.0 ), 8.0 ) * attenuation;
+
+        // Compute the final color as a combination of diffuse and specular
+        vec4 finalColor = diffuse + specular * 0.5;
+
+        // Output the final pixel color with full alpha
+        gl_FragColor = vec4( finalColor.rgb, 1.0 );
+    }
+
+    </script>
+    
+    <script>
+
+    // Retrieve and setup the canvas we'll be using for rendering
+    var canvas = document.getElementById( 'canvas' );
+    canvas.height = window.innerHeight;
+    canvas.width = window.innerWidth;
+
+    // Retrieve the WebGL context from the canvas
+    var gl = canvas.getContext( 'webgl' ) || canvas.getContext( 'experimental-webgl' );
+
+    // If the context doesn't exist, we don't have WebGL. Tears.
+    if ( !gl ) throw "This is not the WebGL context you're looking for";
+
+    // Ask WebGL for new vertex and fragment shaders
+    var vs = gl.createShader( gl.VERTEX_SHADER );
+    var fs = gl.createShader( gl.FRAGMENT_SHADER );
+
+    // Set the GLSL ES source of each shader
+    gl.shaderSource( vs, document.getElementById( 'vs' ).textContent );
+    gl.shaderSource( fs, document.getElementById( 'fs' ).textContent );
+
+    // Compile shaders
+    gl.compileShader( vs );
+    gl.compileShader( fs );
+
+    // Check that the shaders compiled correctly
+    if ( !gl.getShaderParameter( vs, gl.COMPILE_STATUS ) )
+        throw gl.getShaderInfoLog( vs );
+
+    if ( !gl.getShaderParameter( fs, gl.COMPILE_STATUS ) )
+        throw gl.getShaderInfoLog( fs );
+
+    // Create a shader program and attach each shader
+    var program = gl.createProgram();
+    gl.attachShader( program, vs );
+    gl.attachShader( program, fs );
+
+    // Link the program
+    gl.linkProgram( program );
+
+    // Check that the program linked correctly
+    if ( !gl.getProgramParameter( program, gl.LINK_STATUS ) )
+        throw gl.getProgramInfoLog( program );
+
+    // Tell WebGL to use the newly created program
+    gl.useProgram( program );
+
+    // Retrieve the attribute locations from the shader program
+    program.aVertexPositionLoc = gl.getAttribLocation( program, 'aVertexPosition' );
+    program.aVertexNormalLoc = gl.getAttribLocation( program, 'aVertexNormal' );
+
+    // Retrieve the uniform locations from the shader program
+    program.uPerspectiveMatrixLoc = gl.getUniformLocation( program, 'uPerspectiveMatrix' );
+    program.uModelViewMatrixLoc = gl.getUniformLocation( program, 'uModelViewMatrix' );
+    program.uNormalMatrixLoc = gl.getUniformLocation( program, 'uNormalMatrix' );
+    program.uMaterialColorLoc = gl.getUniformLocation( program, 'uMaterialColor' );
+    program.uLightPositionLoc = gl.getUniformLocation( program, 'uLightPosition' );
+    program.uLightColorLoc = gl.getUniformLocation( program, 'uLightColor' );
+
+    // Set lighting and material uniforms
+    gl.uniform4f( program.uMaterialColorLoc, 1.0, 1.0, 1.0, 1.0 );
+    gl.uniform3f( program.uLightPositionLoc, 0.1, 0.2, 0.4 );
+    gl.uniform4f( program.uLightColorLoc, 1.0, 1.0, 1.0, 1.0 );
+
+    // Create square geometry (generally defined anti-clockwise)
+    var vertices = new Float32Array([
+        -1.0, -1.0, 0.0, // 2----3
+         1.0, -1.0, 0.0, // | \  |
+        -1.0,  1.0, 0.0, // |  \ |
+         1.0,  1.0, 0.0  // 0----1
+    ]);
+
+    // Create a buffer to hold the geometry
+    var vertexBuffer = gl.createBuffer();
+
+    // Bind the buffer to the ARRAY_BUFFER bind point
+    gl.bindBuffer( gl.ARRAY_BUFFER, vertexBuffer );
+
+    // Fill the buffer with the vertex data. We're using `STATIC_DRAW` because the buffer data 
+    // is set once and used multiple times. Other options are `DYNAMIC_DRAW` for when the buffer
+    // content or parts of it will change and `STREAM_DRAW` when it will only be used once
+    gl.bufferData( gl.ARRAY_BUFFER, vertices, gl.STATIC_DRAW );
+
+    // Enable this buffer as a per-vertex attribute array, meaning that each chunk represents
+    // attribute data for a single vertex when `drawArrays` or `drawElements` is called
+    gl.enableVertexAttribArray( program.aVertexPositionLoc );
+
+    // Tell WebGL how to interpret the data in this buffer - 3 components or type FLOAT per 
+    // attribute, non-interleaved (consecutive) and without offset
+    gl.vertexAttribPointer( program.aVertexPositionLoc, 3, gl.FLOAT, false, 0, 0 );
+
+    // Create normals for each vertex. Normals are vectors that are perpendicular to the surface
+    // represented by the vertices. A normal can be computed by taking the cross product of the
+    // vectors between adjacent vertices, though for our flat plane, each vertex normal is simply
+    // pointing outwards along the positive z axis, towards the viewer
+    var normals = new Float32Array([
+        0.0, 0.0, 1.0,
+        0.0, 0.0, 1.0,
+        0.0, 0.0, 1.0,
+        0.0, 0.0, 1.0
+    ]);
+
+    // Now buffer the normal data in the same way as the vertex data
+    var normalBuffer = gl.createBuffer();
+    gl.bindBuffer( gl.ARRAY_BUFFER, normalBuffer );
+    gl.bufferData( gl.ARRAY_BUFFER, normals, gl.STATIC_DRAW );
+    gl.enableVertexAttribArray( program.aVertexNormalLoc );
+    gl.vertexAttribPointer( program.aVertexNormalLoc, 3, gl.FLOAT, false, 0, 0 );
+
+    // Transformations are usually handled using 3 matrices:
+    //  - Model matrix maps a mesh into world space
+    //  - View matrix maps the model matrix into camera space
+    //  - Projection or perspective matrix maps to the view frustum
+    // Since our camera is fixed, we can pre-combine the model and view matrices
+    var modelViewMatrix = mat4.create();
+
+    // Create a projection / perspective matrix
+    var perspectiveMatrix = mat4.create();
+
+    // Create a view frustum with perspective from FOV, aspect ratio and near/far clipping planes
+    mat4.perspective( perspectiveMatrix, 60 / 180 * Math.PI, canvas.width / canvas.height, 0.1, 100 );
+
+    // Create a normal matrix for transforming vertex normals while ensuring that they remain
+    // perpendicular to the surface vertices
+    var normalMatrix = mat4.create();
+
+    // Remember, WebGL is a state machine. We can set some unchanging attributes here...
+
+    // Set the clearColor attribute
+    gl.clearColor( 0.82, 0.28, 0.35, 1.0 );
+
+    // Set the viewport size to the actual renderable size of the canvas
+    gl.viewport( 0, 0, gl.drawingBufferWidth, gl.drawingBufferHeight );
+
+    var phase = 0;
+
+    function draw() {
+
+        phase += 0.01;
+
+        // Schedule next update
+        requestAnimationFrame( draw );
+
+        // Clear the color component of the screen buffer
+        gl.clear( gl.COLOR_BUFFER_BIT );
+
+        // Update the mesh transformation
+        mat4.identity( modelViewMatrix );
+        mat4.translate( modelViewMatrix, modelViewMatrix, [ 0, 0, -3 ] );
+        mat4.rotateX( modelViewMatrix, modelViewMatrix, Math.cos( phase * 0.8 ) * Math.PI * 0.15 );
+        mat4.rotateY( modelViewMatrix, modelViewMatrix, Math.sin( phase ) * Math.cos( phase * 0.25 ) );
+
+        // Update the normal matrix, which is the inverted and transposed model-view matrix
+        // @see http://www.lighthouse3d.com/tutorials/glsl-tutorial/the-normal-matrix/
+        mat4.identity( normalMatrix );
+        mat4.invert( normalMatrix, modelViewMatrix );
+        mat4.transpose( normalMatrix, normalMatrix );
+
+        // Update the matrix uniforms for use within the vertex and fragment shaders
+        gl.uniformMatrix4fv( program.uPerspectiveMatrixLoc, false, perspectiveMatrix );
+        gl.uniformMatrix4fv( program.uModelViewMatrixLoc, false, modelViewMatrix );
+        gl.uniformMatrix4fv( program.uNormalMatrixLoc, false, normalMatrix );
+
+        // Draw the currently bound geometry as a triangle strip, starting at the first (0th)
+        // value and drawing all 4 vertices
+        gl.drawArrays( gl.TRIANGLE_STRIP, 0, 4 );
+    }
+
+    draw();
+
+    // Create a GUI for tweaking values
+    var gui = new dat.GUI();
+
+    var opts = {
+        materialColor: [255,255,255],
+        lightColor: [255,255,255]
+    };
+
+    gui.addColor( opts, 'materialColor' ).name( 'Material Color' ).onChange(function() {
+        gl.uniform4f( program.uMaterialColorLoc, opts.materialColor[0]/255, opts.materialColor[1]/255, opts.materialColor[2]/255, 1.0 );
+    });
+
+    gui.addColor( opts, 'lightColor' ).name( 'Light Color' ).onChange(function() {
+        gl.uniform4f( program.uLightColorLoc, opts.lightColor[0]/255, opts.lightColor[1]/255, opts.lightColor[2]/255, 1.0 );
+    });
+
+    </script>
+</body>
+</html>
