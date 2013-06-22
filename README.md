@@ -4,6 +4,30 @@
 Contains presentation materials from the <!doctype html> meetup
 http://www.meetup.com/doctype-html/
 
+Dissecting WebGL - June 22, 2013
+-------------
+directory: /dissecting-webgl
+
+WebGL is a magical graphics leprechaun that lives inside good web browsers. 
+It’s the permissible spawn of OpenGL, which is a big unicorn that eats code and shits pixels.
+
+Taming WebGL will allow you to create GPU accelerated graphics, physics and 
+image effects that can run on desktop and mobile browsers without any plugins. Nice.
+
+This little leprechaun speaks an ancient language though, generally forgotten 
+in Frontendland and despite it’s computational and rendering dexterity, it’s 
+quite shy and will often appear obtuse and quite frankly very unforthcoming 
+about why it’s being such a disobedient little shit.
+
+Join Huge and Justin Windle as we ply this volatile gremlin with treats and 
+make it dance for us. We’ll learn what he really is, what he’s good for, 
+dissect his digestive system (aka the pipeline) and ruminate how to listen to his 
+faintly mumbled complaints. Then, whilst grasping the whip of compliance, we’ll 
+command him to draw shapes, process images, render 3D objects and create particle 
+effects at staggering speeds.
+
+
+
 Web Audio API - April 18, 2013
 -------------
 directory: /webaudio
